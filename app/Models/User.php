@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -19,10 +20,10 @@ class User extends Authenticatable
      */
     protected $table="users";
     protected $fillable = [
+        'id',
         'ten',
         'so_dien_thoai',
         'email',
-        'password',
         'id_dia_chi',
         'role_id',
         'gioi_tinh',
@@ -30,7 +31,12 @@ class User extends Authenticatable
         'ngay_sinh',
         'trang_thai',
     ];
-
+    public function loadListWithPager($param=[])
+    {
+        $query =DB::table($this->table)->select($this->fillable);
+        $lists=$query->paginate(10);
+        return $lists;
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
