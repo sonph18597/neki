@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('sale_off', function (Blueprint $table) {
             $table->id();
             $table->string('ten');
+            $table->string('mo_ta')->nullable();
+            $table->integer('phan_tram');
             $table->string('time_start');
             $table->string('time_end');
             $table->timestamps();
