@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('color', function (Blueprint $table) {
+        Schema::create('mau_sac', function (Blueprint $table) {
             $table->id();
-            $table->string('color_name');
+            $table->string('ten_mau');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('color');
+        Schema::dropIfExists('mau_sac');
     }
 };
