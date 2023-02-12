@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('address', function (Blueprint $table) {
+        Schema::create('dia_chi', function (Blueprint $table) {
             $table->id();
-            $table->string('province'); //Tỉnh thành phố
-            $table->string('district'); //Quận huyện
-            $table->string('village'); //Phường xã
-            $table->string('detail'); //Phường xã
+            $table->string('tinh_thanh_pho');
+            $table->string('quan_huyen');
+            $table->string('phuong_xa');
+            $table->string('chi_tiet');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('address');
+        Schema::dropIfExists('dia_chi');
     }
 };

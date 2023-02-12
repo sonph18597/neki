@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Address extends Model
+class MauSac extends Model
 {
     use HasFactory;
-    protected $table = 'address';
-    protected $fillable = ['id', 'province', 'district', 'village', 'detail'];
+    protected $table = 'mau_sac';
+    protected $fillable = ['id', 'ten_mau'];
 }

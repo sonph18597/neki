@@ -4,29 +4,29 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Color;
+use App\Models\MauSac;
 use Illuminate\Validation\ValidationException;
 
-class ColorController extends Controller
+class MauSacController extends Controller
 {
 
     public function index()
     {
-        return response()->json(Color::all());
+        return response()->json(MauSac::all());
     }
 
     public function store(Request $request)
     {
         try {
             $this->validate($request, [
-                'color_name' => 'required|unique:color|max:255'
+                'ten_mau' => 'required|unique:mau_sac|max:255'
             ]);
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->getMessage()], 400);
         }
 
-        $color = new Color();
-        $color->color_name = $request->color_name;
+        $color = new MauSac();
+        $color->ten_mau = $request->ten_mau;
         $color->save();
 
         // $color = Color::create([
@@ -39,7 +39,7 @@ class ColorController extends Controller
 
     public function show(Request $request, $id)
     {
-        $color = Color::find($id);
+        $color = MauSac::find($id);
 
         if (!$color) {
             return response()->json(['message' => 'Color not found'], 404);
@@ -51,7 +51,7 @@ class ColorController extends Controller
 
     public function update(Request $request, $id)
     {
-        $color = Color::find($id);
+        $color = MauSac::find($id);
 
         if (!$color) {
             return response()->json(['error' => 'The color with id '.$id.' could not be found.'], 404);
@@ -59,13 +59,13 @@ class ColorController extends Controller
 
         try {
             $this->validate($request, [
-                'color_name' => 'required|unique:color|max:255'
+                'ten_mau' => 'required|unique:mau_sac|max:255'
             ]);
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->getMessage()], 400);
         }
 
-        $color->color_name = $request->input('color_name');
+        $color->ten_mau = $request->input('ten_mau');
         $color->save();
 
         return response()->json(['message' => 'Successfully updated color!']);
@@ -75,7 +75,7 @@ class ColorController extends Controller
     public function destroy($id)
     {
 
-        $color = Color::find($id);
+        $color = MauSac::find($id);
 
         if (!$color) {
             return response()->json(['error' => 'The color with id '.$id.' could not be found.'], 404);
