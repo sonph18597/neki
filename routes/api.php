@@ -20,16 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('color', [ColorController::class, 'index']);
-Route::post('color', [ColorController::class, 'store']);
-Route::get('color/{id}', [ColorController::class, 'show']);
-Route::put('color/{id}', [ColorController::class, 'update']);
-Route::delete('color/{id}', [ColorController::class, 'destroy']);
-
-Route::get('address', [AddressController::class, 'index']);
-Route::post('address', [AddressController::class, 'store']);
-Route::get('address/{id}', [AddressController::class, 'show']);
-Route::put('address/{id}', [AddressController::class, 'update']);
-Route::delete('address/{id}', [AddressController::class, 'destroy']);
 
 
