@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::get('mau-sac', [MauSacController::class, 'index']);
 Route::post('mau-sac', [MauSacController::class, 'store']);
 Route::get('mau-sac/{id}', [MauSacController::class, 'show']);
@@ -31,5 +32,4 @@ Route::post('dia-chi', [DiaChiController::class, 'store']);
 Route::get('dia-chi/{id}', [DiaChiController::class, 'show']);
 Route::put('dia-chi/{id}', [DiaChiController::class, 'update']);
 Route::delete('dia-chi/{id}', [DiaChiController::class, 'destroy']);
-
 
