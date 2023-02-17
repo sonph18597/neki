@@ -34,7 +34,6 @@ return [
     | Supported: "session"
     |
     */
-
     'guards' => [
         'web' => [
             'driver' => 'session',
@@ -42,9 +41,14 @@ return [
         ],
         'api' => [
             'driver' => 'passport',
+
             'provider' => 'users',
         ],
-    ],
+
+
+        ],
+
+
 
     /*
     |--------------------------------------------------------------------------
