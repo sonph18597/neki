@@ -10,76 +10,89 @@ use Illuminate\Support\Facades\Session;
 
 class DiscountCodeController extends Controller
 {
-    private $v;
-
-    public function __construct()
-    {
-        $this->v = [];
-    }
     public function index()
     {
-        $discountcode = new DiscountCode();
-        $this->v['lists'] = $discountcode->loadListWithPager();
-        $this->v['_title'] = 'shoes';
-        return view('discountcode.index', $this->v);
+        return response()->json(DiscountCode::all());
     }
-    public function add(DiscountCodeRequest $request)
-    {
-        $this->v['_title'] = "Add";
-        $method_route = 'Router_BackEnd_DiscountCode_Add';
-        if ($request->isMethod('post')) {
-            $param = [];
-            $param['cols'] = $request->post();
-            unset($param['cols']['_token']);
 
-            $modelDiscount = new DiscountCode();
-            $res =  $modelDiscount->saveNew($param);
-            if ($res == null) {
-                return redirect()->route($method_route);
-            } elseif ($res > 0) {
-                Session::flash('success', 'Thêm mới thành công');
-            } else {
-                Session::flash('error', 'Lỗi thêm mới');
-                return redirect()->route($method_route);
-            }
+    public function store(Request $request)
+    {
+        try {
+            $this->validate($request, [
+                'discount_code' => 'required|max:255',
+                'exclude_prod' => 'required|max:255',
+                'include_prod' => 'required|max:255',
+                'condition_type' => 'required|max:255',
+                'type_discount' => 'required|max:255',
+                'discount_number' => 'required',
+                'limits' => 'required',
+                'time_start' => 'required',
+                'time_end' => 'required',
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
         }
-        return view('discountcode.add', $this->v);
-    }
-    public function detail($id)
-    {
-        $this->v['_title'] = "discount code";
-        $discountcode = new DiscountCode();
-        $objItem = $discountcode->loadOne($id);
-        $this->v['objItem'] = $objItem;
-        return view('discountcode.detail', $this->v);
-    }
-    public function update($id, Request $request)
-    {
-        $method_route = 'Router_BackEnd_DiscountCode_Detail';
-        $param = [];
-        $param['cols'] = $request->post();
-        unset($param['cols']['_token']);
 
-        $discountcode = new DiscountCode();
-        $objItem = $discountcode->loadOne($id);
-        $param['cols']['id'] = $id;
-        if (!is_null($param['cols']['discount_code'])) {
-            $param['cols']['discount_code'] = Hash::make($param['cols']['discount_code']);
-        }
-        $res = $discountcode->saveUpdate($param);
-        if ($res == null) {
-            return redirect()->route($method_route, ['id' => $id]);
-        } elseif ($res = 1) {
-            Session::flash('success', 'Cập nhật bản ghi ' . $objItem->id . ' thành công');
-            return redirect()->route($method_route, ['id' => $id]);
-        } else {
-            Session::flash('error', 'Lỗi cập nhật bản ghi ' . $objItem->id);
-            return redirect()->route($method_route, ['id' => $id]);
-        }
+        $DiscountCode = DiscountCode::create([
+            'discount_code' => $request->discount_code,
+            'exclude_prod' => $request->exclude_prod,
+            'include_prod' => $request->include_prod,
+            'condition_type' => $request->condition_type,
+            'type_discount' => $request->type_discount,
+            'discount_number' => $request->min_price,
+            'limits' => $request->limits,
+            'time_start' => $request->time_start,
+            'time_end' => $request->time_end
+        ]);
+
+        return response()->json(['message' => 'CCREATE SUCCESS'], 201);
     }
-    public function destroy($id)
+
+    public function show($id)
     {
-        $discountcode = DiscountCode::destroy($id);
-        return redirect('DiscountCode');
+        $DiscountCode = DiscountCode::find($id);
+
+        if (!$DiscountCode) {
+            return response()->json(['error' => 'NOT FOUND'], 404);
+        }
+
+        return response()->json($DiscountCode);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $DiscountCode = DiscountCode::find($id);
+
+        if (!$DiscountCode) {
+            return response()->json(['error' => 'NOT FOUND'], 404);
+        }
+
+        $validatedData = $request->validate([
+                'discount_code' => 'sometimes|required|max:255',
+                'exclude_prod' => 'sometimes|required|max:255',
+                'include_prod' => 'sometimes|required|max:255',
+                'condition_type' => 'sometimes|required|max:255',
+                'type_discount' => 'sometimes|required|max:255',
+                'discount_number' => 'sometimes|required',
+                'limits' => 'sometimes|required',
+                'time_start' => 'sometimes|required',
+                'time_end' => 'sometimes|required',
+        ]);
+
+        $DiscountCode->update($validatedData);
+
+        return response()->json(['message' => 'UPDATES SUCCESS']);
+    }
+
+    public function delete($id)
+    {
+        $DiscountCode = DiscountCode::find($id);
+
+        if (!$DiscountCode) {
+            return response()->json(['error' => 'NOT FOUND'], 404);
+        }
+        $DiscountCode->delete();
+
+        return response()->json(['message' => 'DELETES SUCCESS']);
     }
 }

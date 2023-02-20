@@ -7,91 +7,88 @@ use App\Models\Shoes;
 use App\Http\Requests\ShoesRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-
+use Dotenv\Exception\ValidationException;
 
 class ShoesController extends Controller
 {
-    private $v;
-
-    public function __construct()
-    {
-        $this->v = [];
-    }
     public function index()
     {
-        $shoes = new Shoes();
-        $this->v['lists'] = $shoes->loadListWithPager();
-        $this->v['_title'] = 'shoes';
-        return view('shoes.index', $this->v);
+        return response()->json(Shoes::all());
     }
-    public function add(ShoesRequest $request)
+
+    public function store(Request $request)
     {
-        $this->v['_title'] = "Add";
-        $method_route = 'Router_BackEnd_Shoes_Add';
-        if ($request->isMethod('post')) {
-            $param = [];
-            $param['cols'] = $request->post();
-            unset($param['cols']['_token']);
-            //upload file
-            if ($request->hasFile('img_list') && $request->file('img_list')->isValid()) {
-                $param['cols']['list_img'] = $this->uploadFile($request->file('img_list'));
-            }
-            //
-            $modelShoes = new Shoes();
-            $res =  $modelShoes->saveNew($param);
-            if ($res == null) {
-                return redirect()->route($method_route);
-            } elseif ($res > 0) {
-                Session::flash('success', 'Thêm mới thành công');
-            } else {
-                Session::flash('error', 'Lỗi thêm mới');
-                return redirect()->route($method_route);
-            }
+        try {
+            $this->validate($request, [
+                'name' => 'required|max:255',
+                'id_prod_sale' => 'required',
+                'id_type' => 'required',
+                'description' => 'required|max:255',
+                'list_variant' => 'required|max:255',
+                'min_price' => 'required',
+                'max_price' => 'required',
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
         }
-        return view('shoes.add', $this->v);
+
+        $shoes = Shoes::create([
+            'name' => $request->name,
+            'id_prod_sale' => $request->id_prod_sale,
+            'id_type' => $request->id_type,
+            'description' => $request->description,
+            'list_variant' => $request->list_variant,
+            'min_price' => $request->min_price,
+            'max_price' => $request->max_price,
+
+        ]);
+
+        return response()->json(['message' => 'CCREATE SUCCESS'], 201);
     }
-    public function detail($id)
+
+    public function show($id)
     {
-        $this->v['_title'] = "Chi tiết sản phẩm";
-        $shoes = new Shoes();
-        $objItem = $shoes->loadOne($id);
-        $this->v['objItem'] = $objItem;
-        return view('shoes.detail', $this->v);
-    }
-    public function update($id, Request $request)
-    {
-        $method_route = 'Router_BackEnd_Shoes_Detail';
-        $param = [];
-        $param['cols'] = $request->post();
-        unset($param['cols']['_token']);
-        if ($request->hasFile('img_list') && $request->file('img_list')->isValid()) {
-            $param['cols']['list_img'] = $this->uploadFile($request->file('img_list'));
+        $shoes = Shoes::find($id);
+
+        if (!$shoes) {
+            return response()->json(['error' => 'NOT FOUND'], 404);
         }
-        $shoes = new Shoes();
-        $objItem = $shoes->loadOne($id);
-        $param['cols']['id'] = $id;
-        if (!is_null($param['cols']['id_prod_sale'])) {
-            $param['cols']['id_prod_sale'] = Hash::make($param['cols']['id_prod_sale']);
-        }
-        $res = $shoes->saveUpdate($param);
-        if ($res == null) {
-            return redirect()->route($method_route, ['id' => $id]);
-        } elseif ($res = 1) {
-            Session::flash('success', 'Cập nhật bản ghi ' . $objItem->id . ' thành công');
-            return redirect()->route($method_route, ['id' => $id]);
-        } else {
-            Session::flash('error', 'Lỗi cập nhật bản ghi ' . $objItem->id);
-            return redirect()->route($method_route, ['id' => $id]);
-        }
+
+        return response()->json($shoes);
     }
-    public function uploadFile($file)
+
+    public function update(Request $request, $id)
     {
-        $fileName = time() . '_' . $file->getClientOriginalName();
-        return $file->storeAs('img', $fileName, 'public');
+        $shoes = Shoes::find($id);
+
+        if (!$shoes) {
+            return response()->json(['error' => 'NOT FOUND'], 404);
+        }
+
+        $validatedData = $request->validate([
+                'name' => 'sometimes|required|max:255',
+                'id_prod_sale' => 'sometimes|required',
+                'id_type' => 'sometimes|required',
+                'description' => 'sometimes|required|max:255',
+                'list_variant' => 'sometimes|required|max:255',
+                'min_price' => 'sometimes|required',
+                'max_price' => 'sometimes|required',
+        ]);
+
+        $shoes->update($validatedData);
+
+        return response()->json(['message' => 'UPDATES SUCCESS']);
     }
-    public function destroy($id)
+
+    public function delete($id)
     {
-        $shoes = Shoes::destroy($id);
-        return redirect('Shoes');
+        $shoes = Shoes::find($id);
+
+        if (!$shoes) {
+            return response()->json(['error' => 'NOT FOUND'], 404);
+        }
+        $shoes->delete();
+
+        return response()->json(['message' => 'DELETES SUCCESS']);
     }
 }
