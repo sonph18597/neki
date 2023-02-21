@@ -48,5 +48,5 @@ Route::delete('san-pham-sale/{id}', [SanPhamSaleController::class, 'destroy'])->
 Route::get('sale-off', [SaleOffController::class, 'index'])->name('sale_off.index');
 Route::post('sale-off', [SaleOffController::class, 'store'])->name('sale_off.store');
 Route::get('sale-off/{id}', [SaleOffController::class, 'show'])->name('sale_off.show');
-Route::match(['put', 'patch'], 'san-pham-sale/{id}', [SaleOffController::class, 'update'])->name('sale_off.update');
+Route::match(['put', 'patch'], 'sale-off/{id}', [SaleOffController::class, 'update'])->name('sale_off.update');
 Route::delete('sale-off/{id}', [SaleOffController::class, 'destroy'])->name('sale_off.destroy');

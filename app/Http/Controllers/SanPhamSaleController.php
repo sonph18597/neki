@@ -11,7 +11,7 @@ class SanPhamSaleController extends Controller
     //show
     public function index()
     {
-        $sanphamsale = SanPhamSale::paginate();  // phân trang
+        $san_pham_sale = SanPhamSale::paginate();  // phân trang
         // return (new SanPhamSale($sanphamsale))->response();
         return response()->json(SanPhamSale::all());
     }
@@ -39,21 +39,21 @@ class SanPhamSaleController extends Controller
     // lấy ra san_pham_sale
     public function show($id)
     {
-        $sanphamsale = SanPhamSale::find($id);
+        $san_pham_sale = SanPhamSale::find($id);
 
-        if (!$sanphamsale) {
+        if (!$san_pham_sale) {
             return response()->json(['error' => 'Không tìm thấy Sản phẩm Sale có ID là ' . $id . '!'], 404);
         }
 
-        return response()->json($sanphamsale);
+        return response()->json($san_pham_sale);
     }
 
 
     // update san_pham_sale
     public function update(Request $request, $id){
-        $sanphamsale = SanPhamSale::find($id);
+        $san_pham_sale = SanPhamSale::find($id);
 
-        if (!$sanphamsale) {
+        if (!$san_pham_sale) {
             return response()->json(['error' => 'Không tìm thấy Sản phẩm Sale'], 404);
         }
 
@@ -63,7 +63,7 @@ class SanPhamSaleController extends Controller
             'gia_sale' => 'sometimes|required|regex:/^\d*(\.\d{3})?$/', // làm tròn sau dấu . có 3 chữ số,
             'so_luong' => 'sometimes|required|regex:/^\d*(\.\d{3})?$/',
         ]);
-        $sanphamsale->update($validatedData, $request->all());
+        $san_pham_sale->update($validatedData, $request->all());
         // return SanPhamSale::update($request->all());
         return response()->json(['message' => 'Cập nhật Thành công!']);    
           
@@ -73,12 +73,12 @@ class SanPhamSaleController extends Controller
     // delete san_pham_sale
     public function destroy($id)
     {
-        $sanphamsale = SanPhamSale::find($id);
+        $san_pham_sale = SanPhamSale::find($id);
 
-        if (!$sanphamsale) {
+        if (!$san_pham_sale) {
             return response()->json(['error' => 'Không tìm thấy Sản phẩm!'], 404);
         }
-        $sanphamsale->delete();
+        $san_pham_sale->delete();
 
         return response()->json(['message' => 'Xóa thành công Sản phẩm Sale!']);
     }
