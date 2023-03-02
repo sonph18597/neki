@@ -25,13 +25,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 //user
 Route::get('user', [UserController::class, 'index']);
-Route::post('add_user', [UserController::class, 'store']);
+Route::post('user', [UserController::class, 'store']);
 Route::get('user/{id}', [UserController::class, 'show']);
 Route::put('user/{id}', [UserController::class, 'update']);
 Route::delete('user/{id}', [UserController::class, 'destroy']);
 
 //soluong_gia
-Route::get('hoa_don', [SoLuongGiaController::class, 'index']);
+Route::get('hoa-don', [SoLuongGiaController::class, 'index']);
+Route::post('hoa-don', [SoLuongGiaController::class, 'store']);
+Route::get('hoa-don/{id}', [SoLuongGiaController::class, 'show']);
+Route::put('hoa-don/{id}', [SoLuongGiaController::class, 'update']);
+Route::delete('hoa-don/{id}', [SoLuongGiaController::class, 'destroy']);
+
 
 Route::get('get_don_hang', [DonHangController::class, 'getDonHang']);
 Route::post('add_don_hang', [DonHangController::class, 'addDonHang']);

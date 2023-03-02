@@ -19,24 +19,20 @@ class UserController extends Controller
             $this->validate($request, [
                 'ten' => 'required',
                 'email'=>'required|email',
-                'password'=>'required',
                 'so_dien_thoai'=>'required',
                 'gioi_tinh'=>'required',
-                'ngay_sinh'=>'required'
+                'password'=>'required',
+                'id_dia_chi'=>'required',
+                'role_id'=>'required',
+                'anh'=>'required',
+                'ngay_sinh'=>'required',
+                'trang_thai'=>'required'
             ]);
         } catch (ValidationException $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
+            return response()->json(['error' => $e->getMessage()]);
         }
-        $user = User::create([
-            'ten' => $request->ten,
-            'email' => $request->email,
-            'password' => $request->password,
-            'so_dien_thoai' => $request->so_dien_thoai,
-            'gioi_tinh'=> $request->gioi_tinh,
-            'ngay_sinh'=> $request->ngay_sinh
-        ]);
-
-        return response()->json(['message' => 'Tạo User thành công'], 201);
+        return User::create($request->all());
+        return response()->json(['message' => 'Tạo User thành công']);
     }
 
     public function show($id)
@@ -62,13 +58,17 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'ten' => 'required',
             'email'=>'required|email',
-            'password'=>'required',
             'so_dien_thoai'=>'required',
             'gioi_tinh'=>'required',
-            'ngay_sinh'=>'required'
+            'password'=>'required',
+            'id_dia_chi'=>'required',
+            'role_id'=>'required',
+            'anh'=>'required',
+            'ngay_sinh'=>'required',
+            'trang_thai'=>'required'
         ]);
 
-        $user->update($validatedData);
+        $user->update($validatedData, $request->all());
 
         return response()->json(['message' => 'Update thành công']);
     }
