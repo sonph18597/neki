@@ -22,4 +22,5 @@ class UserController extends Controller
 //        dd($this->v['list']);
         return view("admin.user.index", $this->v);
     }
+    
 }
