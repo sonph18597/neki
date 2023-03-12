@@ -230,4 +230,16 @@ class SaleOffController extends Controller
         return view('admin.sale_off.index',['data'=>$sale_off]);
     }
 
+
+    //tìm kiếm, lọc
+    public function search(Request $request)
+{
+    $sale_off = SaleOff::query();
+
+    if ($request->has('ten')) {
+        $sale_off->where('ten', 'LIKE', '%' . $request->ten . '%');
+    }
+  
+    return $sale_off->get();
+}
 }
