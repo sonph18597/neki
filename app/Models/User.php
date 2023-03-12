@@ -31,12 +31,6 @@ class User extends Authenticatable
         'ngay_sinh',
         'trang_thai',
     ];
-    public function loadListWithPager($param=[])
-    {
-        $query =DB::table($this->table)->select($this->fillable);
-        $lists=$query->paginate(10);
-        return $lists;
-    }
     /**
      * The attributes that should be hidden for serialization.
      *

@@ -8,49 +8,65 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     //search user
-    public function index(Request $request)
+    public function search(Request $request)
     {
         $search = $request['search'] ?? "";
         if($search != ""){
-            $user = User::where('ten','LIKE',"%$search%")->get();
+                $user = User::where('ten','LIKE',"%$search%")->orWhere('email','LIKE',"%$search%")->get();
         }
         else{
-            return response()->json(User::all());
+            $user = User::all();
         }
+
+    }
+
+    public function index()
+    {
+       $user = User::all();
+       $user = User::paginate(5);
+       return response()->json([
+            'status'=> true,
+            'message'=>'User retrieved.',
+            'data'=> $user
+       ]);
     }
 
     //creat user
     public function store(Request $request)
     {
-        try {
-            $this->validate($request, [
-                'ten' => 'required',
-                'email'=>'required|email',
+            $data = $request->validate([
+                'ten' => 'required|string|max:255',
                 'so_dien_thoai'=>'required',
-                'gioi_tinh'=>'required',
-                'password'=>'required',
+                'email'=>'required|email',
+                'password'=>'required|max:255',
                 'id_dia_chi'=>'required',
                 'role_id'=>'required',
+                'gioi_tinh'=>'required',
                 'anh'=>'required',
-                'ngay_sinh'=>'required',
+                'ngay_sinh'=>'required|date',
                 'trang_thai'=>'required'
             ]);
-        } catch (ValidationException $e) {
-            return response()->json(['error' => $e->getMessage()]);
-        }
-        return User::create($request->all());
-        return response()->json(['message' => 'Tạo User thành công']);
+            $users = User::create($data);
+            return response()->json([
+                'status'=> true,
+                'message'=>'User created.',
+                'data'=> $users
+            ],201);
     }
+
     //Show user
     public function show($id)
     {
         $user = User::find($id);
-
         if (!$user) {
             return response()->json(['message' => 'User không tồn tại'], 404);
         }
+        return response()->json([
+            "success" => true,
+            "message" => "Success",
+            "data" => $user
+        ]);
 
-        return response()->json($user);
     }
 
     //update user
@@ -63,21 +79,25 @@ class UserController extends Controller
         }
 
         $validatedData = $request->validate([
-            'ten' => 'required',
+            'ten' => 'required|string|max:255',
             'email'=>'required|email',
             'so_dien_thoai'=>'required',
             'gioi_tinh'=>'required',
-            'password'=>'required',
+            'password'=>'required|max:255',
             'id_dia_chi'=>'required',
             'role_id'=>'required',
             'anh'=>'required',
-            'ngay_sinh'=>'required',
+            'ngay_sinh'=>'required|date',
             'trang_thai'=>'required'
         ]);
 
         $user->update($validatedData, $request->all());
 
-        return response()->json(['message' => 'Update thành công']);
+        return response()->json([
+            "success" => true,
+            "message" => "Update Thanh Cong",
+            "data" => $user
+        ]);
     }
 
     public function destroy($id)
