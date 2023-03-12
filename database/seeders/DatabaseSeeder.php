@@ -22,9 +22,9 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
             $array=[];
-            for($i=0;$i<10;$i++){
+            for($i=0;$i<2;$i++){
                 array_push($array,[
-                    "ten"=>"Nguyễn Xuân Hậu",
+                    "ten"=>"Nguyen Xuan Hau",
                     "email"=>"nguyenxuanhau".($i+1)."@fpt.edu.vn",
                     "password"=>Hash::make('12345678')
                 ],

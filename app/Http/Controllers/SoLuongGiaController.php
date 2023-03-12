@@ -13,19 +13,20 @@ class SoLuongGiaController extends Controller
     }
     public function store(Request $request)
     {
-        try {
-            $this->validate($request, [
-                'id_mau' => 'required',
-                'id_size'=>'required',
-                'so_luong'=>'required',
-                'gia'=>'required',
-                'anh'=>'required'
-            ]);
-        } catch (ValidationException $e) {
-            return response()->json(['error' => $e->getMessage()]);
-        }
-        return SoLuongGia::create($request->all());
-        return response()->json(['message' => 'Tạo thành công']);
+        $data = $request->validate([
+            'id_mau' => 'required',
+            'id_size'=>'required',
+            'so_luong'=>'required',
+            'gia'=>'required',
+            'anh'=>'required'
+        ]);
+        $soLuongGia = SoLuongGia::create($request->$data);
+        return response()->json([
+            'status'=> true,
+            'message'=>'User created.',
+            'data'=> $soLuongGia
+        ],201);
+
     }
 
     public function show($id)
@@ -36,7 +37,11 @@ class SoLuongGiaController extends Controller
             return response()->json(['message' => 'Không tồn tại'], 404);
         }
 
-        return response()->json($so_luong_gia);
+        return response()->json([
+            "success" => true,
+            "message" => "Success",
+            "data" => $so_luong_gia
+        ]);
     }
 
 
@@ -58,7 +63,11 @@ class SoLuongGiaController extends Controller
 
         $so_luong_gia->update($validatedData, $request->all());
 
-        return response()->json(['message' => 'Update thành công']);
+        return response()->json([
+            "success" => true,
+            "message" => "Update Thanh Cong",
+            "data" => $so_luong_gia
+        ]);
     }
 
     public function destroy($id)
