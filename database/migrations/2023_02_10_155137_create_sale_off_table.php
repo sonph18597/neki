@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('ten');
             $table->string('mo_ta')->nullable();
-            $table->integer('phan_tram');
+            $table->string('phan_tram');
             $table->string('time_start');
             $table->string('time_end');
             $table->timestamps();
