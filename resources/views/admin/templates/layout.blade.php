@@ -209,13 +209,13 @@ $objUser = \Illuminate\Support\Facades\Auth::user();
                     <li class=" active menu-open ">
                         <a href="/san-pham-sale"><i class="fa fa-clipboard"></i> <span>Sản Phẩm Sale</span></a>
                         <ul class="treeview-menu">
-                            <li><a href=""><i class="fa fa-circle-o"></i> Thêm Sản Phẩm Sale</a></li>
+                            <li><a href="/add-san-pham-sale"><i class="fa fa-circle-o"></i> Thêm Sản Phẩm Sale</a></li>
                         </ul>
                     </li>
                     <li class=" active menu-open ">
                         <a href="/sale-off"><i class="fa fa-clipboard"></i> <span>Mã Giảm Giá</span></a>
                         <ul class="treeview-menu">
-                            <li><a href=""><i class="fa fa-circle-o"></i> Thêm Mã Giảm Giá</a></li>
+                            <li><a href="/add-sale-off"><i class="fa fa-circle-o"></i> Thêm Mã Giảm Giá</a></li>
                         </ul>
                     </li>
 

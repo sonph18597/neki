@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\SanPhamSale;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class SanPhamSaleController extends Controller
@@ -13,9 +15,10 @@ class SanPhamSaleController extends Controller
     public function index() // show SẢN PHẦM SALE   
 
     {
-        $san_pham_sale = SanPhamSale::paginate(10); // phân trang
+        
         // return (new SanPhamSale($sanphamsale))->response();
         $san_pham_sale = SanPhamSale::all();
+        $san_pham_sale = SanPhamSale::paginate(8); // phân trang
         // $data = Http::get('http://127.0.0.1:8000/api/sale-off/')->json();
         $data = response()->json([
             "success" => true,
@@ -46,6 +49,7 @@ class SanPhamSaleController extends Controller
     // }
     public function addSanPhamSale(Request $request)
     {
+        if ($request->isMethod('post')) {
         $san_pham_sale = $request->all();
         $validator = Validator::make($san_pham_sale, [
             'id_sale_off' => 'required|unique:san_pham_sale',
@@ -58,12 +62,21 @@ class SanPhamSaleController extends Controller
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
-        $san_pham_sale = SanPhamSale::create($san_pham_sale);
-        return response()->json([
-            "success" => true,
-            "message" => "Thêm Sản Phẩm Giảm Giá Thành Công!",
-            "data" => $san_pham_sale
-        ]);
+        // $san_pham_sale = SanPhamSale::create($san_pham_sale);
+        // return response()->json([
+        //     "success" => true,
+        //     "message" => "Thêm Sản Phẩm Giảm Giá Thành Công!",
+        //     "data" => $san_pham_sale
+        // ]);
+        
+        if ($san_pham_sale = SanPhamSale::create($san_pham_sale)) {
+            Session::flash('success', 'Thêm mới thành công!');
+        }            
+        else {
+            Session::flash('error', 'Lỗi thêm mới người dùng!');
+        }
+        }
+        return view('admin.san_pham_sale.add');
     }
 
 

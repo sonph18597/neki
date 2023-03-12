@@ -13,11 +13,12 @@ class SaleOff extends Model
     protected $fillable= ['id','ten','mo_ta','phan_tram','time_start','time_end']; 
 
 
-    ///
+    
+
     // public function loadListWithPager($param=[])
     // {
     //     $query =DB::table($this->table)->select($this->fillable);
-    //     $lists=$query->paginate(10);
+    //     $lists=$query->paginate(5);
     //     return $lists;
     // }
 }

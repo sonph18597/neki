@@ -70,8 +70,7 @@
                             <input type="text" name="search_ten_nguoi_dung" class="form-control" placeholder="Tên người dùng"
                                    value="">
                         </div>
-                    </div>
-                    <div class="clearfix"></div>
+                    </div>               
                     <div class="col-xs-12" style="text-align:center;">
                         <div class="form-group">
                             <button type="submit" name="btnSearch" class="btn btn-primary btn-sm "><i
@@ -84,7 +83,6 @@
                         </div>
                     </div>
                 </div>
-
             </form>
             <div class="clearfix"></div>
         </div>
@@ -135,7 +133,9 @@
                 </div>
             </form>
         </div>
-        <br>     
+        <div class="text-center">
+            {{ $data->links() }}
+        </div>
         <index-cs ref="index_cs"></index-cs>
     </section>
 
@@ -154,4 +154,5 @@
                 }
                
             })
-        </script> -->
+        </script>
+        @endsection -->

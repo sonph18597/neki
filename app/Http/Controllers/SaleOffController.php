@@ -5,19 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SaleOff;
 use Dotenv\Exception\ValidationException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 
 class SaleOffController extends Controller
 {
-
     public function index() // show mã giảm giá - sale-off    
 
     {
-        $sale_off = SaleOff::paginate(10); // phân trang
+        // $sale_off = DB::table('sale_off')->simplePaginate(5); 
         // return (new SanPhamSale($sanphamsale))->response();
         $sale_off = SaleOff::all();
+        $sale_off = SaleOff::paginate(8); // phân trang
         // $data = Http::get('http://127.0.0.1:8000/api/sale-off/')->json();
         $data = response()->json([
             "success" => true,
@@ -47,7 +49,7 @@ class SaleOffController extends Controller
     //     return response()->json(['message' => 'Thêm Mã Sale Off Thành công!']);    
     // }
 
-    // public function store(Request $request)
+    // public function addSaleOff(Request $request)
     // {
     //     $request->validate([
     //         'ten' => 'required|max:255',
@@ -77,8 +79,33 @@ class SaleOffController extends Controller
     // }
 
     // Add sale off
+    // public function addSaleOff(Request $request)
+    // {
+    //     $sale_off = $request->all();
+    //     $validator = Validator::make($sale_off, [
+    //         'ten' => 'required|max:255',
+    //         //tối đa 255 kí tự
+    //         'mo_ta' => 'required|max:255',
+    //         'phan_tram' => 'integer|required|between:1,100',
+    //         // xác thực số phải nằm giữa 1-100
+    //         'time_start' => 'required',
+    //         // định dạng |date_format:Y-m-d|after_or_equal:now
+    //         'time_end' => 'required' // |date_format:Y-m-d|after_or_equal:from
+    //     ]);
+    //     if ($validator->fails()) {
+    //         return $this->sendError('Validation Error.', $validator->errors());
+    //     }
+    //     $sale_off = SaleOff::create($sale_off);
+    //     return response()->json([
+    //         "success" => true,
+    //         "message" => "Sale Off created successfully.",
+    //         "data" => $sale_off
+    //     ]);
+    //     return view('admin.sale_off.add',["data" => $sale_off]);
+    // }
     public function addSaleOff(Request $request)
     {
+        if ($request->isMethod('post')) {
         $sale_off = $request->all();
         $validator = Validator::make($sale_off, [
             'ten' => 'required|max:255',
@@ -90,17 +117,23 @@ class SaleOffController extends Controller
             // định dạng |date_format:Y-m-d|after_or_equal:now
             'time_end' => 'required' // |date_format:Y-m-d|after_or_equal:from
         ]);
-        if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+        // $sale_off = SaleOff::create($sale_off);
+        // return response()->json([
+        //     "success" => true,
+        //     "message" => "Sale Off created successfully.",
+        //     "data" => $sale_off
+        // ]);    
+        
+        if ($sale_off = SaleOff::create($sale_off)) {
+            Session::flash('success', 'Thêm mới thành công!');
+        }            
+        else {
+            Session::flash('error', 'Lỗi thêm mới người dùng!');
         }
-        $sale_off = SaleOff::create($sale_off);
-        return response()->json([
-            "success" => true,
-            "message" => "Sale Off created successfully.",
-            "data" => $sale_off
-        ]);
+        // Session::flash('success', 'Thêm mới thành công!');
+        }
+        return view('admin.sale_off.add');
     }
-
 
 
     // lấy ra sale_off
@@ -194,6 +227,7 @@ class SaleOffController extends Controller
             "message" => "Xóa Thành công Mã giảm giá!",
             "data" => $sale_off
         ]);
+        return view('admin.sale_off.index',['data'=>$sale_off]);
     }
 
 }

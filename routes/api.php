@@ -21,22 +21,24 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-    // SaleOff
-    Route::get('sale-off', [SaleOffController::class, 'index'])->name('sale_off.index');
-    Route::post('sale-off', [SaleOffController::class, 'addSaleOff'])->name('sale_off.addSaleOff');
-    Route::get('sale-off/{id}', [SaleOffController::class, 'listSaleOff'])->name('sale_off.listSaleOff');
-    Route::match (['put', 'patch'], 'sale-off/{id}', [SaleOffController::class, 'updateSaleOff'])->name('sale_off.updateSaleOff');
-    Route::delete('sale-off/{id}', [SaleOffController::class, 'deleteSaleOff'])->name('sale_off.deleteSaleOff');
-
-    // SanPhamSale
-    Route::get('san-pham-sale', [SanPhamSaleController::class, 'index'])->name('san_pham_sale.index');
-    Route::post('san-pham-sale', [SanPhamSaleController::class, 'store'])->name('san_pham_sale.store');
-    Route::get('san-pham-sale/{id}', [SanPhamSaleController::class, 'show'])->name('san_pham_sale.show');
-    Route::match (['put', 'patch'], 'san-pham-sale/{id}', [SanPhamSaleController::class, 'update'])->name('san_pham_sale.update');
-    Route::delete('san-pham-sale/{id}', [SanPhamSaleController::class, 'destroy'])->name('san_pham_sale.destroy');
+  
 
 });
 
+      // SaleOff
+      Route::get('sale-off', [SaleOffController::class, 'index'])->name('sale_off.index');
+      Route::post('sale-off/add', [SaleOffController::class, 'addSaleOff'])->name('sale_off.addSaleOff');
+      Route::get('sale-off/{id}', [SaleOffController::class, 'listSaleOff'])->name('sale_off.listSaleOff');
+      Route::match (['put', 'patch'], 'sale-off/{id}', [SaleOffController::class, 'updateSaleOff'])->name('sale_off.updateSaleOff');
+      Route::delete('sale-off/{id}', [SaleOffController::class, 'deleteSaleOff'])->name('sale_off.deleteSaleOff');
+    
+     
+    // SanPhamSale
+    Route::get('san-pham-sale', [SanPhamSaleController::class, 'index'])->name('san_pham_sale.index');
+    Route::post('san-pham-sale/add', [SanPhamSaleController::class, 'addSanPhamSale'])->name('san_pham_sale.addSanPhamSale');
+    Route::get('san-pham-sale/{id}', [SanPhamSaleController::class, 'listSanPhamSale'])->name('san_pham_sale.listSanPhamSale');
+    Route::match(['put', 'patch'], 'san-pham-sale/{id}', [SanPhamSaleController::class, 'updateSanPhamSale'])->name('san_pham_sale.updateSanPhamSale');
+    Route::delete('san-pham-sale/{id}', [SanPhamSaleController::class, 'deleteSanPhamSale'])->name('san_pham_sale.deleteSanPhamSale');
 
 Route::get('mau-sac', [MauSacController::class, 'index']);
 Route::post('mau-sac', [MauSacController::class, 'store']);

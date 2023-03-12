@@ -128,8 +128,9 @@
                 </div>
             </form>
         </div>
-        <br>
-       
+        <div class="text-center">
+            {{ $data->links() }}
+        </div>
         <index-cs ref="index_cs"></index-cs>
     </section>
 
