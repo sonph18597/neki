@@ -7,12 +7,19 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-
-    public function index()
+    //search user
+    public function index(Request $request)
     {
-        return response()->json(User::all());
+        $search = $request['search'] ?? "";
+        if($search != ""){
+            $user = User::where('ten','LIKE',"%$search%")->get();
+        }
+        else{
+            return response()->json(User::all());
+        }
     }
 
+    //creat user
     public function store(Request $request)
     {
         try {
@@ -34,7 +41,7 @@ class UserController extends Controller
         return User::create($request->all());
         return response()->json(['message' => 'Tạo User thành công']);
     }
-
+    //Show user
     public function show($id)
     {
         $user = User::find($id);
@@ -46,7 +53,7 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-
+    //update user
     public function update(Request $request, $id)
     {
         $user = User::find($id);
