@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DonHangController;
 use App\Http\Controllers\SanPhamDonHangController;
-
+use \App\Http\Controllers\UserController;
+use \App\Http\Controllers\SoLuongGiaController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,7 +24,22 @@ use App\Http\Controllers\SanPhamDonHangController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+
 });
+//user
+Route::get('user', [UserController::class, 'index']);
+Route::post('user', [UserController::class, 'store']);
+Route::get('user/{id}', [UserController::class, 'show']);
+Route::put('user/{id}', [UserController::class, 'update']);
+Route::delete('user/{id}', [UserController::class, 'destroy']);
+
+//soluong_gia
+Route::get('hoa-don', [SoLuongGiaController::class, 'index']);
+Route::post('hoa-don', [SoLuongGiaController::class, 'store']);
+Route::get('hoa-don/{id}', [SoLuongGiaController::class, 'show']);
+Route::put('hoa-don/{id}', [SoLuongGiaController::class, 'update']);
+Route::delete('hoa-don/{id}', [SoLuongGiaController::class, 'destroy']);
+
 
 Route::get('get_don_hang', [DonHangController::class, 'getDonHang']);
 Route::post('add_don_hang', [DonHangController::class, 'addDonHang']);
@@ -33,6 +49,7 @@ Route::get('get_san_pham_don_hang', [SanPhamDonHangController::class, 'getSanPha
 Route::post('add_san_pham_don_hang', [SanPhamDonHangController::class, 'addSanPhamDonHang']);
 Route::post('delete_san_pham_don_hang', [SanPhamDonHangController::class, 'deleteSanPhamDonHang']);
 Route::put('update_san_pham_don_hang', [SanPhamDonHangController::class, 'updateSanPhamDonHang']);
+
 
 Route::get('mau-sac', [MauSacController::class, 'index']);
 Route::post('mau-sac', [MauSacController::class, 'store']);
@@ -45,6 +62,7 @@ Route::post('dia-chi', [DiaChiController::class, 'store']);
 Route::get('dia-chi/{id}', [DiaChiController::class, 'show']);
 Route::put('dia-chi/{id}', [DiaChiController::class, 'update']);
 Route::delete('dia-chi/{id}', [DiaChiController::class, 'destroy']);
+
 
 // SanPhamSale
 Route::get('san-pham-sale', [SanPhamSaleController::class, 'index'])->name('san_pham_sale.index');
@@ -59,4 +77,4 @@ Route::get('sale-off', [SaleOffController::class, 'index'])->name('sale_off.inde
 Route::post('sale-off', [SaleOffController::class, 'store'])->name('sale_off.store');
 Route::get('sale-off/{id}', [SaleOffController::class, 'show'])->name('sale_off.show');
 Route::match(['put', 'patch'], 'sale-off/{id}', [SaleOffController::class, 'update'])->name('sale_off.update');
-Route::delete('sale-off/{id}', [SaleOffController::class, 'destroy'])->name('sale_off.destroy');
+
