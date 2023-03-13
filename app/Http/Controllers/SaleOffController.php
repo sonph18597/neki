@@ -113,20 +113,14 @@ class SaleOffController extends Controller
 
 
     //tìm kiếm, lọc
-    public function search(Request $request)
+    public function filter(Request $request)
     {
-        $sale_off = SaleOff::query();
-        if ($request->has('ten')) {
-            $sale_off->where('ten', 'LIKE', '%' . $request->ten . '%');
-            $sale_off->where('mo_ta', 'LIKE', '%' . $request->mo_ta . '%');
-            $sale_off->where('phan_tram', 'LIKE', '%' . $request->phan_tram . '%');
+        $search = $request['search'] ?? "";
+        if($search != ""){
+                $sale_off = SaleOff::where('name','LIKE',"%$search%")->get();
         }
-        return $sale_off->get();
-        // return response()->json([
-        //     "success" => true,
-        //     "status_code" => 200,
-        //     "message" => "Đã Tìm thấy Mã giảm giá!",
-        //     "data" => $sale_off
-        // ]);
+        else{
+            $sale_off = SaleOff::all();
+        } 
     }
 }

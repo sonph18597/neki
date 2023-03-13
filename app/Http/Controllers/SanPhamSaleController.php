@@ -112,20 +112,14 @@ public function updateSanPhamSale(Request $request, $id)
 
 
       //tìm kiếm, lọc
-    public function search(Request $request)
-    {
-        $san_pham_sale = SanPhamSale::query();
-        if ($request->has('ten')) {
-            $san_pham_sale->where('ten', 'LIKE', '%' . $request->ten . '%');
-            $san_pham_sale->where('id_sale_off', 'LIKE', '%' . $request->id_sale_off . '%');
-            $san_pham_sale->where('id_san_pham', 'LIKE', '%' . $request->id_san_pham . '%');
-        }
-        return $san_pham_sale->get();
-        // return response()->json([
-        //     "success" => true,
-        //     "status_code" => 200,
-        //     "message" => "Đã Tìm thấy Mã giảm giá!",
-        //     "data" => $sale_off
-        // ]);
-    }
+      public function filter(Request $request)
+      {
+          $search = $request['search'] ?? "";
+          if($search != ""){
+                  $san_pham_sale = SanPhamSale::where('name','LIKE',"%$search%")->get();
+          }
+          else{
+              $san_pham_sale = SanPhamSale::all();
+          } 
+      }
 }
