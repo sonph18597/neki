@@ -29,18 +29,3 @@ Route::middleware(['auth'])->group(function () {
 
    
 });
-//  //sale-off
-//  Route::get('sale-off', [SaleOffController::class, 'index']);
-//  Route::match(['get','post'],'add-sale-off', [SaleOffController::class, 'addSaleOff'])->name('admin.sale_off.add');
-//  Route::get('sale-off/{id}', [SaleOffController::class, 'listSaleOff']);
-//  Route::match(['put', 'patch'], 'sale-off/update/{id}', [SaleOffController::class, 'updateSaleOff']);
-//  Route::delete('sale-off/delete/{id}', [SaleOffController::class, 'deleteSaleOff']);
-
-
-//  // SanPhamSale
-//  Route::get('san-pham-sale', [SanPhamSaleController::class, 'index'])->name('san_pham_sale.index');
-//  Route::match(['get','post'],'add-san-pham-sale', [SanPhamSaleController::class, 'addSanPhamSale'])->name('admin.san_pham_sale.add');
-// //  Route::post('san-pham-sale', [SanPhamSaleController::class, 'addSanPhamSale'])->name('san_pham_sale.addSanPhamSale');
-//  Route::get('san-pham-sale/{id}', [SanPhamSaleController::class, 'listSanPhamSale'])->name('san_pham_sale.listSanPhamSale');
-//  Route::match(['put', 'patch'], 'san-pham-sale/{id}', [SanPhamSaleController::class, 'updateSanPhamSale'])->name('san_pham_sale.updateSanPhamSale');
-//  Route::delete('san-pham-sale/{id}', [SanPhamSaleController::class, 'deleteSanPhamSale'])->name('san_pham_sale.deleteSanPhamSale');
