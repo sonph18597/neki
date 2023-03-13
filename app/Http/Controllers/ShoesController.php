@@ -91,4 +91,15 @@ class ShoesController extends Controller
 
         return response()->json(['message' => 'DELETES SUCCESS']);
     }
+    public function filter(Request $request)
+    {
+        $search = $request['search'] ?? "";
+        if($search != ""){
+                $shoes = Shoes::where('name','LIKE',"%$search%")->get();
+        }
+        else{
+            $shoes = Shoes::all();
+        }
+
+    }
 }

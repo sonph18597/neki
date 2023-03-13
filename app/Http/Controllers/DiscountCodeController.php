@@ -95,4 +95,15 @@ class DiscountCodeController extends Controller
 
         return response()->json(['message' => 'DELETES SUCCESS']);
     }
+    public function filter(Request $request)
+    {
+        $search = $request['search'] ?? "";
+        if($search != ""){
+                $discountCode = DiscountCode::where('discount_code','LIKE',"%$search%")->get();
+        }
+        else{
+            $discountCode = DiscountCode::all();
+        }
+
+    }
 }
