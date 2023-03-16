@@ -113,14 +113,25 @@ class SaleOffController extends Controller
 
 
     //tìm kiếm, lọc
-    public function filter(Request $request)
-    {
-        $search = $request['search'] ?? "";
-        if($search != ""){
-                $sale_off = SaleOff::where('name','LIKE',"%$search%")->get();
+    // public function filter(Request $request)
+    // {
+    //     $sale_off = SaleOff::query();
+    //     $search = $request['search'] ?? "";
+    //     if($search != ""){
+    //             $sale_off = SaleOff::where('ten','LIKE',"%$search%")->get();
+    //     }
+    //     else{
+    //         $sale_off = SaleOff::all();
+    //     } 
+    // }
+
+    public function search(Request $request){
+        $query = SaleOff::query();
+        if($search = $request->input('search')){
+            $query->whereRaw("ten LIKE '%".$search."%'")
+            ->orWhereRaw("mo_ta LIKE '%".$search."%'")
+            ->orWhereRaw("phan_tram LIKE '%".$search."%'");
         }
-        else{
-            $sale_off = SaleOff::all();
-        } 
+        return $query->get();
     }
 }

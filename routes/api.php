@@ -25,18 +25,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // SaleOff
 Route::get('sale-off', [SaleOffController::class, 'index']);
-Route::post('add-sale-off', [SaleOffController::class, 'addSaleOff']);
+Route::post('sale-off', [SaleOffController::class, 'addSaleOff']);
 Route::get('sale-off/{id}', [SaleOffController::class, 'listSaleOff']);
-Route::match(['put', 'patch'], 'update-sale-off/{id}', [SaleOffController::class, 'updateSaleOff']);
-Route::delete('delete-sale-off/{id}', [SaleOffController::class, 'deleteSaleOff']);
+Route::match(['put', 'patch'], 'sale-off/{id}', [SaleOffController::class, 'updateSaleOff']);
+Route::delete('sale-off/{id}', [SaleOffController::class, 'deleteSaleOff']);
+Route::get('sale-off', [SaleOffController::class, 'search']);
 
 
 // SanPhamSale
 Route::get('san-pham-sale', [SanPhamSaleController::class, 'index']);
-Route::post('add-san-pham-sale', [SanPhamSaleController::class, 'addSanPhamSale']);
+Route::post('san-pham-sale', [SanPhamSaleController::class, 'addSanPhamSale']);
 Route::get('san-pham-sale/{id}', [SanPhamSaleController::class, 'listSanPhamSale']);
-Route::match(['put', 'patch'], 'update-san-pham-sale/{id}', [SanPhamSaleController::class, 'updateSanPhamSale']);
-Route::delete('delete-san-pham-sale/{id}', [SanPhamSaleController::class, 'deleteSanPhamSale']);
+Route::match(['put', 'patch'], 'san-pham-sale/{id}', [SanPhamSaleController::class, 'updateSanPhamSale']);
+Route::delete('san-pham-sale/{id}', [SanPhamSaleController::class, 'deleteSanPhamSale']);
+Route::get('san-pham-sale', [SanPhamSaleController::class, 'search']);
 
 Route::get('mau-sac', [MauSacController::class, 'index']);
 Route::post('mau-sac', [MauSacController::class, 'store']);

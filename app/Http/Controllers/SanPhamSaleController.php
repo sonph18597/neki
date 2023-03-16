@@ -111,15 +111,25 @@ public function updateSanPhamSale(Request $request, $id)
     }
 
 
-      //tìm kiếm, lọc
-      public function filter(Request $request)
-      {
-          $search = $request['search'] ?? "";
-          if($search != ""){
-                  $san_pham_sale = SanPhamSale::where('name','LIKE',"%$search%")->get();
-          }
-          else{
-              $san_pham_sale = SanPhamSale::all();
-          } 
-      }
+    //tìm kiếm, lọc
+    //   public function filter(Request $request)
+    //   {
+    //       $search = $request['search'] ?? "";
+    //       if($search != ""){
+    //               $san_pham_sale = SanPhamSale::where('name','LIKE',"%$search%")->get();
+    //       }
+    //       else{
+    //           $san_pham_sale = SanPhamSale::all();
+    //       } 
+    //   }
+
+      public function search(Request $request){
+        $query = SanPhamSale::query();
+        if($search = $request->input('search')){
+            $query->whereRaw("id_sale_off LIKE '%".$search."%'")
+            ->orWhereRaw("id_san_pham LIKE '%".$search."%'")
+            ->orWhereRaw("gia_sale LIKE '%".$search."%'");
+        }
+        return $query->get();
+    }
 }
