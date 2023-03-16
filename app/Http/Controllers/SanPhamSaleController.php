@@ -13,12 +13,12 @@ class SanPhamSaleController extends Controller
 {
     //show
     public function index() // List SẢN PHẦM SALE   
-    {     
+    {
         $san_pham_sale = SanPhamSale::all();
         $san_pham_sale = SanPhamSale::paginate(8); // phân trang
         return response()->json([
             "success" => true,
-            "status_code"=>200,
+            "status_code" => 200,
             "title" => "Danh sách Sản Phẩm Giảm Giá",
             "data" => $san_pham_sale
         ]);
@@ -28,9 +28,11 @@ class SanPhamSaleController extends Controller
     {
         $input = $request->all();
         $validator = Validator::make($input, [
-            'id_sale_off' => 'required|unique:san_pham_sale',  // trường ko được tồn tại trong DB
+            'id_sale_off' => 'required|unique:san_pham_sale',
+            // trường ko được tồn tại trong DB
             'id_san_pham' => 'required',
-            'gia_sale' => 'required|regex:/^\d*(\.\d{3})?$/', // làm tròn sau dấu . có 3 chữ số,
+            'gia_sale' => 'required|regex:/^\d*(\.\d{3})?$/',
+            // làm tròn sau dấu . có 3 chữ số,
             'so_luong' => 'required|regex:/^\d*(\.\d{3})?$/',
         ]);
         if ($validator->fails()) {
@@ -53,7 +55,7 @@ class SanPhamSaleController extends Controller
         $san_pham_sale = SanPhamSale::find($id);
 
         if (!$san_pham_sale) {
-            return response()->json(['error' => 'Không tìm thấy Sản Phẩm Giảm Giá có ID '.$id.''], 404);
+            return response()->json(['error' => 'Không tìm thấy Sản Phẩm Giảm Giá có ID ' . $id . ''], 404);
         }
 
         return response()->json([
@@ -66,32 +68,35 @@ class SanPhamSaleController extends Controller
 
 
 
-// cập nhật mã giảm giá
-public function updateSanPhamSale(Request $request, $id)
-{
-    $san_pham_sale = SanPhamSale::find($id);
+    // cập nhật mã giảm giá
+    public function updateSanPhamSale(Request $request, $id)
+    {
+        $san_pham_sale = SanPhamSale::find($id);
 
-    if (!$san_pham_sale) {
-        return response()->json(['error' => 'Không tìm thấy Sản Phẩm Giảm Giá có ID '.$id.''], 404);
+        if (!$san_pham_sale) {
+            return response()->json(['error' => 'Không tìm thấy Sản Phẩm Giảm Giá có ID ' . $id . ''], 404);
+        }
+
+        $validatedData = $request->validate([
+            'id_sale_off' => 'sometimes|required',
+            // trường ko được tồn tại trong DB //
+            'id_san_pham' => 'sometimes|required',
+            // sometimes: chỉ được xác thực khi nó tồn tại 
+            'gia_sale' => 'sometimes|required|regex:/^\d*(\.\d{3})?$/',
+            // làm tròn sau dấu . có 3 chữ số,
+            'so_luong' => 'sometimes|required|regex:/^\d*(\.\d{3})?$/',
+        ]);
+
+        $san_pham_sale->update($validatedData);
+        return response()->json([
+            "success" => true,
+            "status_code" => 200,
+            "message" => "Cập nhật thành công Sản Phẩm Giảm Giá có ID $id !",
+            "data" => $san_pham_sale
+        ]);
     }
 
-    $validatedData = $request->validate([
-        'id_sale_off' => 'sometimes|required',  // trường ko được tồn tại trong DB //
-        'id_san_pham' => 'sometimes|required',  // sometimes: chỉ được xác thực khi nó tồn tại 
-        'gia_sale' => 'sometimes|required|regex:/^\d*(\.\d{3})?$/', // làm tròn sau dấu . có 3 chữ số,
-        'so_luong' => 'sometimes|required|regex:/^\d*(\.\d{3})?$/',
-    ]);
 
-    $san_pham_sale->update($validatedData);
-    return response()->json([
-        "success" => true,
-        "status_code" => 200,
-        "message" => "Cập nhật thành công Sản Phẩm Giảm Giá có ID $id !",
-        "data" => $san_pham_sale
-    ]);
-}
-
-    
 
     // delete san_pham_sale
     public function deleteSanPhamSale($id)
@@ -99,7 +104,7 @@ public function updateSanPhamSale(Request $request, $id)
         $san_pham_sale = SanPhamSale::find($id);
 
         if (!$san_pham_sale) {
-            return response()->json(['error' => 'Không tìm thấy Sản phẩm Giảm Giá có ID '.$id.''], 404);
+            return response()->json(['error' => 'Không tìm thấy Sản phẩm Giảm Giá có ID ' . $id . ''], 404);
         }
         $san_pham_sale->delete();
         return response()->json([
@@ -112,24 +117,32 @@ public function updateSanPhamSale(Request $request, $id)
 
 
     //tìm kiếm, lọc
-    //   public function filter(Request $request)
-    //   {
-    //       $search = $request['search'] ?? "";
-    //       if($search != ""){
-    //               $san_pham_sale = SanPhamSale::where('name','LIKE',"%$search%")->get();
-    //       }
-    //       else{
-    //           $san_pham_sale = SanPhamSale::all();
-    //       } 
-    //   }
-
-      public function search(Request $request){
+    public function search(Request $request)
+    {
         $query = SanPhamSale::query();
-        if($search = $request->input('search')){
-            $query->whereRaw("id_sale_off LIKE '%".$search."%'")
-            ->orWhereRaw("id_san_pham LIKE '%".$search."%'")
-            ->orWhereRaw("gia_sale LIKE '%".$search."%'");
+        if ($search = $request->input('search')) {
+            $query->whereRaw("id_sale_off LIKE '%" . $search . "%'")
+                ->orWhereRaw("id_san_pham LIKE '%" . $search . "%'")
+                ->orWhereRaw("gia_sale LIKE '%" . $search . "%'");
         }
-        return $query->get();
+        if ($sort = $request->input('sort')) {
+            $query->orderBy('id_san_pham', $sort)
+                ->orderBy('id_sale_off', $sort);
+        }
+
+        $perPage = 8;
+        $page = $request->input('page', 1);
+        $total = $query->count();
+        $result = $query->offset(($page - 1) * $perPage)->limit($perPage)->get();
+        return [
+            'data' => $result,
+            // trả về kết quả
+            'total' => $total,
+            // tổng số kết quả
+            'page' => $page,
+            // số trang
+            'last_page' => ceil($total / $perPage) // trang cuối
+        ];
+        // return $query->get();
     }
 }

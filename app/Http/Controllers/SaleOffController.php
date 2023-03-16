@@ -32,7 +32,8 @@ class SaleOffController extends Controller
             'ten' => 'required|max:255',
             'mo_ta' => 'required',
             'phan_tram' => 'integer|required|between:1,100',
-            'time_start' => 'required', // định dạng |date_format:Y-m-d|after_or_equal:now
+            'time_start' => 'required',
+            // định dạng |date_format:Y-m-d|after_or_equal:now
             'time_end' => 'required' // |date_format:Y-m-d|after_or_equal:from
         ]);
         if ($validator->fails()) {
@@ -55,7 +56,7 @@ class SaleOffController extends Controller
         $sale_off = SaleOff::find($id);
 
         if (!$sale_off) {
-            return response()->json(['error' => 'Không tìm thấy Mã Giảm Giá có ID '.$id.''], 404);
+            return response()->json(['error' => 'Không tìm thấy Mã Giảm Giá có ID ' . $id . ''], 404);
         }
 
         return response()->json([
@@ -73,7 +74,7 @@ class SaleOffController extends Controller
         $sale_off = SaleOff::find($id);
 
         if (!$sale_off) {
-            return response()->json(['error' => 'Không tìm thấy Mã Giảm Giá có ID '.$id.''], 404);
+            return response()->json(['error' => 'Không tìm thấy Mã Giảm Giá có ID ' . $id . ''], 404);
         }
 
         $validatedData = $request->validate([
@@ -93,14 +94,14 @@ class SaleOffController extends Controller
         ]);
     }
 
-  
+
     // xóa sale_off - mã giảm giá
     public function deleteSaleOff($id)
     {
         $sale_off = SaleOff::find($id);
 
         if (!$sale_off) {
-            return response()->json(['error' => 'Không tìm thấy Mã Giảm Giá có ID '.$id.''], 404);
+            return response()->json(['error' => 'Không tìm thấy Mã Giảm Giá có ID ' . $id . ''], 404);
         }
         $sale_off->delete();
         return response()->json([
@@ -113,25 +114,31 @@ class SaleOffController extends Controller
 
 
     //tìm kiếm, lọc
-    // public function filter(Request $request)
-    // {
-    //     $sale_off = SaleOff::query();
-    //     $search = $request['search'] ?? "";
-    //     if($search != ""){
-    //             $sale_off = SaleOff::where('ten','LIKE',"%$search%")->get();
-    //     }
-    //     else{
-    //         $sale_off = SaleOff::all();
-    //     } 
-    // }
-
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $query = SaleOff::query();
-        if($search = $request->input('search')){
-            $query->whereRaw("ten LIKE '%".$search."%'")
-            ->orWhereRaw("mo_ta LIKE '%".$search."%'")
-            ->orWhereRaw("phan_tram LIKE '%".$search."%'");
+        if ($search = $request->input('search')) {
+            $query->whereRaw("ten LIKE '%" . $search . "%'")
+                ->orWhereRaw("mo_ta LIKE '%" . $search . "%'")
+                ->orWhereRaw("phan_tram LIKE '%" . $search . "%'");
         }
-        return $query->get();
+        if ($sort = $request->input('sort')) {
+            $query->orderBy('ten', $sort);
+        }
+
+        $perPage = 8;
+        $page = $request->input('page', 1);
+        $total = $query->count();
+        $result = $query->offset(($page - 1) * $perPage)->limit($perPage)->get();
+        return [
+            'data' => $result,
+            // trả về kết quá
+            'total' => $total,
+            // tổng số kết quả
+            'page' => $page,
+            // số trang
+            'last_page' => ceil($total / $perPage) // trang cuối
+        ];
+        // return $query->get();
     }
 }
