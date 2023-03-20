@@ -21,17 +21,33 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-            $array=[];
-            for($i=0;$i<2;$i++){
-                array_push($array,[
-                    "ten"=>"Nguyen Xuan Hau",
-                    "email"=>"nguyenxuanhau".($i+1)."@fpt.edu.vn",
-                    "password"=>Hash::make('12345678')
-                ],
-                );
+            // $array=[];
+            // for($i=0;$i<2;$i++){
+            //     array_push($array,[  
+            //         "ten"=>"Nguyen Xuan Hau",
+            //         "email"=>"nguyenxuanhau".($i+1)."@fpt.edu.vn",
+            //         "password"=>Hash::make('12345678')
+            //     ],
+            //     );
+            // }
+            // DB::table("users")->insert(
+            //     $array
+            // );
+            $array1=[];
+            for($i=0;$i<11;$i++){
+                array_push($array1,[
+                    "trang_thai" => 1,
+                    "tong_so_luong" => (20 + $i),
+                    "tong_tien" => 1000000,
+                    "user_id" => $i +1,
+                    "ho_ten" => "hau " . $i,
+                    "id_dia_chi" => 1,
+                    "xac_nhan" => 2,
+                    "so_dien_thoai" => "000001112"
+                ]);
             }
-            DB::table("users")->insert(
-                $array
+            DB::table("don_hang")->insert(
+                     $array1
             );
     }
 }

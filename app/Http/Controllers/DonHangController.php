@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\addDonHang;
+use App\Http\Requests\GetAllDonHangRequest;
 use App\Models\DonHang;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -11,10 +12,9 @@ use Illuminate\Support\Facades\DB;
 
 class DonHangController extends Controller
 {
-    //
-    public function getDonHang(){
+    public function getAllDonHang(GetAllDonHangRequest $request){
         $model = new DonHang();
-        $donHang = $model->loadListWithPager();
+        $donHang = $model->loadListWithPager($request->input());
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,

@@ -40,8 +40,8 @@ Route::get('hoa-don/{id}', [SoLuongGiaController::class, 'show']);
 Route::put('hoa-don/{id}', [SoLuongGiaController::class, 'update']);
 Route::delete('hoa-don/{id}', [SoLuongGiaController::class, 'destroy']);
 
-
-Route::get('get_don_hang', [DonHangController::class, 'getDonHang']);
+//don hang 
+Route::get('don-hang', [DonHangController::class, 'getAllDonHang']);
 Route::post('add_don_hang', [DonHangController::class, 'addDonHang']);
 Route::post('delete_don_hang', [DonHangController::class, 'deleteDonHang']);
 Route::put('update_don_hang', [DonHangController::class, 'updateDonHang']);
