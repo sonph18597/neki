@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\addDonHang;
+use App\Http\Requests\AddDonHangRequest;
 use App\Http\Requests\GetAllDonHangRequest;
+use App\Http\Requests\UpdateDonHangRequest;
 use App\Models\DonHang;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-
 class DonHangController extends Controller
 {
     public function getAllDonHang(GetAllDonHangRequest $request){
@@ -24,7 +23,7 @@ class DonHangController extends Controller
         ], JsonResponse::HTTP_OK);
     }
 
-    public function addDonHang(addDonHang $request ){
+    public function addDonHang(AddDonHangRequest $request ){
         $userId = Auth::user()->id;
         $params = [];
         $params['cols'] = $request->post();
@@ -37,13 +36,13 @@ class DonHangController extends Controller
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'entries' => [
-                    'don_hang_id' => $donHang->id
+                    'don_hang_id' => true,
                 ]
             ]
         ], JsonResponse::HTTP_OK);
     }
 
-    public function updateDonHang($id, addDonHang $request ){
+    public function updateDonHang($id, UpdateDonHangRequest $request ){
         $userId = Auth::user()->id;
         $params = [];
         $params['cols'] = $request->post();
@@ -63,15 +62,15 @@ class DonHangController extends Controller
         ], JsonResponse::HTTP_OK);
     }
 
-    public function deleteDonHang($id){
-        $data = DB::table("category")->where('id',$id);
-        $data->delete();
+    public function getOnedonHang($id){
+       $model = new DonHang();
+       $donhang = $model->loadOne($id);
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'entries' => [
-                    'don_hang_id' => $id
+                    'don_hang' => $donhang,
                 ]
             ]
         ], JsonResponse::HTTP_OK);
