@@ -40,11 +40,11 @@ Route::get('hoa-don/{id}', [SoLuongGiaController::class, 'show']);
 Route::put('hoa-don/{id}', [SoLuongGiaController::class, 'update']);
 Route::delete('hoa-don/{id}', [SoLuongGiaController::class, 'destroy']);
 
-
-Route::get('get_don_hang', [DonHangController::class, 'getDonHang']);
-Route::post('add_don_hang', [DonHangController::class, 'addDonHang']);
-Route::post('delete_don_hang', [DonHangController::class, 'deleteDonHang']);
-Route::put('update_don_hang', [DonHangController::class, 'updateDonHang']);
+//don hang 
+Route::get('don-hang', [DonHangController::class, 'getAllDonHang']);
+Route::post('don-hang', [DonHangController::class, 'addDonHang']);
+Route::put('don-hang/{id}', [DonHangController::class, 'updateDonHang']);
+Route::get('don-hang/{id}', [DonHangController::class, 'getOnedonHang']);
 Route::get('get_san_pham_don_hang', [SanPhamDonHangController::class, 'getSanPhamDonHang']);
 Route::post('add_san_pham_don_hang', [SanPhamDonHangController::class, 'addSanPhamDonHang']);
 Route::post('delete_san_pham_don_hang', [SanPhamDonHangController::class, 'deleteSanPhamDonHang']);

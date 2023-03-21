@@ -16,6 +16,7 @@ class SanPhamDonHang extends Model
     public function loadListWithPager($param = []) {
         $query = DB::table($this->table)
             ->select($this->fillable);
+        
         $lists = $query->paginate(5);
         return $lists;
     }
