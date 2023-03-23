@@ -33,4 +33,10 @@ Route::get('DiscountCode/{id}', [DiscountCodeController::class, 'show']);
 Route::put('DiscountCode/{id}', [DiscountCodeController::class, 'update']);
 Route::delete('DiscountCode/{id}', [DiscountCodeController::class, 'delete']);
 Route::get('DiscountCode', [DiscountCodeController::class, 'filter']);
-
+//Size
+Route::get('Size', [SizeController::class, 'index']);
+Route::post('Size', [SizeController::class, 'store']);
+Route::get('Size/{id}', [SizeController::class, 'show']);
+Route::put('Size/{id}', [SizeController::class, 'update']);
+Route::delete('Size/{id}', [SizeController::class, 'delete']);
+Route::get('Size', [SizeController::class, 'filter']);
