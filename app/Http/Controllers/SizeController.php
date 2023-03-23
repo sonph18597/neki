@@ -25,7 +25,7 @@ class SizeController extends Controller
             return response()->json(['error' => $e->getMessage()], 400);
         }
 
-        $shoes = Size::create([
+        $size = Size::create([
             'size' => $request->size,
 
         ]);
