@@ -45,10 +45,11 @@ Route::get('don-hang', [DonHangController::class, 'getAllDonHang']);
 Route::post('don-hang', [DonHangController::class, 'addDonHang']);
 Route::put('don-hang/{id}', [DonHangController::class, 'updateDonHang']);
 Route::get('don-hang/{id}', [DonHangController::class, 'getOnedonHang']);
-Route::get('get_san_pham_don_hang', [SanPhamDonHangController::class, 'getSanPhamDonHang']);
-Route::post('add_san_pham_don_hang', [SanPhamDonHangController::class, 'addSanPhamDonHang']);
-Route::post('delete_san_pham_don_hang', [SanPhamDonHangController::class, 'deleteSanPhamDonHang']);
-Route::put('update_san_pham_don_hang', [SanPhamDonHangController::class, 'updateSanPhamDonHang']);
+
+Route::get('san_pham_don_hang', [SanPhamDonHangController::class, 'getSanPhamDonHang']);
+Route::post('san_pham_don_hang', [SanPhamDonHangController::class, 'addSanPhamDonHang']);
+Route::put('san_pham_don_hang/{id}', [SanPhamDonHangController::class, 'updateSanPhamDonHang']);
+Route::get('san_pham_don_hang/{id}', [SanPhamDonHangController::class, 'getOneSanPhamDonHang']);
 
 
 Route::get('mau-sac', [MauSacController::class, 'index']);
