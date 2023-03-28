@@ -1,21 +1,20 @@
-<?php
-$objUser = \Illuminate\Support\Facades\Auth::user();
-?>
+@php
+    $objUser = \Illuminate\Support\Facades\Auth::user();
+@endphp
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>NEKI::@yield('title')</title>
+    <title>Nike::@yield('title')</title>
 
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    {{-- Dành cho vuejs--}}
+    {{--  Dành cho vuejs--}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta id="_token" name="_token" content="{!! csrf_token() !!}" />
-    {{-- <meta name="csrf-token" content="{{ csrf_token() }}">--}}
-    <!-- Bootstrap 3.3.7 -->
+    <meta id="_token" name="_token" content="{!! csrf_token() !!}"/>
+    {{--  <meta name="csrf-token" content="{{ csrf_token() }}">--}}
+<!-- Bootstrap 3.3.7 -->
     <link rel="stylesheet" href="{{ asset('default/bower_components/bootstrap/dist/css/bootstrap.min.css')}}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('default/bower_components/font-awesome/css/font-awesome.min.css')}}">
@@ -41,13 +40,13 @@ $objUser = \Illuminate\Support\Facades\Auth::user();
     <![endif]-->
 
     <!-- Google Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <link rel="icon" type="image/png" sizes="16x16" href="/public/img/favicon.png">
     <link rel="stylesheet" href="{{asset('default/bower_components/select2/dist/css/select2.min.css')}}">
     @yield('css')
     <style>
-        .select2-container--default .select2-selection--single,
-        .select2-selection .select2-selection--single {
+        .select2-container--default .select2-selection--single, .select2-selection .select2-selection--single {
             padding: 3px 0px;
             height: 30px;
         }
@@ -118,157 +117,153 @@ $objUser = \Illuminate\Support\Facades\Auth::user();
         var sapp = new Object();
     </script>
 </head>
-
 <body class="hold-transition skin-blue sidebar-mini fixed">
-    <script>
-        (function() {
-            if (Boolean(localStorage.getItem('sidebar-toggle-collapsed'))) {
-                var body = document.getElementsByTagName('body')[0];
-                body.className = body.className + ' sidebar-collapse';
-            }
-        })();
-    </script>
-    <!-- Site wrapper class body:  sidebar-collapse -->
-    <div class="wrapper">
+<script>
+    (function () {
+        if (Boolean(localStorage.getItem('sidebar-toggle-collapsed'))) {
+            var body = document.getElementsByTagName('body')[0];
+            body.className = body.className + ' sidebar-collapse';
+        }
+    })();
+</script>
+<!-- Site wrapper class body:  sidebar-collapse -->
+<div class="wrapper">
 
-        <header class="main-header">
-            <!-- Logo -->
-            <a href="/apps" class="logo">
+    <header class="main-header">
+        <!-- Logo -->
+        <a href="/apps" class="logo">
 
-                <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini">
-                </span>
-                <span class="logo-lg">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini">
+      </span>
+            <span class="logo-lg">
 
-                </span>
+      </span>
+        </a>
+        <nav class="navbar navbar-static-top">
+        {{--//noel moi dung      <span class="santa"></span>--}}
+        <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
             </a>
-            <nav class="navbar navbar-static-top">
-                {{--//noel moi dung      <span class="santa"></span>--}}
-                <!-- Sidebar toggle button-->
-                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
 
-                <div class="navbar-custom-menu">
-                    <ul class="nav navbar-nav">
-                        <li class="dropdown user user-menu">
-                            <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="/img/no-avartar.png" class="user-image" alt="User Image">
-                                <span class="hidden-xs"> {{$objUser->ten}} </span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <p style="padding: 10px;">
-                                        <i class="fa fa-user"></i> {{$objUser->email}}<br>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown user user-menu" >
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="/img/no-avartar.png" class="user-image" alt="User Image">
+                            <span class="hidden-xs"> {{$objUser->ten}} </span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <p style="padding: 10px;">
+                                    <i class="fa fa-user"></i> {{$objUser->email}}<br>
 
-                                    </p>
-                                </li>
-                                <li class="user-footer">
-                                    <div class="pull-right">
-                                        <a href="{{route('logout')}}" class="btn btn-default btn-flat">Sign out</a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
-
-        <!-- =============================================== -->
-
-        <!-- Left side column. contains the sidebar -->
-        <aside class="main-sidebar">
-            <!-- sidebar: style can be found in sidebar.less -->
-            <section class="sidebar">
-                <!-- Sidebar user panel -->
-                <div class="user-panel">
-                    <div class="pull-left image">
-                        <img src="/img/no-avartar.png" class="img-circle" alt="User Image">
-                    </div>
-                    <div class="pull-left info">
-                        <p> {{$objUser->ten}} </p>
-
-                    </div>
-                    <div class="clearfix">
-                        <p class="text-info">{{$objUser->email}}</p>
-                    </div>
-
-                </div>
-                <!-- sidebar menu: : style can be found in sidebar.less -->
-                <ul class="sidebar-menu" data-widget="tree">
-                    <li class=" active menu-open ">
-                        <a href="/user"><i class="fa fa-user"></i> <span>Người Dùng</span></a>
-                        <ul class="treeview-menu">
-                            <li><a href="/user/add"><i class="fa fa-circle-o"></i> Thêm người dùng</a></li>
+                                </p>
+                            </li>
+                            <li class="user-footer">
+                                <div class="pull-right">
+                                    <a href="{{route('logout')}}" class="btn btn-default btn-flat">Sign out</a>
+                                </div>
+                            </li>
                         </ul>
                     </li>
-                    <li class=" active menu-open ">
-                        <a href="/san-pham-sale"><i class="fa fa-clipboard"></i> <span>Sản Phẩm Sale</span></a>
-                        <ul class="treeview-menu">
-                            <li><a href="/add-san-pham-sale"><i class="fa fa-circle-o"></i> Thêm Sản Phẩm Sale</a></li>
-                        </ul>
-                    </li>
-                    <li class=" active menu-open ">
-                        <a href="/sale-off"><i class="fa fa-clipboard"></i> <span>Mã Giảm Giá</span></a>
-                        <ul class="treeview-menu">
-                            <li><a href="/add-sale-off"><i class="fa fa-circle-o"></i> Thêm Mã Giảm Giá</a></li>
-                        </ul>
-                    </li>
-
-                    {{-- <li class=" active menu-open ">--}}
-                    {{-- <a href="/product"><i class="fa fa-clipboard"></i> <span>Sản phẩm</span></a>--}}
-                    {{-- <ul class="treeview-menu">--}}
-                    {{-- <li><a href="/product/add"><i--}}
-                    {{-- class="fa fa-circle-o"></i> Thêm sản phẩm</a></li>--}}
-                    {{-- </ul>--}}
-                    {{-- </li>--}}
-                    {{-- <li class=" active menu-open ">--}}
-                    {{-- <a href="/order"><i class="fa fa-credit-card"></i> <span>Order</span></a>--}}
-                    {{-- </li>--}}
                 </ul>
-            </section>
-            <!-- /.sidebar -->
-        </aside>
-
-        <!-- =============================================== -->
-
-        <!-- Content Wrapper. Contains page content -->
-        <div id="app" class="content-wrapper" style="background-color: #ecf0f5;">
-            @yield('content')
-            <div class="clearfix"></div>
-
-        </div>
-        <!-- /.content-wrapper -->
-        <!-- Add the sidebar's background. This div must be placed
-       immediately after the control sidebar -->
-        <div class="control-sidebar-bg"></div>
-
-
-    </div>
-    <!-- ./wrapper -->
-    <div class="modal fade" id="app-modal-dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header" style="padding-bottom: 0px;">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" style="font-size: 24px; color:red; margin-top: -10px" class="fa fa-close"></span></button>
-                    <h4 class="modal-title" id="app-modal-dialog-title">Default Modal</h4>
-                </div>
-                <div class="modal-body" id="app-modal-dialog-body">
-                    <p>Loading...</p>
-                </div>
             </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
+        </nav>
+    </header>
+
+    <!-- =============================================== -->
+
+    <!-- Left side column. contains the sidebar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- Sidebar user panel -->
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="/img/no-avartar.png" class="img-circle" alt="User Image">
+                </div>
+                <div class="pull-left info">
+                    <p> {{$objUser->ten}} </p>
+
+                </div>
+                <div class="clearfix">
+                    <p class="text-info">{{$objUser->email}}</p>
+                </div>
+
+            </div>
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" data-widget="tree">
+                <li class=" active menu-open ">
+                    <a href="/user"><i class="fa fa-user"></i> <span>Người Dùng</span></a>
+                    <ul class="treeview-menu">
+                        <li><a href="/user/add"><i
+                                    class="fa fa-circle-o"></i> Thêm người dùng</a></li>
+                    </ul>
+                </li>
+{{--                <li class=" active menu-open ">--}}
+{{--                    <a href="/category"><i class="fa fa-clipboard"></i> <span>Danh Mục</span></a>--}}
+{{--                    <ul class="treeview-menu">--}}
+{{--                        <li><a href="/category/add"><i--}}
+{{--                                    class="fa fa-circle-o"></i> Thêm danh mục</a></li>--}}
+{{--                    </ul>--}}
+{{--                </li>--}}
+
+{{--                <li class=" active menu-open ">--}}
+{{--                    <a href="/product"><i class="fa fa-clipboard"></i> <span>Sản phẩm</span></a>--}}
+{{--                    <ul class="treeview-menu">--}}
+{{--                        <li><a href="/product/add"><i--}}
+{{--                                    class="fa fa-circle-o"></i> Thêm sản phẩm</a></li>--}}
+{{--                    </ul>--}}
+{{--                </li>--}}
+{{--                <li class=" active menu-open ">--}}
+{{--                    <a href="/order"><i class="fa fa-credit-card"></i> <span>Order</span></a>--}}
+{{--                </li>--}}
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- =============================================== -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div id="app" class="content-wrapper" style="background-color: #ecf0f5;">
+        @yield('content')
+        <div class="clearfix"></div>
+
     </div>
-    <!-- template for the modal component -->
-    <script type="text/x-template" id="modal-template">
-        <transition name="modal">
+    <!-- /.content-wrapper -->
+<!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+    <div class="control-sidebar-bg"></div>
+
+
+</div>
+<!-- ./wrapper -->
+<div class="modal fade" id="app-modal-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="padding-bottom: 0px;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" style="font-size: 24px; color:red; margin-top: -10px"
+                          class="fa fa-close"></span></button>
+                <h4 class="modal-title" id="app-modal-dialog-title">Default Modal</h4>
+            </div>
+            <div class="modal-body" id="app-modal-dialog-body">
+                <p>Loading...</p>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- template for the modal component -->
+<script type="text/x-template" id="modal-template">
+    <transition name="modal">
         <div class="modal-mask">
             <div class="modal-wrapper">
                 <div class="modal-container">
@@ -294,111 +289,108 @@ $objUser = \Illuminate\Support\Facades\Auth::user();
     </transition>
 </script>
 
-    <!-- jQuery 3 -->
+<!-- jQuery 3 -->
 
-    <!-- Bootstrap 3.3.7 -->
-    <script src="{{ asset('default/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
-    <!-- SlimScroll -->
-    <script src="{{ asset('default/bower_components/jquery-slimscroll/jquery.slimscroll.min.js')}}"></script>
-    <!-- FastClick -->
-    <script src="{{ asset('default/bower_components/fastclick/lib/fastclick.js')}}"></script>
-    <!-- iCheck 1.0.1 -->
-    <script src="{{ asset('default/plugins/iCheck/icheck.min.js')}}"></script>
-    <!-- jquery cookie -->
-    <script src="{{ asset('default/plugins/jquery-cookie/jquery.cookie.js')}}"></script>
-    {{--<script src="/public/default/plugins/iCheck/icheck.min.js"></script>--}}
-    <script src="{{ asset('default/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{{ asset('default/bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+<!-- SlimScroll -->
+<script src="{{ asset('default/bower_components/jquery-slimscroll/jquery.slimscroll.min.js')}}"></script>
+<!-- FastClick -->
+<script src="{{ asset('default/bower_components/fastclick/lib/fastclick.js')}}"></script>
+<!-- iCheck 1.0.1 -->
+<script src="{{ asset('default/plugins/iCheck/icheck.min.js')}}"></script>
+<!-- jquery cookie -->
+<script src="{{ asset('default/plugins/jquery-cookie/jquery.cookie.js')}}"></script>
+{{--<script src="/public/default/plugins/iCheck/icheck.min.js"></script>--}}
+<script src="{{ asset('default/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
 
-    <!-- AdminLTE App -->
-    <script src="{{ asset('default/dist/js/adminlte.min.js')}}"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="{{ asset('default/dist/js/demo.js')}}"></script>
-    <script src="{{ asset('js/jquery.doubleScroll.js')}}?b=1 "></script>
-    <script src="{{ asset('js/SpxApp.js')}}?b=1"></script>
-    {{--<script src="{{ taisan('/public/js/backend.js')}}?b={{config('app.build_version')}}"></script>--}}
+<!-- AdminLTE App -->
+<script src="{{ asset('default/dist/js/adminlte.min.js')}}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{{ asset('default/dist/js/demo.js')}}"></script>
+<script src="{{ asset('js/jquery.doubleScroll.js')}}?b=1 "></script>
+<script src="{{ asset('js/SpxApp.js')}}?b=1"></script>
+{{--<script src="{{ taisan('/public/js/backend.js')}}?b={{config('app.build_version')}}"></script>--}}
 
-    {{--@yield('script')--}}
-    @isset($include_file)
+{{--@yield('script')--}}
+@isset($include_file)
     @include($include_file)
-    @endisset
+@endisset
 
 
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2();
-            $('.sidebar-menu').tree();
+<script>
+    $(document).ready(function () {
+        $('.select2').select2();
+        $('.sidebar-menu').tree();
 
-            // //iCheck for checkbox and radio inputs
-            $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-                checkboxClass: 'icheckbox_minimal-blue',
-                radioClass: 'iradio_minimal-blue'
-            });
-
-            $('.sidebar-toggle').click(function(event) {
-                event.preventDefault();
-                console.log('toggle');
-                if (Boolean(localStorage.getItem('sidebar-toggle-collapsed'))) {
-                    localStorage.setItem('sidebar-toggle-collapsed', '');
-                } else {
-                    localStorage.setItem('sidebar-toggle-collapsed', '1');
-                }
-            });
-            $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-                checkboxClass: 'icheckbox_flat-green',
-                radioClass: 'iradio_flat-green'
-            });
-
-            function getMessage() {
-
-                $.get('/apps/ajax-get-help-desk')
-                    .done(function(data, status) {
-                        if (status == 'success') {
-                            // console.log(data);
-                            $('#getMessage').html('(<span class="text-bold" style="color: #f1b351;">' + data + '</span>)');
-                        }
-                    })
-                    .fail(function(err) {
-                        console.log(err)
-                    });
-                // setTimeout(getMessage,10000);
-            }
-
-            getMessage();
-
-
-        })
-    </script>
-    <script>
-        $(function() {
-            $('.btnCloseAllNotify').click(function() {
-                if ($('.btnCloseNotification').length > 0) {
-                    $('.btnCloseNotification').each(function(item) {
-                        $(this).trigger('click');
-                    });
-                    $(this).parent().hide();
-                }
-            });
-            $('.btnCloseNotification').click(function(e) {
-                e.preventDefault();
-                let id = $(this).attr('data-id');
-                $.post('/apps/alert/readed-alert/' + id, {
-                        _token: $('meta[name=_token]').attr('content')
-                    })
-                    .done(data => {
-                        if (data.status == 1) {
-                            $(this).parent().hide();
-                        } else {
-                            if (data.errors.length > 0)
-                                alert(data.errors.join(', '));
-                        }
-                    })
-                    .fail(function(err) {
-                        console.log(err);
-                    })
-            });
+        // //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+            checkboxClass: 'icheckbox_minimal-blue',
+            radioClass: 'iradio_minimal-blue'
         });
-    </script>
-    @yield('script')
-</body>
 
+        $('.sidebar-toggle').click(function (event) {
+            event.preventDefault();
+            console.log('toggle');
+            if (Boolean(localStorage.getItem('sidebar-toggle-collapsed'))) {
+                localStorage.setItem('sidebar-toggle-collapsed', '');
+            } else {
+                localStorage.setItem('sidebar-toggle-collapsed', '1');
+            }
+        });
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+            checkboxClass: 'icheckbox_flat-green',
+            radioClass: 'iradio_flat-green'
+        });
+
+        function getMessage() {
+
+            $.get('/apps/ajax-get-help-desk')
+                .done(function (data, status) {
+                    if (status == 'success') {
+                        // console.log(data);
+                        $('#getMessage').html('(<span class="text-bold" style="color: #f1b351;">' + data + '</span>)');
+                    }
+                })
+                .fail(function (err) {
+                    console.log(err)
+                });
+            // setTimeout(getMessage,10000);
+        }
+
+        getMessage();
+
+
+    })
+</script>
+<script>
+    $(function () {
+        $('.btnCloseAllNotify').click(function () {
+            if ($('.btnCloseNotification').length > 0) {
+                $('.btnCloseNotification').each(function (item) {
+                    $(this).trigger('click');
+                });
+                $(this).parent().hide();
+            }
+        });
+        $('.btnCloseNotification').click(function (e) {
+            e.preventDefault();
+            let id = $(this).attr('data-id');
+            $.post('/apps/alert/readed-alert/' + id, {_token: $('meta[name=_token]').attr('content')})
+                .done(data => {
+                    if (data.status == 1) {
+                        $(this).parent().hide();
+                    } else {
+                        if (data.errors.length > 0)
+                            alert(data.errors.join(', '));
+                    }
+                })
+                .fail(function (err) {
+                    console.log(err);
+                })
+        });
+    });
+</script>
+@yield('script')
+</body>
 </html>

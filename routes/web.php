@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\SaleOffController;
-use App\Http\Controllers\SanPhamSaleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,14 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/login', ['as' => 'login', 'uses' => 'Auth\LoginController@getLogin']);
-Route::post('/login', ['as' => 'login', 'uses' => 'Auth\LoginController@postLogin']);
-Route::get('/logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@getLogout']);
-
-Route::middleware(['auth'])->group(function () {
-    // tất cả đường link muốn bảo vệ chỉ cần viết vào đây
-    //user
-    Route::get('/user', 'UserController@index')->name('route_BackEnd_User_index');
-
-   
-});
+//Route::get('/login', ['as' => 'login', 'uses' => 'Auth\LoginController@getLogin']);
+//Route::post('/login', ['as' => 'login', 'uses' => 'Auth\LoginController@postLogin']);
+//Route::get('/logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@getLogout']);
+//
+//Route::middleware(['auth'])->group(function () {
+//    // tất cả đường link muốn bảo vệ chỉ cần viết vào đây
+//    //user
+//    Route::get('/user', 'UserController@index')->name('route_BackEnd_User_index');
+//});
