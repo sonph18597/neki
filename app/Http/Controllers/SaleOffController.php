@@ -5,148 +5,87 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SaleOff;
 use Dotenv\Exception\ValidationException;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Session;
+
+
 
 class SaleOffController extends Controller
 {
-    public function index()
+
+ 
+    public function index()    // show mã giảm giá - sale-off    
     {
-        $sale_off = SaleOff::all();
-        $sale_off = SaleOff::paginate(8); // phân trang
-        return response()->json([
-            "success" => true,
-            "status_code" => 200,
-            "title" => "Danh Sách Mã Giảm Giá (Sale Off)",
-            "data" => $sale_off
-        ]);
+        $sale_off = SaleOff::paginate();  // phân trang
+        // return (new SanPhamSale($sanphamsale))->response();
+        return response()->json(SaleOff::all());
     }
 
-    public function addSaleOff(Request $request)
+
+    // Thêm sale_off
+    public function store(Request $request)
     {
-        $input = $request->all();
-        $validator = Validator::make($input, [
-            'ten' => 'required|max:255',
-            'mo_ta' => 'required',
-            'phan_tram' => 'integer|required|between:1,100',
-            'time_start' => 'required',
-            // định dạng |date_format:Y-m-d|after_or_equal:now
-            'time_end' => 'required' // |date_format:Y-m-d|after_or_equal:from
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Lỗi xác thực, hãy thử lại!',
-                'errors' => $validator->errors(),
-            ], 422);
-            // return $this->sendError('Validation Error.', $validator->errors());
-            // return response()->json(["error" => 'Lỗi khi thêm, hãy thao tác lại'], 400);
+        try {
+            $this->validate($request, [
+                'ten' => 'required|max:255', //tối đa 255 kí tự
+                'mo_ta' => 'required|max:255',
+                'phan_tram' => 'integer|required|between:1,100', // xác thực số phải nằm giữa 1-100
+                'time_start' => 'required', // định dạng |date_format:Y-m-d|after_or_equal:now
+                'time_end' => 'required'  // |date_format:Y-m-d|after_or_equal:from
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
         }
-        $sale_off = SaleOff::create($input);
-        return response()->json([
-            "success" => true,
-            "status_code" => 200,
-            "title" => "Thêm Mã Giảm Giá Thành Công!",
-            "data" => $sale_off
-        ]);
+        
+        return SaleOff::create($request->all());
+        return response()->json(['message' => 'Thêm Mã Sale Off Thành công!']);    
     }
 
-    // lấy ra danh sách , từng mã theo ID
-    public function listSaleOff($id)
+
+    // lấy ra san_pham_sale
+    public function show($id)
     {
         $sale_off = SaleOff::find($id);
 
         if (!$sale_off) {
-            return response()->json(['error' => 'Không tìm thấy Mã Giảm Giá có ID ' . $id . ''], 404);
+            return response()->json(['error' => 'Không tìm thấy Mã Sale Off có ID là ' . $id . '!'], 404);
         }
 
-        return response()->json([
-            "success" => true,
-            "status_code" => 200,
-            "message" => "Đã tìm thành công Mã Giảm Giá có ID $id !",
-            "data" => $sale_off
-        ]);
+        return response()->json($sale_off);
     }
 
-    // cập nhật mã giảm giá
-    public function updateSaleOff(Request $request, $id)
-    {
+
+    // update sale_off
+    public function update(Request $request, $id){
         $sale_off = SaleOff::find($id);
-        $input = $request->all();
+
         if (!$sale_off) {
-            return response()->json(['error' => 'Không tìm thấy Mã Giảm Giá có ID ' . $id . ''], 404);
+            return response()->json(['error' => 'Không tìm thấy Mã Sale Off'], 404);
         }
 
-        $validator = Validator::make($input,[
-            'ten' => 'required',
-            'mo_ta' => 'required',
-            'phan_tram' => 'required|min:1,max:100',
+        $validatedData = $request->validate([
+            'ten' => 'required|max:255', // tối đa 255 kí tự
+            'mo_ta' => 'required|max:255',
+            'phan_tram' => 'min:1,max:100', // xác thực số phải nằm giữa 1-100
             'time_start' => 'nullable|date',
             'time_end' => 'nullable|date'
         ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Lỗi xác thực, hãy thử lại!',
-                'errors' => $validator->errors(),
-            ], 422);
-            // return $this->sendError('Validation Error.', $validator->errors());
-            // return response()->json(["error" => 'Lỗi khi thêm, hãy thao tác lại'], 400);
-        } 
-
-        $sale_off->update($input);
-        return response()->json([
-            "success" => true,
-            "status_code" => 200,
-            "message" => "Cập nhật thành công Mã Giảm Giá có ID $id !",
-            "data" => $sale_off
-        ]);
+        $sale_off->update($validatedData, $request->all());
+        // return SaleOff::update($request->all());
+        return response()->json(['message' => 'Cập nhật Thành công!']);    
+          
     }
 
-    // xóa sale_off - mã giảm giá
-    public function deleteSaleOff($id)
+
+    // delete sale_off - mã giảm giá
+    public function destroy($id)
     {
         $sale_off = SaleOff::find($id);
 
         if (!$sale_off) {
-            return response()->json(['error' => 'Không tìm thấy Mã Giảm Giá có ID ' . $id . ''], 404);
+            return response()->json(['error' => 'Không tìm thấy Mã Sale Off!'], 404);
         }
         $sale_off->delete();
-        return response()->json([
-            "success" => true,
-            "status_code" => 200,
-            "message" => "Xóa Thành công Mã giảm giá!",
-            "data" => $sale_off
-        ]);
-    }
 
-    //tìm kiếm, lọc
-    public function search(Request $request)
-    {
-        $query = SaleOff::query();
-        if ($search = $request->input('search')) {
-            $query->whereRaw("ten LIKE '%" . $search . "%'")
-                ->orWhereRaw("mo_ta LIKE '%" . $search . "%'")
-                ->orWhereRaw("phan_tram LIKE '%" . $search . "%'");
-        }
-        if ($sort = $request->input('sort')) {
-            $query->orderBy('ten', $sort);
-        }
-
-        $perPage = 8;
-        $page = $request->input('page', 1);
-        $total = $query->count();
-        $result = $query->offset(($page - 1) * $perPage)->limit($perPage)->get();
-        return [
-            'data' => $result,
-            // trả về kết quá
-            'total' => $total,
-            // tổng số kết quả
-            'page' => $page,
-            // số trang
-            'last_page' => ceil($total / $perPage) // trang cuối
-        ];
-        // return $query->get();
+        return response()->json(['message' => 'Xóa thành công Mã Sale Off']);
     }
+   
 }
