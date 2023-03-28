@@ -12,11 +12,24 @@ class DonHang extends Model
 {
     use HasFactory;
     protected $table = 'don_hang';
-    protected $fillable = ['id','tong_so_luong','tong_tien','ho_ten','id_dia_chi','so_dien_thoai','user_id','xac_nhan'];
+    protected $fillable = ['id','tong_so_luong','tong_tien','ho_ten','id_dia_chi','so_dien_thoai','user_id','xac_nhan','trang_thai'];
     public function loadListWithPager($param = []) {
-        $query = DB::table($this->table)
+        $query = DB::table($this->table) 
             ->select($this->fillable);
-        $lists = $query->paginate(5);
+            
+        if(isset($param['so_dien_thoai']) ) {
+            $query->where("so_dien_thoai" , "LIKE" , "%".$param['so_dien_thoai']."%" );
+        }
+        if(isset($param['trang_thai'])) {
+            $query->where('trang_thai',"=", $param['trang_thai'] );
+        }
+        if(isset($param['user_id'])) {
+            $query->where('user_id',"=",$param['user_id'] );
+        }
+        if(isset($param['xac_nhan'])){
+            $query->where('xac_nhan',"=",$param['xac_nhan'] );
+        }
+        $lists = $query->paginate(10);
         return $lists;
     }
     //thêm mới

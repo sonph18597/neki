@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddDonHangSanPhanRequest;
+use App\Http\Requests\GetAllDonHangSanPhanRequest;
 use App\Http\Requests\SanPhamDonHangRequest;
+use App\Http\Requests\UpdateDonHangSanPhanRequest;
 use App\Models\SanPhamDonHang;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -12,9 +15,9 @@ use Illuminate\Support\Facades\DB;
 class SanPhamDonHangController extends Controller
 {
     //
-    public function getSanPhamDonHang(){
+    public function getSanPhamDonHang( GetAllDonHangSanPhanRequest $request){
         $model = new SanPhamDonHang();
-        $sanPhamDonHang = $model->loadListWithPager();
+        $sanPhamDonHang = $model->loadListWithPager($request->input());
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
@@ -23,8 +26,7 @@ class SanPhamDonHangController extends Controller
             ]
         ], JsonResponse::HTTP_OK);
     }
-
-    public function addSanPhamDonHang(SanPhamDonHangRequest $request ){
+    public function addSanPhamDonHang( AddDonHangSanPhanRequest $request ){
         $params = [];
         $params['cols'] = $request->post();
         unset( $params['cols']['_token']);
@@ -41,7 +43,7 @@ class SanPhamDonHangController extends Controller
         ], JsonResponse::HTTP_OK);
     }
 
-    public function updateSanPhamDonHang($id, SanPhamDonHangRequest $request ){
+    public function updateSanPhamDonHang($id, UpdateDonHangSanPhanRequest $request ){
         $params = [];
         $params['cols'] = $request->post();
         $params['cols']['id'] = $id;
@@ -59,15 +61,15 @@ class SanPhamDonHangController extends Controller
         ], JsonResponse::HTTP_OK);
     }
 
-    public function deleteSanPhamDonHang($id){
-        $data = DB::table("san_pham_don_hang")->where('id',$id);
-        $data->delete();
+    public function getOneSanPhamDonHang($id){
+        $model = new SanPhamDonHang();
+       $sanPhammDonHang = $model->loadOne($id);
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'entries' => [
-                    'san_pham_don_hang_id' => $id
+                    'san_pham_don_hang' => $sanPhammDonHang,
                 ]
             ]
         ], JsonResponse::HTTP_OK);
