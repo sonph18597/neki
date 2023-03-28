@@ -17,11 +17,12 @@ return new class extends Migration
             $table->id();
             $table->integer('tong_so_luong');
             $table->integer('tong_tien');
-            $table->integer('ho_ten');
+            $table->string('ho_ten');
             $table->integer('id_dia_chi');
             $table->string('so_dien_thoai');
             $table->string('xac_nhan');
             $table->integer('user_id');
+            $table->integer('trang_thai')->nullable();
             $table->timestamps();
             $table->timestamp('delete_at')->nullable();
         });
