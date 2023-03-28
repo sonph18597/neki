@@ -6,6 +6,7 @@ use App\Models\SanPhamSale;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -36,8 +37,12 @@ class SanPhamSaleController extends Controller
             'so_luong' => 'required|regex:/^\d*(\.\d{3})?$/',
         ]);
         if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Lỗi xác thực, hãy thử lại!',
+                'errors' => $validator->errors(),
+            ], 422);
             // return $this->sendError('Validation Error.', $validator->errors());
-            return response()->json(["error" => 'Lỗi khi thêm, hãy thao tác lại'], 400);
+            // return response()->json(["error" => 'Lỗi khi thêm, hãy thao tác lại'], 400);
         }
         $san_pham_sale = SanPhamSale::create($input);
         return response()->json([
@@ -72,30 +77,36 @@ class SanPhamSaleController extends Controller
     public function updateSanPhamSale(Request $request, $id)
     {
         $san_pham_sale = SanPhamSale::find($id);
-
+        $input = $request->all();
         if (!$san_pham_sale) {
             return response()->json(['error' => 'Không tìm thấy Sản Phẩm Giảm Giá có ID ' . $id . ''], 404);
         }
 
-        $validatedData = $request->validate([
-            'id_sale_off' => 'sometimes|required',
-            // trường ko được tồn tại trong DB //
-            'id_san_pham' => 'sometimes|required',
-            // sometimes: chỉ được xác thực khi nó tồn tại 
-            'gia_sale' => 'sometimes|required|regex:/^\d*(\.\d{3})?$/',
+        $validator = Validator::make($input, [
+            'id_sale_off' => 'required',
+            // trường ko được tồn tại trong DB
+            'id_san_pham' => 'required',
+            'gia_sale' => 'required|regex:/^\d*(\.\d{3})?$/',
             // làm tròn sau dấu . có 3 chữ số,
-            'so_luong' => 'sometimes|required|regex:/^\d*(\.\d{3})?$/',
+            'so_luong' => 'required|regex:/^\d*(\.\d{3})?$/',
         ]);
-
-        $san_pham_sale->update($validatedData);
-        return response()->json([
-            "success" => true,
-            "status_code" => 200,
-            "message" => "Cập nhật thành công Sản Phẩm Giảm Giá có ID $id !",
-            "data" => $san_pham_sale
-        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Lỗi xác thực, hãy thử lại!',
+                'errors' => $validator->errors(),
+            ], 422);
+            // return $this->sendError('Validation Error.', $validator->errors());
+            // return response()->json(["error" => 'Lỗi khi thêm, hãy thao tác lại'], 400);
+        } 
+            $san_pham_sale->update($input);
+            return response()->json([
+                "success" => true,
+                "status_code" => 200,
+                "message" => "Cập nhật thành công Sản Phẩm Giảm Giá có ID $id !",
+                "data" => $san_pham_sale
+            ]);
+        
     }
-
 
 
     // delete san_pham_sale

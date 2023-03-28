@@ -37,8 +37,12 @@ class SaleOffController extends Controller
             'time_end' => 'required' // |date_format:Y-m-d|after_or_equal:from
         ]);
         if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Lỗi xác thực, hãy thử lại!',
+                'errors' => $validator->errors(),
+            ], 422);
             // return $this->sendError('Validation Error.', $validator->errors());
-            return response()->json(["error" => 'Lỗi khi thêm, hãy thao tác lại'], 400);
+            // return response()->json(["error" => 'Lỗi khi thêm, hãy thao tác lại'], 400);
         }
         $sale_off = SaleOff::create($input);
         return response()->json([
@@ -72,20 +76,28 @@ class SaleOffController extends Controller
     public function updateSaleOff(Request $request, $id)
     {
         $sale_off = SaleOff::find($id);
-
+        $input = $request->all();
         if (!$sale_off) {
             return response()->json(['error' => 'Không tìm thấy Mã Giảm Giá có ID ' . $id . ''], 404);
         }
 
-        $validatedData = $request->validate([
+        $validator = Validator::make($input,[
             'ten' => 'required',
             'mo_ta' => 'required',
-            'phan_tram' => 'min:1,max:100',
+            'phan_tram' => 'required|min:1,max:100',
             'time_start' => 'nullable|date',
             'time_end' => 'nullable|date'
         ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Lỗi xác thực, hãy thử lại!',
+                'errors' => $validator->errors(),
+            ], 422);
+            // return $this->sendError('Validation Error.', $validator->errors());
+            // return response()->json(["error" => 'Lỗi khi thêm, hãy thao tác lại'], 400);
+        } 
 
-        $sale_off->update($validatedData);
+        $sale_off->update($input);
         return response()->json([
             "success" => true,
             "status_code" => 200,
