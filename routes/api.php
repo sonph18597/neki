@@ -27,20 +27,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 });
 //user
-Route::get('user', [UserController::class, 'index']);
-Route::post('user', [UserController::class, 'store']);
-Route::get('user/{id}', [UserController::class, 'show']);
-Route::put('user/{id}', [UserController::class, 'update']);
-Route::delete('user/{id}', [UserController::class, 'destroy']);
+Route::get('user', [UserController::class, 'getAllUser']);
+Route::post('user', [UserController::class, 'addUser']);
+Route::get('user/{id}', [UserController::class, 'getOneUser']);
+Route::put('user/{id}', [UserController::class, 'updateUser']);
+Route::delete('user/{id}', [UserController::class, 'deleteUser']);
 
 //soluong_gia
-Route::get('hoa-don', [SoLuongGiaController::class, 'index']);
-Route::post('hoa-don', [SoLuongGiaController::class, 'store']);
-Route::get('hoa-don/{id}', [SoLuongGiaController::class, 'show']);
-Route::put('hoa-don/{id}', [SoLuongGiaController::class, 'update']);
-Route::delete('hoa-don/{id}', [SoLuongGiaController::class, 'destroy']);
+Route::get('hoa-don', [SoLuongGiaController::class, 'getAllSoLuongGia']);
+Route::post('hoa-don', [SoLuongGiaController::class, 'addSoLuongGia']);
+Route::get('hoa-don/{id}', [SoLuongGiaController::class, 'getOneSoLuongGia']);
+Route::put('hoa-don/{id}', [SoLuongGiaController::class, 'updateSoLuongGia']);
+Route::delete('hoa-don/{id}', [SoLuongGiaController::class, 'deleteSoLuongGia']);
 
-//don hang 
+//don hang
 Route::get('don-hang', [DonHangController::class, 'getAllDonHang']);
 Route::post('don-hang', [DonHangController::class, 'addDonHang']);
 Route::put('don-hang/{id}', [DonHangController::class, 'updateDonHang']);

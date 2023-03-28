@@ -2,113 +2,90 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddUserRequest;
+use App\Http\Requests\GetUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
-class UserController extends Controller
-{
-    //search user
-    public function search(Request $request)
-    {
-        $search = $request['search'] ?? "";
-        if($search != ""){
-                $user = User::where('ten','LIKE',"%$search%")->orWhere('email','LIKE',"%$search%")->get();
-        }
-        else{
-            $user = User::all();
-        }
 
-    }
-
-    public function index()
-    {
-       $user = User::all();
-       $user = User::paginate(5);
-       return response()->json([
-            'status'=> true,
-            'message'=>'User retrieved.',
-            'data'=> $user
-       ]);
-    }
-
-    //creat user
-    public function store(Request $request)
-    {
-            $data = $request->validate([
-                'ten' => 'required|string|max:255',
-                'so_dien_thoai'=>'required',
-                'email'=>'required|email',
-                'password'=>'required|max:255',
-                'id_dia_chi'=>'required',
-                'role_id'=>'required',
-                'gioi_tinh'=>'required',
-                'anh'=>'required',
-                'ngay_sinh'=>'required|date',
-                'trang_thai'=>'required'
-            ]);
-            $users = User::create($data);
-            return response()->json([
-                'status'=> true,
-                'message'=>'User created.',
-                'data'=> $users
-            ],201);
-    }
-
-    //Show user
-    public function show($id)
-    {
-        $user = User::find($id);
-        if (!$user) {
-            return response()->json(['message' => 'User không tồn tại'], 404);
-        }
+class UserController extends Controller{
+    public function getAllUser(GetUserRequest $request){
+        $model = new User();
+        $user = $model->loadListWithPager($request->input());
+//        var_dump($user);die;
         return response()->json([
-            "success" => true,
-            "message" => "Success",
-            "data" => $user
-        ]);
-
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => $user
+            ]
+        ], JsonResponse::HTTP_OK);
     }
 
-    //update user
-    public function update(Request $request, $id)
-    {
-        $user = User::find($id);
-
-        if (!$user) {
-            return response()->json(['error' => 'User có id '.$id.' không tồn tại'], 404);
-        }
-
-        $validatedData = $request->validate([
-            'ten' => 'required|string|max:255',
-            'email'=>'required|email',
-            'so_dien_thoai'=>'required',
-            'gioi_tinh'=>'required',
-            'password'=>'required|max:255',
-            'id_dia_chi'=>'required',
-            'role_id'=>'required',
-            'anh'=>'required',
-            'ngay_sinh'=>'required|date',
-            'trang_thai'=>'required'
-        ]);
-
-        $user->update($validatedData, $request->all());
-
+    public function addUser(AddUserRequest $request ){
+        $params = [];
+        $params['cols'] = $request->post();
+        unset( $params['cols']['_token']);
+        $user = new User();
+        $user->saveNew($params);
         return response()->json([
-            "success" => true,
-            "message" => "Update Thanh Cong",
-            "data" => $user
-        ]);
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => [
+                    'id' => true,
+                ]
+            ]
+        ], JsonResponse::HTTP_OK);
     }
 
-    public function destroy($id)
+    public function updateUser($id, UpdateUserRequest $request ){
+        $params = [];
+        $params['cols'] = $request->post();
+        $params['cols']['id'] = $id;
+        unset( $params['cols']['_token']);
+        $user = new User();
+        $user->saveUpdate($params);
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => [
+                    'id' => $user->id
+                ]
+            ]
+        ], JsonResponse::HTTP_OK);
+    }
+
+    public function getOneUser($id){
+        $model = new User();
+        $user = $model->loadOne($id);
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => [
+                    'user' => $user,
+                ]
+            ]
+        ], JsonResponse::HTTP_OK);
+    }
+    public function deleteUser($id)
     {
         $user = User::find($id);
-
         if (!$user) {
             return response()->json(['error' => 'User không tồn tại'], 404);
         }
         $user->delete();
-
-        return response()->json(['message' => 'Xóa thành công']);
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => [
+                    'user' => $user,
+                ]
+            ]
+        ], JsonResponse::HTTP_OK);
     }
 }

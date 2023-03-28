@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetAllDonHangRequest extends FormRequest
+class GetUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,16 @@ class GetAllDonHangRequest extends FormRequest
     public function rules()
     {
         return [
-           "trang_thai" => "nullable|numeric",
-            "so_dien_thoai" => "nullable",
-            "user_id" => "numeric|nullable",
-            "xac_nhan" => "numeric|nullable",
+            'ten' => 'nullable|string|max:255',
+            'so_dien_thoai'=>'nullable',
+            'email'=>'nullable|email',
+            'password'=>'nullable|max:32',
+            'id_dia_chi'=>'nullable',
+            'role_id'=>'nullable',
+            'gioi_tinh'=>'nullable',
+            'anh'=>'nullable',
+            'ngay_sinh'=>'nullable|date',
+            'trang_thai'=>'nullable|numeric'
         ];
     }
 }
