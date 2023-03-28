@@ -31,7 +31,6 @@ Route::match(['put', 'patch'], 'sale-off/{id}', [SaleOffController::class, 'upda
 Route::delete('sale-off/{id}', [SaleOffController::class, 'deleteSaleOff']);
 Route::get('sale-off', [SaleOffController::class, 'search']);
 
-
 // SanPhamSale
 Route::get('san-pham-sale', [SanPhamSaleController::class, 'index']);
 Route::post('san-pham-sale', [SanPhamSaleController::class, 'addSanPhamSale']);
