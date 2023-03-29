@@ -65,17 +65,19 @@ Route::put('dia-chi/{id}', [DiaChiController::class, 'update']);
 Route::delete('dia-chi/{id}', [DiaChiController::class, 'destroy']);
 
 
-// SanPhamSale
-Route::get('san-pham-sale', [SanPhamSaleController::class, 'index'])->name('san_pham_sale.index');
-Route::post('san-pham-sale', [SanPhamSaleController::class, 'store'])->name('san_pham_sale.store');
-Route::get('san-pham-sale/{id}', [SanPhamSaleController::class, 'show'])->name('san_pham_sale.show');
-Route::match(['put', 'patch'], 'san-pham-sale/{id}', [SanPhamSaleController::class, 'update'])->name('san_pham_sale.update');
-Route::delete('san-pham-sale/{id}', [SanPhamSaleController::class, 'destroy'])->name('san_pham_sale.destroy');
-
-
 // SaleOff
-Route::get('sale-off', [SaleOffController::class, 'index'])->name('sale_off.index');
-Route::post('sale-off', [SaleOffController::class, 'store'])->name('sale_off.store');
-Route::get('sale-off/{id}', [SaleOffController::class, 'show'])->name('sale_off.show');
-Route::match(['put', 'patch'], 'sale-off/{id}', [SaleOffController::class, 'update'])->name('sale_off.update');
+Route::get('sale-off', [SaleOffController::class, 'index']);
+Route::post('sale-off', [SaleOffController::class, 'addSaleOff']);
+Route::get('sale-off/{id}', [SaleOffController::class, 'listSaleOff']);
+Route::match(['put', 'patch'], 'sale-off/{id}', [SaleOffController::class, 'updateSaleOff']);
+Route::delete('sale-off/{id}', [SaleOffController::class, 'deleteSaleOff']);
+Route::get('sale-off', [SaleOffController::class, 'search']);
+
+// SanPhamSale
+Route::get('san-pham-sale', [SanPhamSaleController::class, 'index']);
+Route::post('san-pham-sale', [SanPhamSaleController::class, 'addSanPhamSale']);
+Route::get('san-pham-sale/{id}', [SanPhamSaleController::class, 'listSanPhamSale']);
+Route::match(['put', 'patch'], 'san-pham-sale/{id}', [SanPhamSaleController::class, 'updateSanPhamSale']);
+Route::delete('san-pham-sale/{id}', [SanPhamSaleController::class, 'deleteSanPhamSale']);
+Route::get('san-pham-sale', [SanPhamSaleController::class, 'search']);
 
