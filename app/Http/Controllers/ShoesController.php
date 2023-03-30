@@ -64,13 +64,13 @@ class ShoesController extends Controller
         }
 
         $validator = Validator::make($input,[
-            'name' => 'sometimes|required|max:255',
-                'id_prod_sale' => 'sometimes|required',
-                'id_type' => 'sometimes|required',
-                'description' => 'sometimes|required|max:255',
-                'list_variant' => 'sometimes|required|max:255',
-                'min_price' => 'sometimes|required',
-                'max_price' => 'sometimes|required',
+            'name' => 'required|max:255',
+                'id_prod_sale' => 'required',
+                'id_type' => 'required',
+                'description' => 'required|max:255',
+                'list_variant' => 'required|max:255',
+                'min_price' => 'required',
+                'max_price' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json([
