@@ -13,30 +13,27 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
 class SizeController extends Controller
 {
-    //
     public function index()
     {
-        return response()->json(Size::all());
+        $size = Size::all();
+        $size = Size::paginate(8);
+        return response()->json($size);
     }
-    public function pagination() {
-        return response()->json(Shoes::paginate(8));
-    }
-    public function store(Request $request)
+
+    public function create(Request $request)
     {
-        try {
-            $this->validate($request, [
-                'size' => 'required',
-            ]);
-        } catch (ValidationException $e) {
-            return response()->json(['error' => $e->getMessage('BAD REQUEST')], 400);
-        }
-
-        $size = Size::create([
-            'size' => $request->size,
-
+        $input = $request->all();
+        $validator = Validator::make($input, [
+            'size' => 'required|max:255'
         ]);
-
-        return response()->json(['message' => 'CCREATE SUCCESS'], 201);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => '400 Bad Request',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+        $size = Size::create($input);
+        return response()->json($size);
     }
 
     public function show($id)
@@ -58,15 +55,19 @@ class SizeController extends Controller
             return response()->json(['error' => 'NOT FOUND'], 404);
         }
 
-        $validatedData = $request->validate([
-                'size' => 'sometimes|required',
-
+        $validator = Validator::make($input,[
+            'size' => 'required|max:255'
         ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => '400 Bad Request',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
 
-        $size->update($validatedData);
-
-        return response()->json(['message' => 'UPDATES SUCCESS']);
-    }
+        $size->update($input);
+        return response()->json($size);
+        }
 
     public function delete($id)
     {
@@ -77,7 +78,7 @@ class SizeController extends Controller
         }
         $size->delete();
 
-        return response()->json(['message' => 'DELETES SUCCESS']);
+        return response()->json($size);
     }
     public function search(Request $request){
         // Get the search value from the request

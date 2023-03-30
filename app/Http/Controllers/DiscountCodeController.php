@@ -16,16 +16,16 @@ class DiscountCodeController extends Controller
 {
     public function index()
     {
-        return response()->json(DiscountCode::all());
+        $discountcode = DiscountCode::all();
+        $discountcode = DiscountCode::paginate(8);
+        return response()->json($discountcode);
     }
-    public function pagination() {
-        return response()->json(Shoes::paginate(8));
-    }
-    public function store(Request $request)
+
+    public function create(Request $request)
     {
-        try {
-            $this->validate($request, [
-                'discount_code' => 'required|max:255',
+        $input = $request->all();
+        $validator = Validator::make($input, [
+            'discount_code' => 'required|max:255',
                 'exclude_prod' => 'required|max:255',
                 'include_prod' => 'required|max:255',
                 'condition_type' => 'required|max:255',
@@ -34,72 +34,67 @@ class DiscountCodeController extends Controller
                 'limits' => 'required',
                 'time_start' => 'required',
                 'time_end' => 'required',
-            ]);
-        } catch (ValidationException $e) {
-            return response()->json(['error' => $e->getMessage('BAD REQUEST')], 400);
-        }
-
-        $DiscountCode = DiscountCode::create([
-            'discount_code' => $request->discount_code,
-            'exclude_prod' => $request->exclude_prod,
-            'include_prod' => $request->include_prod,
-            'condition_type' => $request->condition_type,
-            'type_discount' => $request->type_discount,
-            'discount_number' => $request->min_price,
-            'limits' => $request->limits,
-            'time_start' => $request->time_start,
-            'time_end' => $request->time_end
         ]);
-
-        return response()->json(['message' => 'CCREATE SUCCESS'], 201);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => '400 Bad Request',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+        $discountcode = DiscountCode::create($input);
+        return response()->json($discountcode);
     }
 
     public function show($id)
     {
-        $DiscountCode = DiscountCode::find($id);
+        $discountcode = DiscountCode::find($id);
 
-        if (!$DiscountCode) {
+        if (!$discountcode) {
             return response()->json(['error' => 'NOT FOUND'], 404);
         }
 
-        return response()->json($DiscountCode);
+        return response()->json($discountcode);
     }
 
     public function update(Request $request, $id)
     {
-        $DiscountCode = DiscountCode::find($id);
+        $discountcode = DiscountCode::find($id);
 
-        if (!$DiscountCode) {
+        if (!$discountcode) {
             return response()->json(['error' => 'NOT FOUND'], 404);
         }
 
-        $validatedData = $request->validate([
-                'discount_code' => 'sometimes|required|max:255',
-                'exclude_prod' => 'sometimes|required|max:255',
-                'include_prod' => 'sometimes|required|max:255',
-                'condition_type' => 'sometimes|required|max:255',
-                'type_discount' => 'sometimes|required|max:255',
-                'discount_number' => 'sometimes|required',
-                'limits' => 'sometimes|required',
-                'time_start' => 'sometimes|required',
-                'time_end' => 'sometimes|required',
+        $validator = Validator::make($input,[
+            'discount_code' => 'required|max:255',
+                'exclude_prod' => 'required|max:255',
+                'include_prod' => 'required|max:255',
+                'condition_type' => 'required|max:255',
+                'type_discount' => 'required|max:255',
+                'discount_number' => 'required',
+                'limits' => 'required',
+                'time_start' => 'required',
+                'time_end' => 'required',
         ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => '400 Bad Request',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
 
-        $DiscountCode->update($validatedData);
-
-        return response()->json(['message' => 'UPDATES SUCCESS']);
-    }
-
+        $discountcode->update($input);
+        return response()->json($discountcode);
+        }
     public function delete($id)
     {
-        $DiscountCode = DiscountCode::find($id);
+        $discountcode = DiscountCode::find($id);
 
-        if (!$DiscountCode) {
+        if (!$discountcode) {
             return response()->json(['error' => 'NOT FOUND'], 404);
         }
-        $DiscountCode->delete();
+        $discountcode->delete();
 
-        return response()->json(['message' => 'DELETES SUCCESS']);
+        return response()->json($discountcode);
     }
     public function search(Request $request){
         // Get the search value from the request

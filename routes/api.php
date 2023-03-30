@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 //Shoes
 Route::get('Shoes', [ShoesController::class, 'index']);
-Route::post('Shoes', [ShoesController::class, 'store']);
+Route::post('Shoes', [ShoesController::class, 'create']);
 Route::get('Shoes/{id}', [ShoesController::class, 'show']);
 Route::put('Shoes/{id}', [ShoesController::class, 'update']);
 Route::delete('Shoes/{id}', [ShoesController::class, 'delete']);
@@ -28,14 +28,14 @@ Route::get('Shoes', [ShoesController::class, 'search']);
 
 //Discount Code
 Route::get('DiscountCode', [DiscountCodeController::class, 'index']);
-Route::post('DiscountCode', [DiscountCodeController::class, 'store']);
+Route::post('DiscountCode', [DiscountCodeController::class, 'create']);
 Route::get('DiscountCode/{id}', [DiscountCodeController::class, 'show']);
 Route::put('DiscountCode/{id}', [DiscountCodeController::class, 'update']);
 Route::delete('DiscountCode/{id}', [DiscountCodeController::class, 'delete']);
 Route::get('DiscountCode', [DiscountCodeController::class, 'search']);
 //Size
 Route::get('Size', [SizeController::class, 'index']);
-Route::post('Size', [SizeController::class, 'store']);
+Route::post('Size', [SizeController::class, 'create']);
 Route::get('Size/{id}', [SizeController::class, 'show']);
 Route::put('Size/{id}', [SizeController::class, 'update']);
 Route::delete('Size/{id}', [SizeController::class, 'delete']);

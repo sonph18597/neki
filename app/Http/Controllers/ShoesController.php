@@ -17,40 +17,57 @@ class ShoesController extends Controller
 {
     public function index()
     {
-        return response()->json(Shoes::all());
-
+        $shoes = Shoes::all();
+        $shoes = Shoes::paginate(8);
+        return response()->json($shoes);
     }
-public function pagination() {
-    return response()->json(Shoes::paginate(8));
-}
-    public function store(Request $request)
+
+    public function create(Request $request)
     {
-        try {
-            $this->validate($request, [
-                'name' => 'required|max:255',
+        $input = $request->all();
+        $validator = Validator::make($input, [
+            'name' => 'required|max:255',
                 'id_prod_sale' => 'required',
                 'id_type' => 'required',
                 'description' => 'required|max:255',
                 'list_variant' => 'required|max:255',
                 'min_price' => 'required',
                 'max_price' => 'required',
-            ]);
-        } catch (ValidationException $e) {
-            return response()->json(['error' => $e->getMessage('BAD REQUEST')], 400);
-        }
-
-        $shoes = Shoes::create([
-            'name' => $request->name,
-            'id_prod_sale' => $request->id_prod_sale,
-            'id_type' => $request->id_type,
-            'description' => $request->description,
-            'list_variant' => $request->list_variant,
-            'min_price' => $request->min_price,
-            'max_price' => $request->max_price,
-
         ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => '400 Bad Request',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+        $shoes = Shoes::create($input);
+        return response()->json($shoes);
+        // try {
+        //     $this->validate($request, [
+        //         'name' => 'required|max:255',
+        //         'id_prod_sale' => 'required',
+        //         'id_type' => 'required',
+        //         'description' => 'required|max:255',
+        //         'list_variant' => 'required|max:255',
+        //         'min_price' => 'required',
+        //         'max_price' => 'required',
+        //     ]);
+        // } catch (ValidationException $e) {
+        //     return response()->json(['error' => $e->getMessage('BAD REQUEST')], 400);
+        // }
 
-        return response()->json(['message' => 'CCREATE SUCCESS'], 201);
+        // $shoes = Shoes::create([
+        //     'name' => $request->name,
+        //     'id_prod_sale' => $request->id_prod_sale,
+        //     'id_type' => $request->id_type,
+        //     'description' => $request->description,
+        //     'list_variant' => $request->list_variant,
+        //     'min_price' => $request->min_price,
+        //     'max_price' => $request->max_price,
+
+        // ]);
+
+        // return response()->json(['message' => 'CCREATE SUCCESS'], 201);
     }
 
     public function show($id)
@@ -72,8 +89,8 @@ public function pagination() {
             return response()->json(['error' => 'NOT FOUND'], 404);
         }
 
-        $validatedData = $request->validate([
-                'name' => 'sometimes|required|max:255',
+        $validator = Validator::make($input,[
+            'name' => 'sometimes|required|max:255',
                 'id_prod_sale' => 'sometimes|required',
                 'id_type' => 'sometimes|required',
                 'description' => 'sometimes|required|max:255',
@@ -81,11 +98,16 @@ public function pagination() {
                 'min_price' => 'sometimes|required',
                 'max_price' => 'sometimes|required',
         ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => '400 Bad Request',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
 
-        $shoes->update($validatedData);
-
-        return response()->json(['message' => 'UPDATES SUCCESS']);
-    }
+        $shoes->update($input);
+        return response()->json($shoes);
+        }
 
     public function delete($id)
     {
@@ -96,8 +118,10 @@ public function pagination() {
         }
         $shoes->delete();
 
-        return response()->json(['message' => 'DELETES SUCCESS']);
+        return response()->json($shoes);
     }
+
+
     public function search(Request $request){
         // Get the search value from the request
         $search = $request->input('search');
