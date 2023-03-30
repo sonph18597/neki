@@ -42,32 +42,6 @@ class ShoesController extends Controller
         }
         $shoes = Shoes::create($input);
         return response()->json($shoes);
-        // try {
-        //     $this->validate($request, [
-        //         'name' => 'required|max:255',
-        //         'id_prod_sale' => 'required',
-        //         'id_type' => 'required',
-        //         'description' => 'required|max:255',
-        //         'list_variant' => 'required|max:255',
-        //         'min_price' => 'required',
-        //         'max_price' => 'required',
-        //     ]);
-        // } catch (ValidationException $e) {
-        //     return response()->json(['error' => $e->getMessage('BAD REQUEST')], 400);
-        // }
-
-        // $shoes = Shoes::create([
-        //     'name' => $request->name,
-        //     'id_prod_sale' => $request->id_prod_sale,
-        //     'id_type' => $request->id_type,
-        //     'description' => $request->description,
-        //     'list_variant' => $request->list_variant,
-        //     'min_price' => $request->min_price,
-        //     'max_price' => $request->max_price,
-
-        // ]);
-
-        // return response()->json(['message' => 'CCREATE SUCCESS'], 201);
     }
 
     public function show($id)
