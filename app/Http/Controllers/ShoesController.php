@@ -14,8 +14,11 @@ class ShoesController extends Controller
     public function index()
     {
         return response()->json(Shoes::all());
-    }
 
+    }
+public function pagination() {
+    return response()->json(Shoes::paginate(8));
+}
     public function store(Request $request)
     {
         try {

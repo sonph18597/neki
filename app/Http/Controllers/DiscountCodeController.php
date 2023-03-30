@@ -14,7 +14,9 @@ class DiscountCodeController extends Controller
     {
         return response()->json(DiscountCode::all());
     }
-
+    public function pagination() {
+        return response()->json(Shoes::paginate(8));
+    }
     public function store(Request $request)
     {
         try {

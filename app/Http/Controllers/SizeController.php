@@ -14,7 +14,9 @@ class SizeController extends Controller
     {
         return response()->json(Size::all());
     }
-
+    public function pagination() {
+        return response()->json(Shoes::paginate(8));
+    }
     public function store(Request $request)
     {
         try {
