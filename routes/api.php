@@ -11,6 +11,7 @@ use App\Http\Controllers\DonHangController;
 use App\Http\Controllers\SanPhamDonHangController;
 use \App\Http\Controllers\UserController;
 use \App\Http\Controllers\SoLuongGiaController;
+use \App\Http\Controllers\LoaiController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -32,6 +33,13 @@ Route::post('user', [UserController::class, 'addUser']);
 Route::get('user/{id}', [UserController::class, 'getOneUser']);
 Route::put('user/{id}', [UserController::class, 'updateUser']);
 Route::delete('user/{id}', [UserController::class, 'deleteUser']);
+
+//Loai
+Route::get('loai', [LoaiController::class, 'getAllLoai']);
+Route::post('loai', [LoaiController::class, 'addLoai']);
+Route::get('loai/{id}', [LoaiController::class, 'getOneLoai']);
+Route::put('loai/{id}', [LoaiController::class, 'updateLoai']);
+Route::delete('loai/{id}', [LoaiController::class, 'deleteLoai']);
 
 //soluong_gia
 Route::get('hoa-don', [SoLuongGiaController::class, 'getAllSoLuongGia']);
