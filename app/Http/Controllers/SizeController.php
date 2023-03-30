@@ -59,7 +59,7 @@ class SizeController extends Controller
 
         ]);
 
-        $sizze->update($validatedData);
+        $size->update($validatedData);
 
         return response()->json(['message' => 'UPDATES SUCCESS']);
     }
