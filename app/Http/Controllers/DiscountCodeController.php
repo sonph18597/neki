@@ -7,7 +7,11 @@ use App\Models\DiscountCode;
 use App\Http\Requests\DiscountCodeRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-
+use Dotenv\Exception\ValidationException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
 class DiscountCodeController extends Controller
 {
     public function index()

@@ -8,6 +8,10 @@ use App\Http\Requests\ShoesRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Dotenv\Exception\ValidationException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
 
 class ShoesController extends Controller
 {
