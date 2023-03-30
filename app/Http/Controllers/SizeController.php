@@ -24,7 +24,7 @@ class SizeController extends Controller
                 'size' => 'required',
             ]);
         } catch (ValidationException $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
+            return response()->json(['error' => $e->getMessage('BAD REQUEST')], 400);
         }
 
         $size = Size::create([

@@ -32,7 +32,7 @@ public function pagination() {
                 'max_price' => 'required',
             ]);
         } catch (ValidationException $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
+            return response()->json(['error' => $e->getMessage('BAD REQUEST')], 400);
         }
 
         $shoes = Shoes::create([
