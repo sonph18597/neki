@@ -24,7 +24,7 @@ Route::post('Shoes', [ShoesController::class, 'store']);
 Route::get('Shoes/{id}', [ShoesController::class, 'show']);
 Route::put('Shoes/{id}', [ShoesController::class, 'update']);
 Route::delete('Shoes/{id}', [ShoesController::class, 'delete']);
-Route::get('Shoes', [ShoesController::class, 'filter']);
+Route::get('Shoes', [ShoesController::class, 'search']);
 
 //Discount Code
 Route::get('DiscountCode', [DiscountCodeController::class, 'index']);
@@ -32,11 +32,11 @@ Route::post('DiscountCode', [DiscountCodeController::class, 'store']);
 Route::get('DiscountCode/{id}', [DiscountCodeController::class, 'show']);
 Route::put('DiscountCode/{id}', [DiscountCodeController::class, 'update']);
 Route::delete('DiscountCode/{id}', [DiscountCodeController::class, 'delete']);
-Route::get('DiscountCode', [DiscountCodeController::class, 'filter']);
+Route::get('DiscountCode', [DiscountCodeController::class, 'search']);
 //Size
 Route::get('Size', [SizeController::class, 'index']);
 Route::post('Size', [SizeController::class, 'store']);
 Route::get('Size/{id}', [SizeController::class, 'show']);
 Route::put('Size/{id}', [SizeController::class, 'update']);
 Route::delete('Size/{id}', [SizeController::class, 'delete']);
-Route::get('Size', [SizeController::class, 'filter']);
+Route::get('Size', [SizeController::class, 'search']);

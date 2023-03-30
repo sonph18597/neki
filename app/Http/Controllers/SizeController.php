@@ -79,15 +79,16 @@ class SizeController extends Controller
 
         return response()->json(['message' => 'DELETES SUCCESS']);
     }
-    public function filter(Request $request)
-    {
-        $search = $request['search'] ?? "";
-        if($search != ""){
-                $size = Size::where('size','LIKE',"%$search%")->get();
-        }
-        else{
-            $size = Size::all();
-        }
+    public function search(Request $request){
+        // Get the search value from the request
+        $search = $request->input('search');
 
+        // Search in the title and body columns from the posts table
+        $size = Size::query()
+            ->where('size', 'LIKE', "%{$search}%")
+            ->get();
+
+        // Return the search view with the resluts compacted
+        return view('search', compact('size'));
     }
 }

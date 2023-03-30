@@ -101,15 +101,19 @@ class DiscountCodeController extends Controller
 
         return response()->json(['message' => 'DELETES SUCCESS']);
     }
-    public function filter(Request $request)
-    {
-        $search = $request['search'] ?? "";
-        if($search != ""){
-                $discountCode = DiscountCode::where('discount_code','LIKE',"%$search%")->get();
-        }
-        else{
-            $discountCode = DiscountCode::all();
-        }
+    public function search(Request $request){
+        // Get the search value from the request
+        $search = $request->input('search');
 
+        // Search in the title and body columns from the posts table
+        $DiscountCode = DiscountCode::query()
+            ->where('discount_code', 'LIKE', "%{$search}%")
+            ->orWhere('exclude_prod', 'LIKE', "%{$search}%")
+            ->orWhere('include_prod', 'LIKE', "%{$search}%")
+            ->orWhere('type_discount', 'LIKE', "%{$search}%")
+            ->get();
+
+        // Return the search view with the resluts compacted
+        return view('search', compact('discountcode'));
     }
 }

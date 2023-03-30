@@ -98,15 +98,17 @@ public function pagination() {
 
         return response()->json(['message' => 'DELETES SUCCESS']);
     }
-    public function filter(Request $request)
-    {
-        $search = $request['search'] ?? "";
-        if($search != ""){
-                $shoes = Shoes::where('name','LIKE',"%$search%")->get();
-        }
-        else{
-            $shoes = Shoes::all();
-        }
+    public function search(Request $request){
+        // Get the search value from the request
+        $search = $request->input('search');
 
+        // Search in the title and body columns from the posts table
+        $shoes = Shoes::query()
+            ->where('name', 'LIKE', "%{$search}%")
+            ->orWhere('id_type', 'LIKE', "%{$search}%")
+            ->get();
+
+        // Return the search view with the resluts compacted
+        return view('search', compact('shoes'));
     }
 }
