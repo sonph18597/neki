@@ -14,5 +14,5 @@ class DiscountCode extends Model
 {
     use HasFactory, HasApiTokens, Notifiable;
     protected $table = "discount_code";
-    protected $fillable = ['id', 'discount_code', 'exclude_prod','include_prod', 'condition_type', 'type_discount', 'discount_number', 'limits','time_start', 'time_end'];
+    protected $fillable = ['id', 'discount_code', 'exclude_prod','include_prod', 'condition_type', 'type_discount', 'discount_number', 'limits','time_start', 'time_end', 'deleted_at'];
 }

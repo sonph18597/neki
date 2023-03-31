@@ -17,9 +17,9 @@ class ShoesController extends Controller
 {
     public function index()
     {
-        $shoes = Shoes::all();
-        $shoes = Shoes::paginate(8);
-        return response()->json($shoes);
+        $shoes = Shoes::paginate(8)
+        ->where('deleted_at', 'LIKE', '%null%');
+            return response()->json(['data' => $shoes]);
     }
 
     public function create(Request $request)
@@ -41,7 +41,7 @@ class ShoesController extends Controller
             ], 400);
         }
         $shoes = Shoes::create($input);
-        return response()->json($shoes);
+            return response()->json(['data' => $shoes]);
     }
 
     public function show($id)
@@ -52,7 +52,7 @@ class ShoesController extends Controller
             return response()->json(['error' => 'NOT FOUND'], 404);
         }
 
-        return response()->json($shoes);
+            return response()->json(['data' => $shoes]);
     }
 
     public function update(Request $request, $id)
@@ -71,6 +71,7 @@ class ShoesController extends Controller
                 'list_variant' => 'required|max:255',
                 'min_price' => 'required',
                 'max_price' => 'required',
+                'deleted_at'=>'required'
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -80,33 +81,31 @@ class ShoesController extends Controller
         }
 
         $shoes->update($input);
-        return response()->json($shoes);
+            return response()->json(['data' => $shoes]);
         }
 
     public function delete($id)
     {
-        $shoes = Shoes::find($id);
+        $shoes = Shoes::find($id)
+        ->where('deleted_at', 'LIKE', '%null%');
 
         if (!$shoes) {
             return response()->json(['error' => 'NOT FOUND'], 404);
         }
         $shoes->delete();
 
-        return response()->json($shoes);
+            return response()->json(['data' => $shoes]);
     }
 
 
     public function search(Request $request){
-        // Get the search value from the request
         $search = $request->input('search');
 
-        // Search in the title and body columns from the posts table
         $shoes = Shoes::query()
             ->where('name', 'LIKE', "%{$search}%")
             ->orWhere('id_type', 'LIKE', "%{$search}%")
             ->get();
 
-        // Return the search view with the resluts compacted
-        return view('search', compact('shoes'));
-    }
+            return response()->json(['data' => $shoes]);
+        }
 }

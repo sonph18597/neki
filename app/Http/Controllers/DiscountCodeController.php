@@ -16,9 +16,9 @@ class DiscountCodeController extends Controller
 {
     public function index()
     {
-        $discountcode = DiscountCode::all();
-        $discountcode = DiscountCode::paginate(8);
-        return response()->json($discountcode);
+        $discountcode = DiscountCode::paginate(8)
+        ->where('deleted_at', 'LIKE', '%null%');
+        return response()->json(['data' => $discountcode]);
     }
 
     public function create(Request $request)
@@ -42,7 +42,7 @@ class DiscountCodeController extends Controller
             ], 400);
         }
         $discountcode = DiscountCode::create($input);
-        return response()->json($discountcode);
+        return response()->json(['data' => $discountcode]);
     }
 
     public function show($id)
@@ -53,7 +53,7 @@ class DiscountCodeController extends Controller
             return response()->json(['error' => 'NOT FOUND'], 404);
         }
 
-        return response()->json($discountcode);
+        return response()->json(['data' => $discountcode]);
     }
 
     public function update(Request $request, $id)
@@ -74,6 +74,7 @@ class DiscountCodeController extends Controller
                 'limits' => 'required',
                 'time_start' => 'required',
                 'time_end' => 'required',
+                'deleted_at'=>'required'
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -83,24 +84,24 @@ class DiscountCodeController extends Controller
         }
 
         $discountcode->update($input);
-        return response()->json($discountcode);
+        return response()->json(['data' => $discountcode]);
         }
     public function delete($id)
     {
-        $discountcode = DiscountCode::find($id);
+        $discountcode = DiscountCode::find($id)
+        ->where('deleted_at', 'LIKE', '%null%');
+
 
         if (!$discountcode) {
             return response()->json(['error' => 'NOT FOUND'], 404);
         }
         $discountcode->delete();
 
-        return response()->json($discountcode);
+        return response()->json(['data' => $discountcode]);
     }
     public function search(Request $request){
-        // Get the search value from the request
         $search = $request->input('search');
 
-        // Search in the title and body columns from the posts table
         $DiscountCode = DiscountCode::query()
             ->where('discount_code', 'LIKE', "%{$search}%")
             ->orWhere('exclude_prod', 'LIKE', "%{$search}%")
@@ -108,7 +109,6 @@ class DiscountCodeController extends Controller
             ->orWhere('type_discount', 'LIKE', "%{$search}%")
             ->get();
 
-        // Return the search view with the resluts compacted
-        return view('search', compact('discountcode'));
+        return response()->json(['data' => $discountcode]);
     }
 }

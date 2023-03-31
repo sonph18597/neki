@@ -14,5 +14,5 @@ class Shoes extends Model
 {
     use HasFactory, HasApiTokens, Notifiable;
     protected $table = "shoes";
-    protected $fillable = ['id', 'name', 'id_prod_sale','list_img', 'id_type', 'description', 'list_variant', 'min_price','max_price'];
+    protected $fillable = ['id', 'name', 'id_prod_sale','list_img', 'id_type', 'description', 'list_variant', 'min_price','max_price', 'deleted_at'];
 }

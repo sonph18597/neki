@@ -15,9 +15,9 @@ class SizeController extends Controller
 {
     public function index()
     {
-        $size = Size::all();
-        $size = Size::paginate(8);
-        return response()->json($size);
+        $size = Size::paginate(8)
+        ->where('deleted_at', 'LIKE', '%null%');
+return response()->json(['data' => $size]);
     }
 
     public function create(Request $request)
@@ -33,7 +33,7 @@ class SizeController extends Controller
             ], 400);
         }
         $size = Size::create($input);
-        return response()->json($size);
+return response()->json(['data' => $size]);
     }
 
     public function show($id)
@@ -44,7 +44,7 @@ class SizeController extends Controller
             return response()->json(['error' => 'NOT FOUND'], 404);
         }
 
-        return response()->json($size);
+return response()->json(['data' => $size]);
     }
 
     public function update(Request $request, $id)
@@ -56,7 +56,8 @@ class SizeController extends Controller
         }
 
         $validator = Validator::make($input,[
-            'size' => 'required|max:255'
+            'size' => 'required|max:255',
+            'deleted_at'=>'required'
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -66,30 +67,28 @@ class SizeController extends Controller
         }
 
         $size->update($input);
-        return response()->json($size);
+return response()->json(['data' => $size]);
         }
 
     public function delete($id)
     {
-        $size = Size::find($id);
+        $size = Size::find($id)
+                ->where('deleted_at', 'LIKE', '%null%');
 
         if (!$size) {
             return response()->json(['error' => 'NOT FOUND'], 404);
         }
         $size->delete();
 
-        return response()->json($size);
+return response()->json(['data' => $size]);
     }
     public function search(Request $request){
-        // Get the search value from the request
         $search = $request->input('search');
 
-        // Search in the title and body columns from the posts table
         $size = Size::query()
             ->where('size', 'LIKE', "%{$search}%")
             ->get();
 
-        // Return the search view with the resluts compacted
-        return view('search', compact('size'));
+return response()->json(['data' => $size]);
     }
 }

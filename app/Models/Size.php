@@ -10,5 +10,5 @@ class Size extends Model
 {
     use HasFactory, HasApiTokens, Notifiable;
     protected $table = "size";
-    protected $fillable = ['id', 'size'];
+    protected $fillable = ['id', 'size', 'deleted_at'];
 }
