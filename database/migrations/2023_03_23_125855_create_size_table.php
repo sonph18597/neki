@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->integer('size');
-            $table->timestamps('deleted_at')->nullable();
+            $table->softDeletes()->nullable();
         });
     }
 
