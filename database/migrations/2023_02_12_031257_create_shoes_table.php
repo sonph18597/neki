@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('list_variant');
             $table->integer('min_price');
             $table->integer('max_price');
-            $table->timestamps('deleted_at')->nullable();
+            $table->softDeletes()->nullable();
         });
     }
 
