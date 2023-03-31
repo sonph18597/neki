@@ -14,6 +14,8 @@ use App\Http\Controllers\SanPhamDonHangController;
 use \App\Http\Controllers\UserController;
 use \App\Http\Controllers\SoLuongGiaController;
 use \App\Http\Controllers\LoaiController;
+use App\Http\Controllers\ThongKeController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,7 +29,6 @@ use \App\Http\Controllers\LoaiController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-
 });
 
 //Shoes
@@ -87,7 +88,6 @@ Route::post('san_pham_don_hang', [SanPhamDonHangController::class, 'addSanPhamDo
 Route::put('san_pham_don_hang/{id}', [SanPhamDonHangController::class, 'updateSanPhamDonHang']);
 Route::get('san_pham_don_hang/{id}', [SanPhamDonHangController::class, 'getOneSanPhamDonHang']);
 
-
 Route::get('mau-sac', [MauSacController::class, 'index']);
 Route::post('mau-sac', [MauSacController::class, 'store']);
 Route::get('mau-sac/{id}', [MauSacController::class, 'show']);
@@ -99,7 +99,6 @@ Route::post('dia-chi', [DiaChiController::class, 'store']);
 Route::get('dia-chi/{id}', [DiaChiController::class, 'show']);
 Route::put('dia-chi/{id}', [DiaChiController::class, 'update']);
 Route::delete('dia-chi/{id}', [DiaChiController::class, 'destroy']);
-
 
 // SaleOff
 Route::get('sale-off', [SaleOffController::class, 'index']);
@@ -116,5 +115,9 @@ Route::get('san-pham-sale/{id}', [SanPhamSaleController::class, 'listSanPhamSale
 Route::match(['put', 'patch'], 'san-pham-sale/{id}', [SanPhamSaleController::class, 'updateSanPhamSale']);
 Route::delete('san-pham-sale/{id}', [SanPhamSaleController::class, 'deleteSanPhamSale']);
 Route::get('san-pham-sale', [SanPhamSaleController::class, 'search']);
+
+//thong ke
+Route::get('thong-ke/{sothang}', [ThongKeController::class, 'donHangThangTruoc']);
+
 
 
