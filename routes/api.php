@@ -7,6 +7,8 @@ use App\Http\Controllers\SanPhamSaleController;
 use App\Models\SanPhamSale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DiscountCodeController;
+use App\Http\Controllers\ShoesController;
 use App\Http\Controllers\DonHangController;
 use App\Http\Controllers\SanPhamDonHangController;
 use \App\Http\Controllers\UserController;
@@ -27,6 +29,32 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 
 });
+
+//Shoes
+Route::get('Shoes', [ShoesController::class, 'index']);
+Route::post('Shoes', [ShoesController::class, 'create']);
+Route::get('Shoes/{id}', [ShoesController::class, 'show']);
+Route::put('Shoes/{id}', [ShoesController::class, 'update']);
+Route::delete('Shoes/{id}', [ShoesController::class, 'delete']);
+Route::get('Shoes/search', [ShoesController::class, 'search']);
+
+//Discount Code
+Route::get('DiscountCode', [DiscountCodeController::class, 'index']);
+Route::post('DiscountCode', [DiscountCodeController::class, 'create']);
+Route::get('DiscountCode/{id}', [DiscountCodeController::class, 'show']);
+Route::put('DiscountCode/{id}', [DiscountCodeController::class, 'update']);
+Route::delete('DiscountCode/{id}', [DiscountCodeController::class, 'delete']);
+Route::get('DiscountCode/search', [DiscountCodeController::class, 'search']);
+//Size
+
+Route::get('Size', [SizeController::class, 'index']);
+Route::post('Size', [SizeController::class, 'create']);
+Route::get('Size/{id}', [SizeController::class, 'show']);
+Route::put('Size/{id}', [SizeController::class, 'update']);
+Route::delete('Size/{id}', [SizeController::class, 'delete']);
+Route::get('Size/search', [SizeController::class, 'search']);
+
+
 //user
 Route::get('user', [UserController::class, 'getAllUser']);
 Route::post('user', [UserController::class, 'addUser']);
@@ -88,4 +116,5 @@ Route::get('san-pham-sale/{id}', [SanPhamSaleController::class, 'listSanPhamSale
 Route::match(['put', 'patch'], 'san-pham-sale/{id}', [SanPhamSaleController::class, 'updateSanPhamSale']);
 Route::delete('san-pham-sale/{id}', [SanPhamSaleController::class, 'deleteSanPhamSale']);
 Route::get('san-pham-sale', [SanPhamSaleController::class, 'search']);
+
 
