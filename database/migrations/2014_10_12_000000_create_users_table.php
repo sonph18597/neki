@@ -19,11 +19,11 @@ return new class extends Migration
             $table->string('so_dien_thoai')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string("email")->unique();
-            $table->string('password');
-            $table->integer('id_dia_chi');
+            $table->string('password')->nullable();
+            $table->integer('id_dia_chi')->default(1);
             $table->integer('role_id')->default(1);
             $table->integer('gioi_tinh')->default(1);
-            $table->string("anh");
+            $table->string("anh")->nullable();
             $table->date("ngay_sinh")->nullable();
             $table->integer('trang_thai')->default(1);
             $table->rememberToken();

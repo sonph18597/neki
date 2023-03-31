@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer("id_size");
             $table->integer('so_luong');
             $table->float('gia');
-            $table->string('anh');
+            $table->string('anh')->nullable();
             $table->timestamps();
         });
     }
