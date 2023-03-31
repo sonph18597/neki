@@ -12,6 +12,9 @@ class SoLuongGiaController extends Controller{
     public function getAllSoLuongGia(GetSoLuongGiaRequest $request){
         $model = new SoLuongGia();
         $soLuongGia = $model->loadListWithPager($request->input());
+        if($soLuongGia == null) {
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
@@ -59,6 +62,9 @@ class SoLuongGiaController extends Controller{
     public function getOneSoLuongGia($id){
         $model = new SoLuongGia();
         $soLuongGia = $model->loadOne($id);
+        if($soLuongGia == null) {
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,

@@ -33,7 +33,8 @@ class AddUserRequest extends FormRequest
                 'gioi_tinh'=>'nullable',
                 'anh'=>'nullable',
                 'ngay_sinh'=>'nullable|date',
-                'trang_thai'=>'nullable|numeric'
+                'trang_thai'=>'nullable|numeric',
+                'delete_at'=>'nullable'
         ];
     }
 }

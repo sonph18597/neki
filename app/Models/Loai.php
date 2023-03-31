@@ -14,7 +14,8 @@ class Loai extends Model
     protected $fillable = ['id', 'loai','gioi_tinh'];
     public function loadListWithPager($param = []) {
         $query = DB::table($this->table)
-            ->select($this->fillable);
+            ->select($this->fillable)
+            ->where('delete_at', '!=', null);
 
         if(isset($param['loai']) ) {
             $query->where("loai" , "LIKE" , "%".$param['loai']."%" );
@@ -34,7 +35,8 @@ class Loai extends Model
     //load ra chi tiết loai
     public function loadOne($id,$params = []) {
         $query = DB::table($this->table)
-            ->where('id','=',$id);
+            ->where('id','=',$id)
+            ->where('delete_at', '!=', null);
         $obj = $query->first();
         return $obj;
     }

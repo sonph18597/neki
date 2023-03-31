@@ -13,6 +13,9 @@ class LoaiController extends Controller
     public function getAllLoai(GetLoaiRequest $request){
         $model = new Loai();
         $loai = $model->loadListWithPager($request->input());
+        if($loai == null) {
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
@@ -60,6 +63,9 @@ class LoaiController extends Controller
     public function getOneLoai($id){
         $model = new Loai();
         $loai = $model->loadOne($id);
+        if($loai == null) {
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
@@ -72,7 +78,8 @@ class LoaiController extends Controller
     }
     public function deleteLoai($id)
     {
-        $loai = Loai::find($id);
+        $loai = Loai::find($id)
+            ->where('deleted_at', 'LIKE', '%null%');
         if (!$loai) {
             return response()->json(['error' => 'Loại sản phẩm này không tồn tại'], 404);
         }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('loai');
             $table->string('gioi_tinh')->default(1);
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }
