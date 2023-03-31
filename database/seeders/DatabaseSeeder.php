@@ -50,16 +50,28 @@ class DatabaseSeeder extends Seeder
         // DB::table("don_hang")->insert(
         //          $array1
         // );
-        $array2 = [];
+        // $array2 = [];
+        // for ($i = 0; $i < 11; $i++) {
+        //     array_push($array2, [
+        //         'id_don_hang' => $i + 1,
+        //         'id_san_pham' => $i + 1,
+        //         'so_luong' => 100
+        //     ]);
+        // }
+        // DB::table("san_pham_don_hang")->insert(
+        //     $array2
+        // );
+        $array3 = [];
         for ($i = 0; $i < 11; $i++) {
-            array_push($array2, [
-                'id_don_hang' => $i + 1,
-                'id_san_pham' => $i + 1,
-                'so_luong' => 100
-            ]);
-        }
-        DB::table("san_pham_don_hang")->insert(
-            $array2
-        );
+                array_push($array3, [
+                    'id_sale_off' => $i + 1,
+                    'id_san_pham' => $i + 1,
+                    'gia_sale' => 100000,
+                    'so_luong' => 40,
+                ]);
+            }
+            DB::table("san_pham_sale")->insert(
+                $array3
+            );
     }
 }

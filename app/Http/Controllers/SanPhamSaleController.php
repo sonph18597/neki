@@ -79,7 +79,6 @@ class SanPhamSaleController extends Controller
         if (!$san_pham_sale) {
             return response()->json(['error' => 'Không tìm thấy Sản Phẩm Giảm Giá có ID ' . $id . ''], 404);
         }
-
         $validator = Validator::make($input, [
             'id_sale_off' => 'required',
             // trường ko được tồn tại trong DB
