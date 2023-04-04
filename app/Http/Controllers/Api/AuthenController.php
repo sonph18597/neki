@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -30,7 +31,13 @@ class AuthenController extends Controller
 
             $user->save();
 
-            return response()->json(["user" => $user], 201);
+            return response()->json([
+                'result' => true,
+                'status_code' => JsonResponse::HTTP_CREATED,
+                'contents' => [
+                    'entries' => $user
+                ]
+            ], JsonResponse::HTTP_CREATED);
         }
         catch (QueryException $e){
             return response()->json(["message" => $e], 400);
@@ -41,14 +48,20 @@ class AuthenController extends Controller
     {
         $credentials = $request->only('email', 'password');
         if (!$token = JWTAuth::attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['message' => 'Unauthorized'], 401);
         }
     
         $user = JWTAuth::user();
         return response()->json([
-            'token' => $token,
-            'exp' => JWTAuth::factory()->getTTL(86400) * 60 * 24 , // tính toán thời gian hết hạn của token
-            'user' => $user
-        ], 200);
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => [
+                    'token' => $token,
+                    'exp' => JWTAuth::factory()->getTTL(86400) * 60 * 24 , // tính toán thời gian hết hạn của token
+                    'user' => $user
+                ]
+            ]
+        ], JsonResponse::HTTP_OK);
     }
 }
