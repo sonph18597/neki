@@ -32,7 +32,6 @@ class UpdateUserRequest extends FormRequest
             'role_id'=>'nullable',
             'gioi_tinh'=>'nullable',
             'anh'=>'nullable',
-            'ngay_sinh'=>'nullable|date',
             'trang_thai'=>'nullable|numeric'
         ];
     }

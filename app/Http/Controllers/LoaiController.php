@@ -37,6 +37,7 @@ class LoaiController extends Controller
             'contents' => [
                 'entries' => [
                     'id' => true,
+                    'messages'=> "Add Loại thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);
@@ -54,7 +55,8 @@ class LoaiController extends Controller
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'entries' => [
-                    'id' => $loai->id
+                    'id' => $loai->id,
+                    'messages'=> "Update Loại thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);
@@ -72,6 +74,7 @@ class LoaiController extends Controller
             'contents' => [
                 'entries' => [
                     'loai' => $loai,
+
                 ]
             ]
         ], JsonResponse::HTTP_OK);
@@ -90,6 +93,7 @@ class LoaiController extends Controller
             'contents' => [
                 'entries' => [
                     'loai' => $loai,
+                    'messages'=> "Xóa Loại thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);

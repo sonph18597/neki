@@ -37,6 +37,7 @@ class UserController extends Controller{
             'contents' => [
                 'entries' => [
                     'id' => true,
+                    'messages'=> "Add User thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);
@@ -54,7 +55,8 @@ class UserController extends Controller{
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'entries' => [
-                    'id' => $user->id
+                    'id' => $user->id,
+                    'messages'=> "Update User thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);
@@ -79,7 +81,7 @@ class UserController extends Controller{
     public function deleteUser($id)
     {
         $user = User::find($id)
-        ->where('deleted_at', 'LI   KE', '%null%');
+        ->where('deleted_at', 'LIKE', '%null%');
         if (!$user) {
             return response()->json(['error' => 'User không tồn tại'], 404);
         }
@@ -90,6 +92,7 @@ class UserController extends Controller{
             'contents' => [
                 'entries' => [
                     'user' => $user,
+                    'messages'=> "Xóa User thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);

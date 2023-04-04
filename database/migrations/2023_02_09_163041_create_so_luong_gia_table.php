@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('so_luong');
             $table->float('gia');
             $table->string('anh')->nullable();
+            $table->timestamp("delete_at")->nullable();
             $table->timestamps();
         });
     }

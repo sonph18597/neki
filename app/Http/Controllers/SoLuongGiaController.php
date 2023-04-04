@@ -36,6 +36,7 @@ class SoLuongGiaController extends Controller{
             'contents' => [
                 'entries' => [
                     'id' => true,
+                    'messages'=> "Add thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);
@@ -53,7 +54,8 @@ class SoLuongGiaController extends Controller{
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'entries' => [
-                    'id' => $soLuongGia->id
+                    'id' => $soLuongGia->id,
+                    'messages'=> "Update thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);
@@ -79,7 +81,7 @@ class SoLuongGiaController extends Controller{
     {
         $soLuongGia = SoLuongGia::find($id);
         if (!$soLuongGia) {
-            return response()->json(['error' => 'User không tồn tại'], 404);
+            return response()->json(['error' => 'Không tồn tại'], 404);
         }
         $soLuongGia->delete();
         return response()->json([
@@ -88,6 +90,7 @@ class SoLuongGiaController extends Controller{
             'contents' => [
                 'entries' => [
                     'soLuongGia' => $soLuongGia,
+                    'messages'=> "Xóa thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);

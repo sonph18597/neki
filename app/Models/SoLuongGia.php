@@ -21,7 +21,7 @@ class SoLuongGia extends Model
     public function loadListWithPager($param = []) {
         $query = DB::table($this->table)
             ->select($this->fillable)
-            ->where('delete_at', '!=', null);
+            ->where('delete_at', '=', null);
         if(isset($param['gia']) ) {
             $query->where("gia" , "LIKE" , "%".$param['gia']."%" );
         }
@@ -46,7 +46,7 @@ class SoLuongGia extends Model
     public function loadOne($id,$params = []) {
         $query = DB::table($this->table)
             ->where('id','=',$id)
-            ->where('delete_at', '!=', null);
+            ->where('delete_at', '=', null);
         $obj = $query->first();
         return $obj;
     }
