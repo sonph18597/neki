@@ -25,6 +25,7 @@ class SaleOffController extends Controller
         ]);
     }
 
+    //thêm mã giảm giá sale-off
     public function addSaleOff(Request $request)
     {
         $input = $request->all();
@@ -57,11 +58,9 @@ class SaleOffController extends Controller
     public function listSaleOff($id)
     {
         $sale_off = SaleOff::find($id);
-
         if (!$sale_off) {
             return response()->json(['error' => 'Không tìm thấy Mã Giảm Giá có ID ' . $id . ''], 404);
         }
-
         return response()->json([
             "success" => true,
             "status_code" => 200,
@@ -78,7 +77,6 @@ class SaleOffController extends Controller
         if (!$sale_off) {
             return response()->json(['error' => 'Không tìm thấy Mã Giảm Giá có ID ' . $id . ''], 404);
         }
-
         $validator = Validator::make($input,[
             'ten' => 'required',
             'mo_ta' => 'required',
@@ -94,7 +92,6 @@ class SaleOffController extends Controller
             // return $this->sendError('Validation Error.', $validator->errors());
             // return response()->json(["error" => 'Lỗi khi thêm, hãy thao tác lại'], 400);
         } 
-
         $sale_off->update($input);
         return response()->json([
             "success" => true,
@@ -108,7 +105,6 @@ class SaleOffController extends Controller
     public function deleteSaleOff($id)
     {
         $sale_off = SaleOff::find($id);
-
         if (!$sale_off) {
             return response()->json(['error' => 'Không tìm thấy Mã Giảm Giá có ID ' . $id . ''], 404);
         }
@@ -133,12 +129,11 @@ class SaleOffController extends Controller
         if ($sort = $request->input('sort')) {
             $query->orderBy('ten', $sort);
         }
-
         $perPage = 8;
         $page = $request->input('page', 1);
         $total = $query->count();
         $result = $query->offset(($page - 1) * $perPage)->limit($perPage)->get();
-        return [
+        return [      
             'data' => $result,
             // trả về kết quá
             'total' => $total,
