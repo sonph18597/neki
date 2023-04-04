@@ -8,11 +8,15 @@ use App\Http\Controllers\SanPhamSaleController;
 use App\Models\SanPhamSale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DiscountCodeController;
+use App\Http\Controllers\ShoesController;
 use App\Http\Controllers\DonHangController;
 use App\Http\Controllers\SanPhamDonHangController;
 use \App\Http\Controllers\UserController;
 use \App\Http\Controllers\SoLuongGiaController;
 use \App\Http\Controllers\LoaiController;
+use App\Http\Controllers\ThongKeController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,6 +32,32 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('dia-chi', [DiaChiController::class, 'store']);
 
 });
+
+
+//Shoes
+Route::get('Shoes', [ShoesController::class, 'index']);
+Route::post('Shoes', [ShoesController::class, 'create']);
+Route::get('Shoes/{id}', [ShoesController::class, 'show']);
+Route::put('Shoes/{id}', [ShoesController::class, 'update']);
+Route::delete('Shoes/{id}', [ShoesController::class, 'delete']);
+Route::get('Shoes/search', [ShoesController::class, 'search']);
+
+//Discount Code
+Route::get('DiscountCode', [DiscountCodeController::class, 'index']);
+Route::post('DiscountCode', [DiscountCodeController::class, 'create']);
+Route::get('DiscountCode/{id}', [DiscountCodeController::class, 'show']);
+Route::put('DiscountCode/{id}', [DiscountCodeController::class, 'update']);
+Route::delete('DiscountCode/{id}', [DiscountCodeController::class, 'delete']);
+Route::get('DiscountCode/search', [DiscountCodeController::class, 'search']);
+//Size
+
+Route::get('Size', [SizeController::class, 'index']);
+Route::post('Size', [SizeController::class, 'create']);
+Route::get('Size/{id}', [SizeController::class, 'show']);
+Route::put('Size/{id}', [SizeController::class, 'update']);
+Route::delete('Size/{id}', [SizeController::class, 'delete']);
+Route::get('Size/search', [SizeController::class, 'search']);
+
 
 //user
 Route::get('user', [UserController::class, 'getAllUser']);
@@ -61,7 +91,6 @@ Route::post('san_pham_don_hang', [SanPhamDonHangController::class, 'addSanPhamDo
 Route::put('san_pham_don_hang/{id}', [SanPhamDonHangController::class, 'updateSanPhamDonHang']);
 Route::get('san_pham_don_hang/{id}', [SanPhamDonHangController::class, 'getOneSanPhamDonHang']);
 
-
 Route::get('mau-sac', [MauSacController::class, 'index']);
 Route::post('mau-sac', [MauSacController::class, 'store']);
 Route::get('mau-sac/{id}', [MauSacController::class, 'show']);
@@ -91,6 +120,8 @@ Route::match(['put', 'patch'], 'san-pham-sale/{id}', [SanPhamSaleController::cla
 Route::delete('san-pham-sale/{id}', [SanPhamSaleController::class, 'deleteSanPhamSale']);
 Route::get('san-pham-sale', [SanPhamSaleController::class, 'search']);
 
-// Authen api
-Route::post('dang-ky', [AuthenController::class, 'register']);
-Route::post('dang-nhap', [AuthenController::class, 'login']);
+//thong ke
+Route::get('thong-ke/{sothang}', [ThongKeController::class, 'donHangThangTruoc']);
+
+
+

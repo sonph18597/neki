@@ -14,6 +14,9 @@ class DonHangController extends Controller
     public function getAllDonHang(GetAllDonHangRequest $request){
         $model = new DonHang();
         $donHang = $model->loadListWithPager($request->input());
+        if($donHang == null) {
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
@@ -65,6 +68,9 @@ class DonHangController extends Controller
     public function getOnedonHang($id){
        $model = new DonHang();
        $donhang = $model->loadOne($id);
+       if($donhang == null) {
+        return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,

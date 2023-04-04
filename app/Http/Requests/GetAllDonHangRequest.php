@@ -25,7 +25,7 @@ class GetAllDonHangRequest extends FormRequest
     {
         return [
            "trang_thai" => "nullable|numeric",
-            "so_dien_thoai" => "nullable",
+            "so_dien_thoai" => "nullable|string",
             "user_id" => "numeric|nullable",
             "xac_nhan" => "numeric|nullable",
         ];

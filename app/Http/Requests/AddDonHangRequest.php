@@ -33,4 +33,12 @@ class AddDonHangRequest extends FormRequest
             "id_dia_chi"=> "required",
         ];
     }
+    public function messages(){
+        return [
+            'tong_so_luong.required' => 'Tổng số lượng là trường bắt buộc',
+            'tong_tien.required' => 'Tổng tiền là trường bắt buộc' ,
+            'ho_ten.required' => 'Họ tên là trường bắt buộc',
+            'id_dia_chi' => 'Địa chỉ là trường bắt buộc'   
+        ];
+    }
 }
