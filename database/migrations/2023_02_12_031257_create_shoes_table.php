@@ -18,12 +18,14 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->integer('id_prod_sale');
             $table->string('name');
-            $table->string('list_img');
+            $table->string('img');
             $table->string('description');
             $table->integer('id_type');
             $table->string('list_variant');
-            $table->integer('min_price');
-            $table->integer('max_price');
+            $table->integer('price');
+            $table->integer('sale_price');
+            $table->integer('time_end_sale');
+            $table->integer('time_start_sale');
             $table->softDeletes()->nullable();
         });
     }
