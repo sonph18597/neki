@@ -32,7 +32,7 @@ class Size extends Model
     //load ra chi tiết
     public function loadOne($id,$params = []) {
         $query = DB::table($this->table)
-            ->where('id','=',$id);
+            ->where('id','=',$id)
             ->where('delete_at', '=', null);
         $obj = $query->first();
         return $obj;
