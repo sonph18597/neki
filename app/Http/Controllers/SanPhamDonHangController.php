@@ -18,6 +18,9 @@ class SanPhamDonHangController extends Controller
     public function getSanPhamDonHang( GetAllDonHangSanPhanRequest $request){
         $model = new SanPhamDonHang();
         $sanPhamDonHang = $model->loadListWithPager($request->input());
+        if($sanPhamDonHang == null){
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
@@ -63,13 +66,16 @@ class SanPhamDonHangController extends Controller
 
     public function getOneSanPhamDonHang($id){
         $model = new SanPhamDonHang();
-       $sanPhammDonHang = $model->loadOne($id);
+       $sanPhamDonHang = $model->loadOne($id);
+       if($sanPhamDonHang == null){
+        return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'entries' => [
-                    'san_pham_don_hang' => $sanPhammDonHang,
+                    'san_pham_don_hang' => $sanPhamDonHang,
                 ]
             ]
         ], JsonResponse::HTTP_OK);

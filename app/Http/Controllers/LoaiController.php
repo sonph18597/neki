@@ -2,69 +2,70 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SoLuongGia;
+use App\Http\Requests\AddLoaiRequest;
+use App\Http\Requests\GetLoaiRequest;
+use App\Http\Requests\UpdateLoaiRequest;
+use App\Models\Loai;
 use Illuminate\Http\JsonResponse;
-use App\Http\Requests\GetSoLuongGiaRequest;
-use App\Http\Requests\AddSoLuongGiaRequest;
-use App\Http\Requests\UpdateSoLuongGiaRequest;
 
-class SoLuongGiaController extends Controller{
-    public function getAllSoLuongGia(GetSoLuongGiaRequest $request){
-        $model = new SoLuongGia();
-        $soLuongGia = $model->loadListWithPager($request->input());
-        if($soLuongGia == null) {
+class LoaiController extends Controller
+{
+    public function getAllLoai(GetLoaiRequest $request){
+        $model = new Loai();
+        $loai = $model->loadListWithPager($request->input());
+        if($loai == null) {
             return response()->json([ 'message' => "Không có dữ liệu"  ]);
         }
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
-                'entries' => $soLuongGia
+                'entries' => $loai
             ]
         ], JsonResponse::HTTP_OK);
     }
 
-    public function addSoLuongGia(AddSoLuongGiaRequest $request ){
+    public function addLoai(AddLoaiRequest $request ){
         $params = [];
         $params['cols'] = $request->post();
         unset( $params['cols']['_token']);
-        $soLuongGia = new SoLuongGia();
-        $soLuongGia->saveNew($params);
+        $loai = new Loai();
+        $loai->saveNew($params);
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'entries' => [
                     'id' => true,
-                    'messages'=> "Add thành công"
+                    'messages'=> "Add Loại thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);
     }
 
-    public function updateSoLuongGia($id, UpdateSoLuongGiaRequest $request ){
+    public function updateLoai($id, UpdateLoaiRequest $request ){
         $params = [];
         $params['cols'] = $request->post();
         $params['cols']['id'] = $id;
         unset( $params['cols']['_token']);
-        $soLuongGia = new SoLuongGia();
-        $soLuongGia->saveUpdate($params);
+        $loai = new Loai();
+        $loai->saveUpdate($params);
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'entries' => [
-                    'id' => $soLuongGia->id,
-                    'messages'=> "Update thành công"
+                    'id' => $loai->id,
+                    'messages'=> "Update Loại thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);
     }
 
-    public function getOneSoLuongGia($id){
-        $model = new SoLuongGia();
-        $soLuongGia = $model->loadOne($id);
-        if($soLuongGia == null) {
+    public function getOneLoai($id){
+        $model = new Loai();
+        $loai = $model->loadOne($id);
+        if($loai == null) {
             return response()->json([ 'message' => "Không có dữ liệu"  ]);
         }
         return response()->json([
@@ -72,25 +73,27 @@ class SoLuongGiaController extends Controller{
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'entries' => [
-                    'soLuongGia' => $soLuongGia,
+                    'loai' => $loai,
+
                 ]
             ]
         ], JsonResponse::HTTP_OK);
     }
-    public function deleteSoLuongGia($id)
+    public function deleteLoai($id)
     {
-        $soLuongGia = SoLuongGia::find($id);
-        if (!$soLuongGia) {
-            return response()->json(['error' => 'Không tồn tại'], 404);
+        $loai = Loai::find($id)
+            ->where('deleted_at', 'LIKE', '%null%');
+        if (!$loai) {
+            return response()->json(['error' => 'Loại sản phẩm này không tồn tại'], 404);
         }
-        $soLuongGia->delete();
+        $loai->delete();
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'entries' => [
-                    'soLuongGia' => $soLuongGia,
-                    'messages'=> "Xóa thành công"
+                    'loai' => $loai,
+                    'messages'=> "Xóa Loại thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);

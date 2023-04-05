@@ -13,14 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('so_luong_gia', function (Blueprint $table) {
+        Schema::create('loai', function (Blueprint $table) {
             $table->id();
-            $table->integer("id_mau");
-            $table->integer("id_size");
-            $table->integer('so_luong');
-            $table->float('gia');
-            $table->string('anh')->nullable();
-            $table->timestamp("delete_at")->nullable();
+            $table->string('loai');
+            $table->timestamp('delete_at')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('so_luong_gia');
+        Schema::dropIfExists('loai');
     }
 };

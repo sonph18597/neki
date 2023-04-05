@@ -25,6 +25,8 @@ class SanPhamSaleController extends Controller
         ]);
     }
 
+
+    //thêm sp sale
     public function addSanPhamSale(Request $request)
     {
         $input = $request->all();
@@ -61,7 +63,6 @@ class SanPhamSaleController extends Controller
         if (!$san_pham_sale) {
             return response()->json(['error' => 'Không tìm thấy Sản Phẩm Giảm Giá có ID ' . $id . ''], 404);
         }
-
         return response()->json([
             "success" => true,
             "status_code" => 200,
@@ -79,13 +80,11 @@ class SanPhamSaleController extends Controller
         if (!$san_pham_sale) {
             return response()->json(['error' => 'Không tìm thấy Sản Phẩm Giảm Giá có ID ' . $id . ''], 404);
         }
-
         $validator = Validator::make($input, [
             'id_sale_off' => 'required',
-            // trường ko được tồn tại trong DB
             'id_san_pham' => 'required',
             'gia_sale' => 'required|regex:/^\d*(\.\d{3})?$/',
-            // làm tròn sau dấu . có 3 chữ số,
+            // làm tròn sau dấu . có 3 chữ số, vd: 300.000
             'so_luong' => 'required|regex:/^\d*(\.\d{3})?$/',
         ]);
         if ($validator->fails()) {
@@ -110,7 +109,6 @@ class SanPhamSaleController extends Controller
     public function deleteSanPhamSale($id)
     {
         $san_pham_sale = SanPhamSale::find($id);
-
         if (!$san_pham_sale) {
             return response()->json(['error' => 'Không tìm thấy Sản phẩm Giảm Giá có ID ' . $id . ''], 404);
         }
@@ -135,13 +133,12 @@ class SanPhamSaleController extends Controller
         if ($sort = $request->input('sort')) {
             $query->orderBy('id_san_pham', $sort)
                 ->orderBy('id_sale_off', $sort);
-        }
-
+        }     
         $perPage = 8;
         $page = $request->input('page', 1);
         $total = $query->count();
         $result = $query->offset(($page - 1) * $perPage)->limit($perPage)->get();
-        return [
+        return [          
             'data' => $result,
             // trả về kết quả
             'total' => $total,

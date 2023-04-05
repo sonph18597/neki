@@ -7,42 +7,33 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
-class SoLuongGia extends Model
+class Loai extends Model
 {
     use HasFactory;
-    protected $table ="so_luong_gia";
-    protected $fillable =[
-        'id_mau',
-        'id_size',
-        'so_luong',
-        'gia',
-        'anh',
-    ];
+    protected $table = 'loai';
+    protected $fillable = ['id', 'loai'];
     public function loadListWithPager($param = []) {
         $query = DB::table($this->table)
             ->select($this->fillable)
             ->where('delete_at', '=', null);
-        if(isset($param['gia']) ) {
-            $query->where("gia" , "LIKE" , "%".$param['gia']."%" );
+
+        if(isset($param['loai']) ) {
+            $query->where("loai" , "LIKE" , "%".$param['loai']."%" );
         }
-        if(isset($param['gia'])) {
-            $query->where('gia',"=", $param['gia'] );
+        if(isset($param['limit'])){
+            $query->limit($param['limit']);
         }
-        if(isset($param['id_mau'])) {
-            $query->where('id_mau',"=",$param['id_mau'] );
-        }
-        if(isset($param['id_size'])) {
-            $query->where('id_size',"=",$param['id_size'] );
-        }
+        $query->orderBy('loai');
         $lists = $query->paginate(10);
         return $lists;
     }
+    //thêm mới
     public function saveNew($params){
         $data = $params['cols'];
         $res = DB::table($this->table)->insertGetId($data);
         return $res;
     }
-
+    //load ra chi tiết loai
     public function loadOne($id,$params = []) {
         $query = DB::table($this->table)
             ->where('id','=',$id)
@@ -50,8 +41,7 @@ class SoLuongGia extends Model
         $obj = $query->first();
         return $obj;
     }
-
-
+    //sửa
     public function saveUpdate($params) {
         if (empty($params['cols']['id'])) {
             Session::push('errors','không xác định bản ghi cập nhập');

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetAllDonHangRequest extends FormRequest
+class UpdateLoaiRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,8 @@ class GetAllDonHangRequest extends FormRequest
     public function rules()
     {
         return [
-           "trang_thai" => "nullable|numeric",
-            "so_dien_thoai" => "nullable|string",
-            "user_id" => "numeric|nullable",
-            "xac_nhan" => "numeric|nullable",
+            "loai" => "required|max:255",
+            "gioi_tinh" => "nullable",
         ];
     }
 }

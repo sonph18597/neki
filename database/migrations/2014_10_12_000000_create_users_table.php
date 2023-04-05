@@ -24,11 +24,10 @@ return new class extends Migration
             $table->integer('role_id')->default(1);
             $table->integer('gioi_tinh')->default(1);
             $table->string("anh")->nullable();
-            $table->date("ngay_sinh")->nullable();
             $table->integer('trang_thai')->default(1);
             $table->rememberToken();
             $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->timestamp('delete_at')->nullable();
         });
     }
 
