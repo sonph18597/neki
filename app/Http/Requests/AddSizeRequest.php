@@ -27,4 +27,9 @@ class AddSizeRequest extends FormRequest
             'size'=>'required|numeric',
         ];
     }
+    public function messages(){
+        return [
+            'size.required' => 'Trường bắt buộc phải nhập',
+        ];
+    }
 }

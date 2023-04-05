@@ -17,7 +17,7 @@ class DiscountCode extends Model
     protected $fillable = ['id', 'discount_code', 'exclude_prod','include_prod', 'condition_type', 'type_discount', 'discount_number', 'limits','time_start', 'time_end'];
     public function loadListWithPager($param = []) {
         $query = DB::table($this->table)
-            ->select($this->fillable);
+            ->select($this->fillable)->where('delete_at', '=', null);
 
         if(isset($param['discount_code']) ) {
             $query->where("discount_code" , "LIKE" , "%".$param['discount_code']."%" );
@@ -40,7 +40,7 @@ class DiscountCode extends Model
     //load ra chi tiết
     public function loadOne($id,$params = []) {
         $query = DB::table($this->table)
-            ->where('id','=',$id);
+            ->where('id','=',$id)->where('delete_at', '=', null);
         $obj = $query->first();
         return $obj;
     }

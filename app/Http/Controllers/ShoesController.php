@@ -22,6 +22,9 @@ class ShoesController extends Controller
     public function getAllShoes(GetShoesRequest $request){
         $model = new Shoes();
         $shoes = $model->loadListWithPager($request->input());
+        if($shoes == null) {
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
@@ -43,6 +46,8 @@ class ShoesController extends Controller
             'contents' => [
                 'entries' => [
                     'id' => true,
+                    'messages'=> "Add thành công"
+
                 ]
             ]
         ], JsonResponse::HTTP_OK);
@@ -60,7 +65,9 @@ class ShoesController extends Controller
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'entries' => [
-                    'id' => $shoes->id
+                    'id' => $shoes->id,
+                    'messages'=> "Update thành công"
+
                 ]
             ]
         ], JsonResponse::HTTP_OK);
@@ -69,6 +76,9 @@ class ShoesController extends Controller
     public function getOneShoes($id){
         $model = new Shoes();
         $shoes = $model->loadOne($id);
+        if($shoes == null) {
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
@@ -92,6 +102,8 @@ class ShoesController extends Controller
             'contents' => [
                 'entries' => [
                     'shoes' => $shoes,
+                    'messages'=> "Delete thành công"
+
                 ]
             ]
         ], JsonResponse::HTTP_OK);

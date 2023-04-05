@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('sale_price');
             $table->integer('time_end_sale');
             $table->integer('time_start_sale');
-            $table->softDeletes()->nullable();
+            $table->timestamp('delete_at')->nullable();
         });
     }
 

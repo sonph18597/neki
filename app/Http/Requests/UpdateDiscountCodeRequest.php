@@ -35,4 +35,13 @@ class UpdateDiscountCodeRequest extends FormRequest
             'time_end'=>'required|date',
         ];
     }
+    public function messages(){
+        return [
+            'discount_code.required' => 'Trường bắt buộc phải nhập',
+            'discount_number.required' => 'Trường bắt buộc phải nhập',
+            'limits.required' => 'Trường bắt buộc phải nhập',
+            'time_start.required' => 'Trường bắt buộc phải nhập',
+            'time_end.required' => 'Trường bắt buộc phải nhập',
+        ];
+    }
 }

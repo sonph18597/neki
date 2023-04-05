@@ -22,6 +22,9 @@ class DiscountCodeController extends Controller
     public function getAllDiscountCode(GetDiscountCodeRequest $request){
         $model = new DiscountCode();
         $discountcode = $model->loadListWithPager($request->input());
+        if($discountcode == null) {
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
@@ -43,6 +46,7 @@ class DiscountCodeController extends Controller
             'contents' => [
                 'entries' => [
                     'id' => true,
+                    'messages'=> "Add thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);
@@ -60,7 +64,8 @@ class DiscountCodeController extends Controller
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'entries' => [
-                    'id' => $discountcode->id
+                    'id' => $discountcode->id,
+                    'messages'=> "Update thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);
@@ -69,6 +74,9 @@ class DiscountCodeController extends Controller
     public function getOneDiscountCode($id){
         $model = new DiscountCode();
         $discountcode = $model->loadOne($id);
+        if($discountcode == null) {
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
@@ -92,6 +100,7 @@ class DiscountCodeController extends Controller
             'contents' => [
                 'entries' => [
                     'discountcode' => $discountcode,
+                    'messages'=> "Delete thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);

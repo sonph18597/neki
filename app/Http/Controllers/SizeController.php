@@ -21,6 +21,9 @@ class SizeController extends Controller
     public function getAllSize(GetSizeRequest $request){
         $model = new Size();
         $size = $model->loadListWithPager($request->input());
+        if($size == null) {
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
@@ -42,6 +45,7 @@ class SizeController extends Controller
             'contents' => [
                 'entries' => [
                     'id' => true,
+                    'messages'=> "Add thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);
@@ -59,7 +63,8 @@ class SizeController extends Controller
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'entries' => [
-                    'id' => $size->id
+                    'id' => $size->id,
+                    'messages'=> "Update thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);
@@ -68,6 +73,9 @@ class SizeController extends Controller
     public function getOneSize($id){
         $model = new Size();
         $size = $model->loadOne($id);
+        if($size == null) {
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
@@ -80,7 +88,7 @@ class SizeController extends Controller
     }
     public function deleteSize($id)
     {
-        $size = Size::find($id);
+        $size = Size::find($id) ->where('deleted_at', 'LIKE', '%null%');
         if (!$size) {
             return response()->json(['error' => 'Size này không tồn tại'], 404);
         }
@@ -91,6 +99,7 @@ class SizeController extends Controller
             'contents' => [
                 'entries' => [
                     'size' => $size,
+                    'messages'=> "Xóa thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);

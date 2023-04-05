@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 class Size extends Model
 {
     use HasFactory, HasApiTokens, Notifiable;
@@ -13,7 +15,7 @@ class Size extends Model
     protected $fillable = ['id', 'size'];
     public function loadListWithPager($param = []) {
         $query = DB::table($this->table)
-            ->select($this->fillable);
+            ->select($this->fillable)->where('delete_at', '=', null);
 
         if(isset($param['size']) ) {
             $query->where("size" , "LIKE" , "%".$param['size']."%" );
@@ -31,6 +33,7 @@ class Size extends Model
     public function loadOne($id,$params = []) {
         $query = DB::table($this->table)
             ->where('id','=',$id);
+            ->where('delete_at', '=', null);
         $obj = $query->first();
         return $obj;
     }

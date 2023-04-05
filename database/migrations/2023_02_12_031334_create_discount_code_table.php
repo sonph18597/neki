@@ -25,7 +25,7 @@ return new class extends Migration
             $table->integer('limits');
             $table->integer('time_start');
             $table->integer('time_end');
-            $table->softDeletes()->nullable();
+            $table->timestamp('delete_at')->nullable();
         });
     }
 

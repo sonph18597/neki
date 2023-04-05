@@ -36,4 +36,12 @@ class UpdateShoesRequest extends FormRequest
             'time_start_sale'=>'nullable|date',
         ];
     }
+    public function messages(){
+        return [
+            'name.required' => 'Trường bắt buộc phải nhập',
+            'id_prod_sale.required' => 'Trường bắt buộc phải nhập',
+            'img.required' => 'Trường bắt buộc phải nhập',
+            'price.required' => 'Trường bắt buộc phải nhập',
+        ];
+    }
 }
