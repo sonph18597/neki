@@ -20,7 +20,7 @@ class Shoes extends Model
         ->leftJoin('so_luong_gia', 'shoes.id', '=', 'so_luong_gia.id_giay')
         ->leftJoin('size', 'so_luong_gia.id_size', '=', 'size.id')
         ->leftJoin('mau', 'so_luong_gia.id_mau', '=', 'mau.id')
-        ->select('shoes.name', 'shoes.price','shoes.img','shoes.id_type','shoes.description','shoes.id_prod_sale','shoes.sale_price','shoes.time_end_sale','shoes.time_start_sale' DB::raw('JSON_EXTRACT(list_variant, "$.size") as size'), DB::raw('JSON_EXTRACT(list_variant, "$.color") as color'), DB::raw('JSON_EXTRACT(list_variant, "$.so_luong") as so_luong'))
+        ->select('shoes.name', 'shoes.price','shoes.img','shoes.id_type','shoes.description','shoes.id_prod_sale','shoes.sale_price','shoes.time_end_sale','shoes.time_start_sale', DB::raw('JSON_EXTRACT(list_variant, "$.size") as size'), DB::raw('JSON_EXTRACT(list_variant, "$.color") as color'), DB::raw('JSON_EXTRACT(list_variant, "$.so_luong") as so_luong'))
         ->where('delete_at', '=', null);
         ->get();
         if(isset($param['name']) ) {
