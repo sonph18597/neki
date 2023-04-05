@@ -14,10 +14,13 @@ class Shoes extends Model
 {
     use HasFactory, HasApiTokens, Notifiable;
     protected $table = "shoes";
-    protected $fillable = ['id', 'name', 'id_prod_sale','img', 'id_type', 'description', 'list_variant', 'price','sale_price', 'time_end_sale', 'time_start_sale'];
+    protected $fillable = ['id', 'name', 'id_prod_sale','img', 'id_type','bien_the', 'description', 'list_variant', 'price','sale_price', 'time_end_sale', 'time_start_sale'];
     public function loadListWithPager($param = []) {
         $query = DB::table($this->table)
-            ->select($this->fillable);
+        ->join('size', 'so_luong_gia.id_size', '=', 'size.id')
+        ->join('mau', 'so_luong_gia.id_mau', '=', 'mau.id')
+        ->join('so_luong_gia', 'shoes.id', '=', 'so_luong_gia.id_giay')
+            ->select($this->fillable,'mau.mau as color', 'size.size as sizes', 'so_luong_gia.gia as prices')->get();
 
         if(isset($param['name']) ) {
             $query->where("name" , "LIKE" , "%".$param['name']."%" );
@@ -34,7 +37,7 @@ class Shoes extends Model
         $res = DB::table($this->table)->insertGetId($data);
         return $res;
     }
-    //load ra chi tiết loai
+    //load ra chi tiết
     public function loadOne($id,$params = []) {
         $query = DB::table($this->table)
             ->where('id','=',$id);

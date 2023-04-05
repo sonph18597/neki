@@ -37,7 +37,7 @@ class DiscountCode extends Model
         $res = DB::table($this->table)->insertGetId($data);
         return $res;
     }
-    //load ra chi tiết loai
+    //load ra chi tiết
     public function loadOne($id,$params = []) {
         $query = DB::table($this->table)
             ->where('id','=',$id);
