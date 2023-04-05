@@ -117,9 +117,13 @@ Route::match(['put', 'patch'], 'san-pham-sale/{id}', [SanPhamSaleController::cla
 Route::delete('san-pham-sale/{id}', [SanPhamSaleController::class, 'deleteSanPhamSale']);
 Route::get('san-pham-sale', [SanPhamSaleController::class, 'search']);
 
+//Ảnh
+Route::get('anh', [AnhController::class, 'getAllAnh']);
+Route::post('anh', [AnhController::class, 'addAnh']);
+Route::get('anh/{id}', [AnhController::class, 'getOneAnh']);
+Route::put('anh/{id}', [AnhController::class, 'updateAnh']);
+Route::delete('anh/{id}', [AnhController::class, 'deleteAnh']);
+
 //thong ke
 Route::get('thong-ke/{sothang}', [ThongKeController::class, 'donHangThangTruoc']);
 
-// ảnh
-Route::get('anh', [AnhController::class, 'index']);
-Route::post('anh', [AnhController::class, 'upload']);

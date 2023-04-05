@@ -2,118 +2,106 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AnhRequest;
+use App\Http\Requests\AddAnhRequest;
+use App\Http\Requests\GetAnhRequest;
+use App\Http\Requests\UpdateAnhRequest;
 use App\Models\Anh;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File as FacadesFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AnhController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function getAllAnh()
     {
         $anh = Anh::all();
-        $anh = Anh::paginate(5); // phân trang
-        if($anh == null) {
-            return response()->json([ 'message' => "Không có ảnh"  ]);
-        }
+        $anh = Anh::paginate(8); // phân trang
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
-                'data' =>[ 
-                          $anh
-                    ]
+                'entries' => $anh,
             ]
         ], JsonResponse::HTTP_OK);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-
-    
-    public function upload(AnhRequest $request)   //thêm ảnh
-    {
+    public function addAnh(AddAnhRequest $request ){
+        $params = [];
+        $params['cols'] = $request->post();
+        unset( $params['cols']['_token']);
+        if ($request->hasFile('url') && $request->file('url')->isValid())
+        {
+            $params['cols']['images'] = [ $this->uploadFile($request->file('url')) ];
+        }
         $anh = new Anh();
-
-        $anh ->product_id = $request->product_id;
-        $anh ->url = $request->url;
-       
-        $anh->save();
+        $anh->saveNew($params);
         return response()->json([
             'result' => true,
-            'title' => "Thêm Thành Công!",
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'entries' => [
-                    "data" => $anh,
+                    'id' => true,
+                    'messages'=> "Thêm Ảnh thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+    public function updateAnh($id, UpdateAnhRequest $request ){
+        $params = [];
+        $params['cols'] = $request->post();
+        $params['cols']['id'] = $id;
+        unset( $params['cols']['_token']);
+        $anh = new Anh();
+        $anh->saveUpdate($params);
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => [
+                    'id' => $anh->id,
+                    'messages'=> "Update Ảnh thành công"
+                ]
+            ]
+        ], JsonResponse::HTTP_OK);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+    public function getOneAnh($id){
+        $model = new Anh();
+        $anh = $model->loadOne($id);
+        if($anh == null) {
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => [
+                    'anh' => $anh,
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+                ]
+            ]
+        ], JsonResponse::HTTP_OK);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function deleteAnh($id)
     {
-        //
+        $anh = Anh::find($id);
+            // ->where('deleted_at', 'LIKE', '%null%');
+        if (!$anh) {
+            return response()->json(['error' => 'Ảnh sản phẩm này không tồn tại'], 404);
+        }
+        $anh->delete();
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => [
+                    'anh' => $anh,
+                    'messages'=> "Xóa Ảnh thành công"
+                ]
+            ]
+        ], JsonResponse::HTTP_OK);
     }
 }
