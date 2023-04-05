@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Shoes;
-use App\Http\Requests\ShoesRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Dotenv\Exception\ValidationException;
@@ -27,7 +26,7 @@ class ShoesController extends Controller
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
-                'entries' => $shoes
+                'entries' =>
             ]
         ], JsonResponse::HTTP_OK);
     }

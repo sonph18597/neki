@@ -32,28 +32,25 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //Shoes
-Route::get('Shoes', [ShoesController::class, 'index']);
-Route::post('Shoes', [ShoesController::class, 'create']);
-Route::get('Shoes/{id}', [ShoesController::class, 'show']);
-Route::put('Shoes/{id}', [ShoesController::class, 'update']);
-Route::delete('Shoes/{id}', [ShoesController::class, 'delete']);
-Route::get('Shoes/search', [ShoesController::class, 'search']);
+Route::get('shoes', [ShoesController::class, 'getAllShoes']);
+Route::post('shoes', [ShoesController::class, 'addShoes']);
+Route::get('shoes/{id}', [ShoesController::class, 'getOneShoes']);
+Route::put('shoes/{id}', [ShoesController::class, 'updateShoes']);
+Route::delete('shoes/{id}', [ShoesController::class, 'deleteShoes']);
 
 //Discount Code
-Route::get('DiscountCode', [DiscountCodeController::class, 'index']);
-Route::post('DiscountCode', [DiscountCodeController::class, 'create']);
-Route::get('DiscountCode/{id}', [DiscountCodeController::class, 'show']);
-Route::put('DiscountCode/{id}', [DiscountCodeController::class, 'update']);
-Route::delete('DiscountCode/{id}', [DiscountCodeController::class, 'delete']);
-Route::get('DiscountCode/search', [DiscountCodeController::class, 'search']);
+Route::get('discountcode', [DiscountCodeController::class, 'getAllDiscountCode']);
+Route::post('discountcode', [DiscountCodeController::class, 'addDiscountCode']);
+Route::get('discountcode/{id}', [DiscountCodeController::class, 'getOneDiscountCode']);
+Route::put('discountcode/{id}', [DiscountCodeController::class, 'updateDiscountCode']);
+Route::delete('discountcode/{id}', [DiscountCodeController::class, 'deleteDiscountCode']);
 //Size
 
-Route::get('Size', [SizeController::class, 'index']);
-Route::post('Size', [SizeController::class, 'create']);
-Route::get('Size/{id}', [SizeController::class, 'show']);
-Route::put('Size/{id}', [SizeController::class, 'update']);
-Route::delete('Size/{id}', [SizeController::class, 'delete']);
-Route::get('Size/search', [SizeController::class, 'search']);
+Route::get('size', [SizeController::class, 'getAllSize']);
+Route::post('size', [SizeController::class, 'addSize']);
+Route::get('size/{id}', [SizeController::class, 'getOneSize']);
+Route::put('size/{id}', [SizeController::class, 'updateSize']);
+Route::delete('size/{id}', [SizeController::class, 'deleteSize']);
 
 
 //user

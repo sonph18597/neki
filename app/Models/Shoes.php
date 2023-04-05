@@ -19,11 +19,11 @@ class Shoes extends Model
         $query = DB::table($this->table)
             ->select($this->fillable);
 
-        if(isset($param['loai']) ) {
-            $query->where("loai" , "LIKE" , "%".$param['loai']."%" );
+        if(isset($param['name']) ) {
+            $query->where("name" , "LIKE" , "%".$param['name']."%" );
         }
-        if(isset($param['gioi_tinh'])) {
-            $query->where('gioi_tinh',"=", $param['gioi_tinh'] );
+        if(isset($param['description'])) {
+            $query->where('description',"LIKE", "%".$param['description']."%" );
         }
         $lists = $query->paginate(10);
         return $lists;
