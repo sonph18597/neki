@@ -13,6 +13,9 @@ class LoaiController extends Controller
     public function getAllLoai(GetLoaiRequest $request){
         $model = new Loai();
         $loai = $model->loadListWithPager($request->input());
+        if($loai == null) {
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
@@ -34,6 +37,7 @@ class LoaiController extends Controller
             'contents' => [
                 'entries' => [
                     'id' => true,
+                    'messages'=> "Add Loại thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);
@@ -51,7 +55,8 @@ class LoaiController extends Controller
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'entries' => [
-                    'id' => $loai->id
+                    'id' => $loai->id,
+                    'messages'=> "Update Loại thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);
@@ -60,19 +65,24 @@ class LoaiController extends Controller
     public function getOneLoai($id){
         $model = new Loai();
         $loai = $model->loadOne($id);
+        if($loai == null) {
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
         return response()->json([
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'entries' => [
                     'loai' => $loai,
+
                 ]
             ]
         ], JsonResponse::HTTP_OK);
     }
     public function deleteLoai($id)
     {
-        $loai = Loai::find($id);
+        $loai = Loai::find($id)
+            ->where('deleted_at', 'LIKE', '%null%');
         if (!$loai) {
             return response()->json(['error' => 'Loại sản phẩm này không tồn tại'], 404);
         }
@@ -83,6 +93,7 @@ class LoaiController extends Controller
             'contents' => [
                 'entries' => [
                     'loai' => $loai,
+                    'messages'=> "Xóa Loại thành công"
                 ]
             ]
         ], JsonResponse::HTTP_OK);

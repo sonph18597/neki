@@ -25,7 +25,11 @@ class AddLoaiRequest extends FormRequest
     {
         return [
             "loai" => "required|max:255",
-            "gioi_tinh" => "nullable",
+        ];
+    }
+    public function messages(){
+        return [
+            'loai.required' => 'Tên loại bắt buộc phải nhập',
         ];
     }
 }

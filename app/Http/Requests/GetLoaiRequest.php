@@ -25,7 +25,7 @@ class GetLoaiRequest extends FormRequest
     {
         return [
             'loai'=>'nullable',
-            'gioi_tinh'=>'nullable',
+            'limit'=>'nullable'
         ];
     }
 }
