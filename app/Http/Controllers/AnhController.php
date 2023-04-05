@@ -25,7 +25,6 @@ class AnhController extends Controller
         }
         return response()->json([
             'result' => true,
-            'title' => "Thêm Thành Công!",
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'data' =>[ 
@@ -63,6 +62,7 @@ class AnhController extends Controller
         $anh->save();
         return response()->json([
             'result' => true,
+            'title' => "Thêm Thành Công!",
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
                 'entries' => [
