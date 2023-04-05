@@ -14,14 +14,14 @@ class Shoes extends Model
 {
     use HasFactory, HasApiTokens, Notifiable;
     protected $table = "shoes";
-    protected $fillable = ['id', 'name', 'id_prod_sale','img', 'id_type','bien_the', 'description', 'list_variant', 'price','sale_price', 'time_end_sale', 'time_start_sale'];
+    protected $fillable = ['id', 'name', 'id_prod_sale','img', 'id_type', 'description', 'list_variant', 'price','sale_price', 'time_end_sale', 'time_start_sale'];
     public function loadListWithPager($param = []) {
         $query = DB::table($this->table)
-        ->join('size', 'so_luong_gia.id_size', '=', 'size.id')
-        ->join('mau', 'so_luong_gia.id_mau', '=', 'mau.id')
-        ->join('so_luong_gia', 'shoes.id', '=', 'so_luong_gia.id_giay')
-            ->select($this->fillable,'mau.mau as color', 'size.size as sizes', 'so_luong_gia.gia as prices')->get();
-
+        ->leftJoin('so_luong_gia', 'shoes.id', '=', 'so_luong_gia.id_giay')
+        ->leftJoin('size', 'so_luong_gia.id_size', '=', 'size.id')
+        ->leftJoin('mau', 'so_luong_gia.id_mau', '=', 'mau.id')
+        ->select('shoes.name', 'shoes.price','shoes.img','shoes.id_type','shoes.description','shoes.id_prod_sale','shoes.sale_price','shoes.time_end_sale','shoes.time_start_sale' DB::raw('JSON_EXTRACT(list_variant, "$.size") as size'), DB::raw('JSON_EXTRACT(list_variant, "$.color") as color'), DB::raw('JSON_EXTRACT(list_variant, "$.so_luong") as so_luong'))
+->get();
         if(isset($param['name']) ) {
             $query->where("name" , "LIKE" , "%".$param['name']."%" );
         }
