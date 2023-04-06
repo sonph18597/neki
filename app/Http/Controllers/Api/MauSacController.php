@@ -40,11 +40,9 @@ class MauSacController extends Controller
     public function show(Request $request, $id)
     {
         $color = MauSac::find($id);
-
         if (!$color) {
             return response()->json(['message' => 'Color not found'], 404);
         }
-
         return response()->json($color);
     }
 
@@ -56,7 +54,7 @@ class MauSacController extends Controller
         if (!$color) {
             return response()->json(['error' => 'The color with id '.$id.' could not be found.'], 404);
         }
-
+        
         try {
             $this->validate($request, [
                 'ten_mau' => 'required|unique:mau_sac|max:255'

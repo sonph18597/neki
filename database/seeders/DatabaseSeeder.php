@@ -34,22 +34,22 @@ class DatabaseSeeder extends Seeder
         // DB::table("users")->insert(
         //     $array
         // );
-        // $array1=[];
-        // for($i=0;$i<11;$i++){
-        //     array_push($array1,[
-        //         "trang_thai" => 1,
-        //         "tong_so_luong" => (20 + $i),
-        //         "tong_tien" => 1000000,
-        //         "user_id" => $i +1,
-        //         "ho_ten" => "hau " . $i,
-        //         "id_dia_chi" => 1,
-        //         "xac_nhan" => 2,
-        //         "so_dien_thoai" => "000001112"
-        //     ]);
-        // }
-        // DB::table("don_hang")->insert(
-        //          $array1
-        // );
+        $array1=[];
+        for($i=0;$i<11;$i++){
+            array_push($array1,[
+                "trang_thai" => 1,
+                "tong_so_luong" => (20 + $i),
+                "tong_tien" => 1000000,
+                "user_id" => $i +1,
+                "ho_ten" => "hau " . $i,
+                "id_dia_chi" => 1,
+                "xac_nhan" => 2,
+                "so_dien_thoai" => "000001112"
+            ]);
+        }
+        DB::table("don_hang")->insert(
+                 $array1
+        );
         // $array2 = [];
         // for ($i = 0; $i < 11; $i++) {
         //     array_push($array2, [
@@ -61,17 +61,17 @@ class DatabaseSeeder extends Seeder
         // DB::table("san_pham_don_hang")->insert(
         //     $array2
         // );
-        $array3 = [];
-        for ($i = 0; $i < 11; $i++) {
-                array_push($array3, [
-                    'id_sale_off' => $i + 1,
-                    'id_san_pham' => $i + 1,
-                    'gia_sale' => 100000,
-                    'so_luong' => 40,
-                ]);
-            }
-            DB::table("san_pham_sale")->insert(
-                $array3
-            );
+        // $array3 = [];
+        // for ($i = 0; $i < 11; $i++) {
+        //         array_push($array3, [
+        //             'id_sale_off' => $i + 1,
+        //             'id_san_pham' => $i + 1,
+        //             'gia_sale' => 100000,
+        //             'so_luong' => 40,
+        //         ]);
+        //     }
+        //     DB::table("san_pham_sale")->insert(
+        //         $array3
+        //     );
     }
 }
