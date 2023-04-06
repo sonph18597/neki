@@ -26,8 +26,8 @@ class Shoes extends Model
         if(isset($param['name']) ) {
             $query->where("name" , "LIKE" , "%".$param['name']."%" );
         }
-        if(isset($param['description'])) {
-            $query->where('description',"LIKE", "%".$param['description']."%" );
+        if(isset($param['price'])) {
+            $query->where('price',"LIKE", "%".$param['price']."%" );
         }
         $lists = $query->paginate(10);
         return $lists;
