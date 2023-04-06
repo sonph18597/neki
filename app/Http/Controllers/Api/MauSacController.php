@@ -22,7 +22,7 @@ class MauSacController extends Controller
                 'ten_mau' => 'required|unique:mau_sac|max:255'
             ]);
         } catch (ValidationException $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
+            return response()->json(['message' => $e->getMessage()], 400);
         }
 
         $color = new MauSac();
@@ -33,7 +33,13 @@ class MauSacController extends Controller
         //     'color_name' => $request->color_name
         // ]);
 
-        return response()->json(['message' => 'Successfully created color!'], 201);
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_CREATED,
+            'contents' => [
+                'entries' => $color
+            ]
+        ], JsonResponse::HTTP_CREATED);
     }
 
 
@@ -45,7 +51,13 @@ class MauSacController extends Controller
             return response()->json(['message' => 'Color not found'], 404);
         }
 
-        return response()->json($color);
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => $color
+            ]
+        ], JsonResponse::HTTP_OK);
     }
 
 
@@ -54,7 +66,7 @@ class MauSacController extends Controller
         $color = MauSac::find($id);
 
         if (!$color) {
-            return response()->json(['error' => 'The color with id '.$id.' could not be found.'], 404);
+            return response()->json(['message' => 'The color with id '.$id.' could not be found.'], 404);
         }
 
         try {
@@ -62,13 +74,19 @@ class MauSacController extends Controller
                 'ten_mau' => 'required|unique:mau_sac|max:255'
             ]);
         } catch (ValidationException $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
+            return response()->json(['message' => $e->getMessage()], 400);
         }
 
         $color->ten_mau = $request->input('ten_mau');
         $color->save();
 
-        return response()->json(['message' => 'Successfully updated color!']);
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => $color
+            ]
+        ], JsonResponse::HTTP_OK);
     }
 
 
@@ -78,9 +96,15 @@ class MauSacController extends Controller
         $color = MauSac::find($id);
 
         if (!$color) {
-            return response()->json(['error' => 'The color with id '.$id.' could not be found.'], 404);
+            return response()->json(['message' => 'The color with id '.$id.' could not be found.'], 404);
         }
         $color->delete();
-        return response()->json(['message' => 'Successfully deleted color!']);
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => $color
+            ]
+        ], JsonResponse::HTTP_OK);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthenController;
 use App\Http\Controllers\Api\DiaChiController;
 use App\Http\Controllers\Api\MauSacController;
 use App\Http\Controllers\SaleOffController;
@@ -26,10 +27,12 @@ use App\Http\Controllers\ThongKeController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['jwt.auth'])->group(function () {
+    // Các route bảo vệ ở đây
+    
 });
+
+Route::get('dia-chi', [DiaChiController::class, 'index']);
 
 //Shoes
 Route::get('Shoes', [ShoesController::class, 'index']);
@@ -94,11 +97,13 @@ Route::get('mau-sac/{id}', [MauSacController::class, 'show']);
 Route::put('mau-sac/{id}', [MauSacController::class, 'update']);
 Route::delete('mau-sac/{id}', [MauSacController::class, 'destroy']);
 
-Route::get('dia-chi', [DiaChiController::class, 'index']);
-Route::post('dia-chi', [DiaChiController::class, 'store']);
+// Route::post('dia-chi', [DiaChiController::class, 'store']);
 Route::get('dia-chi/{id}', [DiaChiController::class, 'show']);
+Route::post('dia-chi', [DiaChiController::class, 'store']);
 Route::put('dia-chi/{id}', [DiaChiController::class, 'update']);
 Route::delete('dia-chi/{id}', [DiaChiController::class, 'destroy']);
+Route::get('dia-chi-search/', [DiaChiController::class, 'search']);
+
 
 // SaleOff
 Route::get('sale-off', [SaleOffController::class, 'index']);
@@ -119,5 +124,7 @@ Route::get('san-pham-sale', [SanPhamSaleController::class, 'search']);
 //thong ke
 Route::get('thong-ke/{sothang}', [ThongKeController::class, 'donHangThangTruoc']);
 
-
+// Authen api
+Route::post('dang-ky', [AuthenController::class, 'register']);
+Route::post('dang-nhap', [AuthenController::class, 'login']);
 
