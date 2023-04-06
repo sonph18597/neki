@@ -11,84 +11,97 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
+use App\Http\Requests\AddSizeRequest;
+use App\Http\Requests\GetSizeRequest;
+use App\Http\Requests\UpdateSizeRequest;
+use Illuminate\Http\JsonResponse;
+
 class SizeController extends Controller
 {
-    public function index()
-    {
-        $size = Size::paginate(8)
-        ->where('deleted_at', 'LIKE', '%null%');
-return response()->json(['data' => $size]);
+    public function getAllSize(GetSizeRequest $request){
+        $model = new Size();
+        $size = $model->loadListWithPager($request->input());
+        if($size == null) {
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => $size
+            ]
+        ], JsonResponse::HTTP_OK);
     }
 
-    public function create(Request $request)
-    {
-        $input = $request->all();
-        $validator = Validator::make($input, [
-            'size' => 'required|max:255'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => '400 Bad Request',
-                'errors' => $validator->errors(),
-            ], 400);
-        }
-        $size = Size::create($input);
-return response()->json(['data' => $size]);
+    public function addSize(AddSizeRequest $request ){
+        $params = [];
+        $params['cols'] = $request->post();
+        unset( $params['cols']['_token']);
+        $size = new Size();
+        $size->saveNew($params);
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => [
+                    'id' => true,
+                    'messages'=> "Add thành công"
+                ]
+            ]
+        ], JsonResponse::HTTP_OK);
     }
 
-    public function show($id)
-    {
-        $size = Size::find($id);
-
-        if (!$size) {
-            return response()->json(['error' => 'NOT FOUND'], 404);
-        }
-
-return response()->json(['data' => $size]);
+    public function updateSize($id, UpdateSizeRequest $request ){
+        $params = [];
+        $params['cols'] = $request->post();
+        $params['cols']['id'] = $id;
+        unset( $params['cols']['_token']);
+        $size = new Size();
+        $size->saveUpdate($params);
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => [
+                    'id' => $size->id,
+                    'messages'=> "Update thành công"
+                ]
+            ]
+        ], JsonResponse::HTTP_OK);
     }
 
-    public function update(Request $request, $id)
+    public function getOneSize($id){
+        $model = new Size();
+        $size = $model->loadOne($id);
+        if($size == null) {
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => [
+                    'size' => $size,
+                ]
+            ]
+        ], JsonResponse::HTTP_OK);
+    }
+    public function deleteSize($id)
     {
-        $size = Size::find($id);
-
+        $size = Size::find($id) ->where('deleted_at', 'LIKE', '%null%');
         if (!$size) {
-            return response()->json(['error' => 'NOT FOUND'], 404);
-        }
-
-        $validator = Validator::make($input,[
-            'size' => 'required|max:255',
-            'deleted_at'=>'required'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => '400 Bad Request',
-                'errors' => $validator->errors(),
-            ], 400);
-        }
-
-        $size->update($input);
-return response()->json(['data' => $size]);
-        }
-
-    public function delete($id)
-    {
-        $size = Size::find($id)
-                ->where('deleted_at', 'LIKE', '%null%');
-
-        if (!$size) {
-            return response()->json(['error' => 'NOT FOUND'], 404);
+            return response()->json(['error' => 'Size này không tồn tại'], 404);
         }
         $size->delete();
-
-return response()->json(['data' => $size]);
-    }
-    public function search(Request $request){
-        $search = $request->input('search');
-
-        $size = Size::query()
-            ->where('size', 'LIKE', "%{$search}%")
-            ->get();
-
-return response()->json(['data' => $size]);
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => [
+                    'size' => $size,
+                    'messages'=> "Xóa thành công"
+                ]
+            ]
+        ], JsonResponse::HTTP_OK);
     }
 }

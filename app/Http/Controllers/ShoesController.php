@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Shoes;
-use App\Http\Requests\ShoesRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Dotenv\Exception\ValidationException;
@@ -12,100 +11,101 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
+use App\Http\Requests\AddShoesRequest;
+use App\Http\Requests\GetShoesRequest;
+use App\Http\Requests\UpdateShoesRequest;
+use Illuminate\Http\JsonResponse;
+
 
 class ShoesController extends Controller
 {
-    public function index()
-    {
-        $shoes = Shoes::paginate(8)
-        ->where('deleted_at', 'LIKE', '%null%');
-            return response()->json(['data' => $shoes]);
-    }
-
-    public function create(Request $request)
-    {
-        $input = $request->all();
-        $validator = Validator::make($input, [
-            'name' => 'required|max:255',
-                'id_prod_sale' => 'required',
-                'id_type' => 'required',
-                'description' => 'required|max:255',
-                'list_variant' => 'required|max:255',
-                'min_price' => 'required',
-                'max_price' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => '400 Bad Request',
-                'errors' => $validator->errors(),
-            ], 400);
+    public function getAllShoes(GetShoesRequest $request){
+        $model = new Shoes();
+        $shoes = $model->loadListWithPager($request->input());
+        if($shoes == null) {
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
         }
-        $shoes = Shoes::create($input);
-            return response()->json(['data' => $shoes]);
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' =>
+            ]
+        ], JsonResponse::HTTP_OK);
     }
 
-    public function show($id)
+    public function addShoes(AddShoesRequest $request ){
+        $params = [];
+        $params['cols'] = $request->post();
+        unset( $params['cols']['_token']);
+        $shoes = new Shoes();
+        $shoes->saveNew($params);
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => [
+                    'id' => true,
+                    'messages'=> "Add thành công"
+
+                ]
+            ]
+        ], JsonResponse::HTTP_OK);
+    }
+
+    public function updateShoes($id, UpdateShoesRequest $request ){
+        $params = [];
+        $params['cols'] = $request->post();
+        $params['cols']['id'] = $id;
+        unset( $params['cols']['_token']);
+        $shoes = new Shoes();
+        $shoes->saveUpdate($params);
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => [
+                    'id' => $shoes->id,
+                    'messages'=> "Update thành công"
+
+                ]
+            ]
+        ], JsonResponse::HTTP_OK);
+    }
+
+    public function getOneShoes($id){
+        $model = new Shoes();
+        $shoes = $model->loadOne($id);
+        if($shoes == null) {
+            return response()->json([ 'message' => "Không có dữ liệu"  ]);
+        }
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => [
+                    'shoes' => $shoes,
+                ]
+            ]
+        ], JsonResponse::HTTP_OK);
+    }
+    public function deleteShoes($id)
     {
         $shoes = Shoes::find($id);
-
         if (!$shoes) {
-            return response()->json(['error' => 'NOT FOUND'], 404);
-        }
-
-            return response()->json(['data' => $shoes]);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $shoes = Shoes::find($id);
-
-        if (!$shoes) {
-            return response()->json(['error' => 'NOT FOUND'], 404);
-        }
-
-        $validator = Validator::make($input,[
-            'name' => 'required|max:255',
-                'id_prod_sale' => 'required',
-                'id_type' => 'required',
-                'description' => 'required|max:255',
-                'list_variant' => 'required|max:255',
-                'min_price' => 'required',
-                'max_price' => 'required',
-                'deleted_at'=>'required'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => '400 Bad Request',
-                'errors' => $validator->errors(),
-            ], 400);
-        }
-
-        $shoes->update($input);
-            return response()->json(['data' => $shoes]);
-        }
-
-    public function delete($id)
-    {
-        $shoes = Shoes::find($id)
-        ->where('deleted_at', 'LIKE', '%null%');
-
-        if (!$shoes) {
-            return response()->json(['error' => 'NOT FOUND'], 404);
+            return response()->json(['error' => 'Sản phẩm này không tồn tại'], 404);
         }
         $shoes->delete();
+        return response()->json([
+            'result' => true,
+            'status_code' => JsonResponse::HTTP_OK,
+            'contents' => [
+                'entries' => [
+                    'shoes' => $shoes,
+                    'messages'=> "Delete thành công"
 
-            return response()->json(['data' => $shoes]);
+                ]
+            ]
+        ], JsonResponse::HTTP_OK);
     }
-
-
-    public function search(Request $request){
-        $search = $request->input('search');
-
-        $shoes = Shoes::query()
-            ->where('name', 'LIKE', "%{$search}%")
-            ->orWhere('id_type', 'LIKE', "%{$search}%")
-            ->get();
-
-            return response()->json(['data' => $shoes]);
-        }
 }
