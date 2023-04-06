@@ -32,8 +32,16 @@ class AddUserRequest extends FormRequest
                 'role_id'=>'nullable',
                 'gioi_tinh'=>'nullable',
                 'anh'=>'nullable',
-                'ngay_sinh'=>'nullable|date',
-                'trang_thai'=>'nullable|numeric'
+                'trang_thai'=>'nullable|numeric',
+                'delete_at'=>'nullable'
+        ];
+    }
+    public function messages(){
+        return [
+            'ten.required' => 'Tên là trường bắt buộc',
+            'so_dien_thoai.required' => 'Số điện thoại là trường bắt buộc' ,
+            'email.required' => 'Email là trường bắt buộc',
+            'password' => 'Password là trường bắt buộc'
         ];
     }
 }

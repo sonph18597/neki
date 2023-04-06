@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('loai', function (Blueprint $table) {
             $table->id();
             $table->string('loai');
-            $table->string('gioi_tinh')->default(1);
+            $table->timestamp('delete_at')->nullable();
             $table->timestamps();
         });
     }

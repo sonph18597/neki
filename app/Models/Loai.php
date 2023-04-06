@@ -11,17 +11,19 @@ class Loai extends Model
 {
     use HasFactory;
     protected $table = 'loai';
-    protected $fillable = ['id', 'loai','gioi_tinh'];
+    protected $fillable = ['id', 'loai'];
     public function loadListWithPager($param = []) {
         $query = DB::table($this->table)
-            ->select($this->fillable);
+            ->select($this->fillable)
+            ->where('delete_at', '=', null);
 
         if(isset($param['loai']) ) {
             $query->where("loai" , "LIKE" , "%".$param['loai']."%" );
         }
-        if(isset($param['gioi_tinh'])) {
-            $query->where('gioi_tinh',"=", $param['gioi_tinh'] );
+        if(isset($param['limit'])){
+            $query->limit($param['limit']);
         }
+        $query->orderBy('loai');
         $lists = $query->paginate(10);
         return $lists;
     }
@@ -34,7 +36,8 @@ class Loai extends Model
     //load ra chi tiết loai
     public function loadOne($id,$params = []) {
         $query = DB::table($this->table)
-            ->where('id','=',$id);
+            ->where('id','=',$id)
+            ->where('delete_at', '=', null);
         $obj = $query->first();
         return $obj;
     }

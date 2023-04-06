@@ -31,12 +31,13 @@ class User extends Authenticatable
         'role_id',
         'gioi_tinh',
         'anh',
-        'ngay_sinh',
         'trang_thai',
     ];
     public function loadListWithPager($param = []) {
         $query = DB::table($this->table)
-            ->select($this->fillable);
+            ->select($this->fillable)
+            ->where('delete_at', '=', null);
+
         if(isset($param['so_dien_thoai']) ) {
             $query->where("so_dien_thoai" , "LIKE" , "%".$param['so_dien_thoai']."%" );
         }
@@ -60,7 +61,8 @@ class User extends Authenticatable
 
     public function loadOne($id,$params = []) {
         $query = DB::table($this->table)
-            ->where('id','=',$id);
+            ->where('id','=',$id)
+            ->where('delete_at', '=', null);
         $obj = $query->first();
         return $obj;
     }

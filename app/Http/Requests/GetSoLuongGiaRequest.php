@@ -28,7 +28,8 @@ class GetSoLuongGiaRequest extends FormRequest
             'id_size'=>'nullable|numeric',
             'so_luong'=>'nullable|numeric',
             'gia'=>'nullable|numeric',
-            'anh'=>'nullable'
+            'anh'=>'nullable',
+            'limit'=>'nullable'
         ];
     }
 }
