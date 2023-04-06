@@ -117,7 +117,7 @@ Route::delete('san-pham-sale/{id}', [SanPhamSaleController::class, 'deleteSanPha
 Route::get('san-pham-sale', [SanPhamSaleController::class, 'search']);
 
 //thong ke
-Route::get('thong-ke/{sothang}', [ThongKeController::class, 'donHangThangTruoc']);
+Route::get('tong-tien-don-hang-cac-thang-truoc', [ThongKeController::class, 'tongTienDonHangCacThangTruoc']);
 
 
 

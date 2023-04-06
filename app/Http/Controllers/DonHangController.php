@@ -7,6 +7,7 @@ use App\Http\Requests\AddDonHangRequest;
 use App\Http\Requests\GetAllDonHangRequest;
 use App\Http\Requests\UpdateDonHangRequest;
 use App\Models\DonHang;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 class DonHangController extends Controller
@@ -30,7 +31,11 @@ class DonHangController extends Controller
         $userId = Auth::user()->id;
         $params = [];
         $params['cols'] = $request->post();
-        $params['cols']['user_id'] = $userId;
+        if($userId == null ){
+            $params['cols']['user_id'] = null;
+        }else{
+            $params['cols']['user_id'] = $userId;
+        }
         unset( $params['cols']['_token']);
         $donHang = new DonHang();
         $donHang->saveNew($params);
@@ -64,7 +69,6 @@ class DonHangController extends Controller
             ]
         ], JsonResponse::HTTP_OK);
     }
-
     public function getOnedonHang($id){
        $model = new DonHang();
        $donhang = $model->loadOne($id);
