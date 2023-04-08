@@ -29,7 +29,7 @@ class ShoesController extends Controller
             'result' => true,
             'status_code' => JsonResponse::HTTP_OK,
             'contents' => [
-                'entries' =>
+                'entries' => $shoes
             ]
         ], JsonResponse::HTTP_OK);
     }
